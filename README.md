@@ -12,5 +12,18 @@ Android-App to detect when I arrived or left the office. In addition, I can mana
 
 ## Getting Started
 
-This app uses the Gradle build system.
-Download the app by cloning this repository and use the "gradlew build" command to build the project directly.
+The app is not released yet, so you have to build a debug apk. 
+Download the app by cloning this repository and use the "gradlew installDebug" command to build and install the project directly on your connected device or running emulator.
+
+### Connect your device 
+
+Follow these steps to connect your device:
+
+1. Connect your device by USB
+2. Enable 'Developer options > USB debugging' on your device (Developer options is hidden by default. To make it available, go to 'Settings > About phone' and tap 'Build number' seven times)
+3. Now you should see your device with `adb device -l`
+> optional connection by wifi
+4. Activate Wifi-Connection
+5. `adb tcpip 5555`
+6. `adb connect <XXX.XXX.X.XXX>:5555` > add the ip-adress of your device ('Settings > About phone > Status')
+7. Enjoy
