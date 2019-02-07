@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+            android:id="@+id/bottom_navigation_project"
+            android:title="@string/bottom_navigation_project"
+            android:icon="@drawable/ic_projects"/>
+    <item
+            android:id="@+id/bottom_navigation_calendar"
+            android:title="@string/bottom_navigation_calendar"
+            android:icon="@drawable/ic_calendar"/>
+    <item
+            android:id="@+id/bottom_navigation_geofence"
+            android:title="@string/bottom_navigation_geofence"
+            android:icon="@drawable/ic_geofence"/>
+</menu>
