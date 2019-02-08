@@ -29,5 +29,9 @@
             app:layout_constraintTop_toBottomOf="@id/frame_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"/>
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:itemBackground="@color/eazyTime_colorBrand"
+            app:itemIconTint="@color/eazy_time_bottom_navigation"
+            app:itemTextColor="@color/eazy_time_bottom_navigation"
+            />
 </android.support.constraint.ConstraintLayout>
