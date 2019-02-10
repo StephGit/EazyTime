@@ -8,5 +8,5 @@ import java.time.LocalDate
 @Entity
 data class WorkDay(@PrimaryKey(autoGenerate = true)
                    var id: Long = 0,
-                   var date: Long? = null,
+                   var date: LocalDate? = null,
                    var totalWorkHours: Float? = null)

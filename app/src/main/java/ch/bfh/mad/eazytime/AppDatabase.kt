@@ -13,6 +13,7 @@ import ch.bfh.mad.eazytime.entity.TimeSlot
 import ch.bfh.mad.eazytime.entity.WorkDay
 
 @Database(entities = [Project::class, TimeSlot::class, GeoFence::class, WorkDay::class], version = 1)
+@TypeConverters(DatabaseTypeConverters::class)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun projectDao(): ProjectDao
     abstract fun timeSlotDao(): TimeSlotDao
