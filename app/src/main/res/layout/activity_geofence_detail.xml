@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             android:id="@+id/geofenceDetail">
+    <com.google.android.gms.maps.MapView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:id="@+id/mapView"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/tvGeofenceDetailTitle"/>
+    <TextView
+            android:text="@string/geofence_title_detail"
+            android:id="@+id/tvGeofenceDetailTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintTop_toBottomOf="@id/mapView"
+            app:layout_constraintBottom_toTopOf="@id/tvGeofenceDetailItemName"/>
+
+    <EditText
+            android:text="@string/geofence_item_name"
+            android:contentDescription="@string/geofence_item_name_desc"
+            android:id="@+id/etGeofenceDetailItemName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintTop_toBottomOf="@id/tvGeofenceDetailTitle"
+            app:layout_constraintBottom_toTopOf="@id/btnGeofenceSave"/>
+
+    <Button
+            android:text="@string/save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnGeofenceSave"
+            app:layout_constraintTop_toBottomOf="@id/etGeofenceDetailItemName"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btnGeofenceDelete"
+            app:layout_constraintVertical_bias="0.0"/>
+
+    <Button
+            android:text="@string/delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnGeofenceDelete"
+            app:layout_constraintTop_toBottomOf="@id/etGeofenceDetailItemName"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btnGeofenceSave"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+
+
+</android.support.constraint.ConstraintLayout>
