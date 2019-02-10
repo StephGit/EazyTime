@@ -13,7 +13,10 @@
     <string name="geofence_title_detail">Geofence Detail</string>
     <string name="geofence_item_name">Name</string>
     <string name="geofence_item_name_desc">Geofence Name</string>
-    <string name="delete">Delete</string>
-    <string name="save">Save</string>
+    <string name="delete">Löschen</string>
+    <string name="save">Speichern</string>
+    <string name="no_geofences">Keine Geofences</string>
+    <string name="no_geofence_added_hint">Hinzugefügte Geofences werden hier angezeigt.</string>
+    <string name="geofence_icon">geofence icon</string>
 
 </resources>

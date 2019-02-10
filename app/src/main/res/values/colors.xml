@@ -5,9 +5,9 @@
     <color name="colorAccent">#D81B60</color>
 
     <!-- EazyTime colors -->
-    <color name="eazyTime_colorWhite">#fff</color>
+    <color name="eazyTime_colorWhite">#FFFFFF</color>
     <color name="eazyTime_colorBlack">#000</color>
-    <color name="eazyTime_colorBrand">#4dabf7</color>
+    <color name="eazyTime_colorBrand">#4DABF7</color>
     <color name="eazyTime_colorSelected">#311B92</color>
     <color name="eazyTime_colorBackgroundText">#ced4da</color>
     <color name="eazyTime_colorBackground">#f1f3f5</color>
