@@ -1,6 +1,7 @@
 package ch.bfh.mad.eazytime.di
 
 import android.app.Application
+import ch.bfh.mad.eazytime.geofence.GeoFenceViewModel
 import ch.bfh.mad.eazytime.homeScreenWidget.WidgetBroadCastReceiver
 import ch.bfh.mad.eazytime.homeScreenWidget.WidgetProvider
 import ch.bfh.mad.eazytime.projects.ProjectFragment
@@ -27,5 +28,6 @@ interface AppComponent {
     fun inject(homeScreenWidgetBroadCastReceiver: WidgetBroadCastReceiver)
 
     fun inject(widgetProvider: WidgetProvider)
+    fun inject(geoFenceViewModel: GeoFenceViewModel)
 
 }

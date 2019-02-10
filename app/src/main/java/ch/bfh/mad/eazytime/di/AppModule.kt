@@ -15,6 +15,9 @@ import ch.bfh.mad.eazytime.util.EazyTimeColorUtil
 import ch.bfh.mad.eazytime.util.ProjectProviderService
 import ch.bfh.mad.eazytime.util.TimerService
 import ch.bfh.mad.eazytime.util.WidgetProviderUtils
+import ch.bfh.mad.eazytime.data.AppDatabase
+import ch.bfh.mad.eazytime.data.GeoFenceRepository
+import ch.bfh.mad.eazytime.geofence.GeoFenceViewModel
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -27,6 +30,9 @@ class AppModule {
     @Singleton
     fun provideContext(application: Application): Context = application
 
+    @Provides
+    @Singleton
+    fun provideGeoFenceRepository() : GeoFenceRepository = GeoFenceRepository()
     @Provides
     @Singleton
     fun providesEazyTimeColorUtil(context: Context) =  EazyTimeColorUtil(context)
@@ -55,6 +61,8 @@ class AppModule {
     @Singleton
     fun provideWorkDayDao(database: AppDatabase) = database.workDayDao()
 
+    @Provides
+    fun provideGeoFenceViewModel(geoFenceViewModel: GeoFenceViewModel) : GeoFenceViewModel = geoFenceViewModel
     @Provides
     @Singleton
     fun provideTimerService(timeSlotRepo: TimeSlotRepo, projectDao: ProjectDao, workDayRepo: WorkDayRepo) = TimerService(timeSlotRepo, projectDao, workDayRepo)

@@ -1,5 +1,8 @@
 package ch.bfh.mad.eazytime.util
 
+import android.arch.lifecycle.ViewModel
+import android.arch.lifecycle.ViewModelProvider
+import ch.bfh.mad.eazytime.geofence.GeoFenceViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
@@ -36,7 +39,7 @@ class ViewModelFactory: ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when (modelClass) {
-//            GeoFenceViewModel::class.java -> GeoFenceViewModel()
+            GeoFenceViewModel::class.java -> GeoFenceViewModel()
             else -> throw IllegalStateException("ViewModel not found")
         } as T
     }
