@@ -10,6 +10,7 @@
     <string name="bottom_navigation_project">Projekte</string>
     <string name="bottom_navigation_calendar">Kalender</string>
     <string name="bottom_navigation_geofence">Geofence</string>
+
     <string name="geofence_title_detail">Geofence Detail</string>
     <string name="geofence_item_name">Name</string>
     <string name="geofence_item_name_desc">Geofence Name</string>
