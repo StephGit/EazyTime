@@ -11,50 +11,50 @@
             android:layout_height="400dp"
             android:id="@+id/mapView"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/tvGeofenceDetailTitle"/>
+            app:layout_constraintBottom_toTopOf="@id/tv_geoFenceDetailTitle"/>
     <TextView
             android:text="@string/geofence_title_detail"
-            android:id="@+id/tvGeofenceDetailTitle"
+            android:id="@+id/tv_geoFenceDetailTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintVertical_chainStyle="packed"
             app:layout_constraintTop_toBottomOf="@id/mapView"
-            app:layout_constraintBottom_toTopOf="@id/tvGeofenceDetailItemName"/>
+            app:layout_constraintBottom_toTopOf="@id/et_geoFenceDetailItemName"/>
 
     <EditText
             android:text="@string/geofence_item_name"
             android:contentDescription="@string/geofence_item_name_desc"
-            android:id="@+id/etGeofenceDetailItemName"
+            android:id="@+id/et_geoFenceDetailItemName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
             app:layout_constraintVertical_chainStyle="packed"
-            app:layout_constraintTop_toBottomOf="@id/tvGeofenceDetailTitle"
-            app:layout_constraintBottom_toTopOf="@id/btnGeofenceSave"/>
+            app:layout_constraintTop_toBottomOf="@id/tv_geoFenceDetailTitle"
+            app:layout_constraintBottom_toTopOf="@id/btn_geoFenceSave"/>
 
     <Button
             android:text="@string/save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/btnGeofenceSave"
-            app:layout_constraintTop_toBottomOf="@id/etGeofenceDetailItemName"
+            android:id="@+id/btn_geoFenceSave"
+            app:layout_constraintTop_toBottomOf="@id/et_geoFenceDetailItemName"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintVertical_chainStyle="packed"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/btnGeofenceDelete"
+            app:layout_constraintEnd_toStartOf="@id/btn_geoFenceDelete"
             app:layout_constraintVertical_bias="0.0"/>
 
     <Button
             android:text="@string/delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/btnGeofenceDelete"
-            app:layout_constraintTop_toBottomOf="@id/etGeofenceDetailItemName"
+            android:id="@+id/btn_geoFenceDelete"
+            app:layout_constraintTop_toBottomOf="@id/et_geoFenceDetailItemName"
             app:layout_constraintVertical_chainStyle="packed"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/btnGeofenceSave"
+            app:layout_constraintStart_toEndOf="@id/btn_geoFenceSave"
             app:layout_constraintEnd_toEndOf="parent"/>
 
 
