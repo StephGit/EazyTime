@@ -8,7 +8,7 @@
         tools:context=".eazytime.geofence.GeoFenceFragment">
 
     <TextView
-            android:id="@+id/tv_geofence_placeholder"
+            android:id="@+id/tvGeofenceDetailItemName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="remove me"
