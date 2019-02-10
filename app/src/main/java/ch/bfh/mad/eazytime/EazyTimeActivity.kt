@@ -6,12 +6,14 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.MenuItem
+import android.widget.Toast
 import ch.bfh.mad.R
 import ch.bfh.mad.eazytime.calendar.CalendarFragment
 import ch.bfh.mad.eazytime.geofence.GeoFenceFragment
 import ch.bfh.mad.eazytime.projects.ProjectFragment
+import ch.bfh.mad.eazytime.projects.addProject.AddProjectFragment
 
-class EazyTimeActivity : AppCompatActivity() {
+class EazyTimeActivity : AppCompatActivity(), EazyTimeNavigator {
 
     private lateinit var navigation: BottomNavigationView
 
@@ -42,6 +44,12 @@ class EazyTimeActivity : AppCompatActivity() {
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.frame_content, fragment)
+            .commit()
+    }
+
+    override fun openAddProjectFragment() {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.frame_content, AddProjectFragment())
             .commit()
     }
 }

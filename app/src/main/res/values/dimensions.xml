@@ -29,4 +29,6 @@
     <dimen name="eazyTime_text_size_time_project_list_item">16sp</dimen>
     <dimen name="eazyTime_text_size_project_short_code_project_list_item">16sp</dimen>
 
+    <dimen name="eazyTime_floating_action_button_margin">20dp</dimen>
+
 </resources>
