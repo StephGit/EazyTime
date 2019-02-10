@@ -74,6 +74,8 @@ class GeoFenceFragmentEmpty : Fragment() {
         startActivity(GeoFenceDetailActivity.newIntent(requireContext()))
     }
 
+
+    // TODO fragment show/hide -> Fragment vs. Activity
     private fun hideListView() {
         iconNoGeofence.visibility = View.VISIBLE
         textAddGeofence.visibility = View.VISIBLE
