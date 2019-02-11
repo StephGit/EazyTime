@@ -11,10 +11,11 @@
     <ImageView
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="80dp"
             android:id="@+id/iv_noGeofence"
-            tools:src="@drawable/ic_geofence"
+            android:src="@drawable/ic_geofence"
             android:layout_marginBottom="8dp"
+            app:backgroundTint="@color/eazyTime_colorBackgroundText"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -33,7 +34,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@id/tv_noGeofenceHint"
             android:textSize="18sp"
-            app:layout_constraintVertical_bias="0.3"/>
+            app:layout_constraintVertical_bias="0.3" android:textColor="@color/eazyTime_colorBackgroundText"/>
     <TextView
             android:text="@string/no_geofence_added_hint"
             android:layout_width="wrap_content"
@@ -44,7 +45,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_noGeofence"
-            app:layout_constraintVertical_bias="0.3"/>
+            app:layout_constraintVertical_bias="0.3" android:textColor="@color/eazyTime_colorBackgroundText"/>
 
     <ListView
             android:id="@+id/lv_geofences"

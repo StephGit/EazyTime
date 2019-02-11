@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <!--<color name="colorPrimary">#008577</color>-->
+    <!--<color name="colorPrimaryDark">#00574B</color>-->
+    <!--<color name="colorAccent">#D81B60</color>-->
 
     <!-- EazyTime colors -->
     <color name="eazyTime_colorWhite">#FFFFFF</color>
     <color name="eazyTime_colorBlack">#000</color>
     <color name="eazyTime_colorBrand">#4DABF7</color>
     <color name="eazyTime_colorSelected">#311B92</color>
-    <color name="eazyTime_colorBackgroundText">#ced4da</color>
+    <color name="eazyTime_colorBackgroundText">#CED4DA</color>
     <color name="eazyTime_colorBackground">#f1f3f5</color>
     <color name="eazyTime_colorProject1">#ff8787</color>
     <color name="eazyTime_colorProject2">#f783ac</color>
