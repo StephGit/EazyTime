@@ -11,6 +11,7 @@
     <color name="eazyTime_colorSelected">#311B92</color>
     <color name="eazyTime_colorBackgroundText">#CED4DA</color>
     <color name="eazyTime_colorBackground">#F1F3F5</color>
+    <color name="eazyTime_light_gray">#808080</color>
     <color name="eazyTime_colorProject1">#ff8787</color>
     <color name="eazyTime_colorProject2">#f783ac</color>
     <color name="eazyTime_colorProject3">#9775fa</color>
@@ -20,6 +21,18 @@
     <color name="eazyTime_colorProject7">#a9e34b</color>
     <color name="eazyTime_colorProject8">#ffd43b</color>
     <color name="eazyTime_colorProject9">#ffa94d</color>
+
+    <array name="eazyTime_project_colors">
+        <item name="project_color_1">@color/eazyTime_colorProject1</item>
+        <item name="project_color_2">@color/eazyTime_colorProject2</item>
+        <item name="project_color_3">@color/eazyTime_colorProject3</item>
+        <item name="project_color_4">@color/eazyTime_colorProject4</item>
+        <item name="project_color_5">@color/eazyTime_colorProject5</item>
+        <item name="project_color_6">@color/eazyTime_colorProject6</item>
+        <item name="project_color_7">@color/eazyTime_colorProject7</item>
+        <item name="project_color_8">@color/eazyTime_colorProject8</item>
+        <item name="project_color_9">@color/eazyTime_colorProject9</item>
+    </array>
 </resources>
 
 

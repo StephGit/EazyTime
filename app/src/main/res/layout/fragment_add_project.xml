@@ -1,14 +1,200 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context=".eazytime.projects.addProject.AddProjectFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <data>
+        <variable
+                name="addProjectViewModel"
+                type="ch.bfh.mad.eazytime.projects.addProject.AddProjectViewModel"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/hello_blank_fragment"/>
+            tools:context=".eazytime.projects.addProject.AddProjectFragment"
+            android:padding="@dimen/eazyTime_padding_form_fields_border">
 
-</FrameLayout>
+        <EditText
+                android:id="@+id/et_add_project_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/eazyTime_bottom_margin_form_elements"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/et_add_project_short_code"
+                android:hint="@string/et_hint_add_project_name"
+                android:text="@={addProjectViewModel.projectName}"
+                android:inputType="text"
+                tools:ignore="Autofill"/>
+
+        <EditText
+                android:id="@+id/et_add_project_short_code"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/eazyTime_bottom_margin_form_elements"
+                app:layout_constraintTop_toBottomOf="@id/et_add_project_name"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/cl_color_spinner"
+                android:hint="@string/et_hint_add_project_short_code"
+                android:text="@={addProjectViewModel.shortCode}"
+                android:inputType="text"
+                tools:ignore="Autofill"/>
+
+
+        <android.support.constraint.ConstraintLayout
+                android:id="@+id/cl_color_spinner"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/et_add_project_short_code"
+                app:layout_constraintBottom_toTopOf="@id/cl_on_widget"
+                android:layout_marginTop="@dimen/eazyTime_empty_fragment_icon_marginBottom"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:id="@+id/tv_label_add_project_color_spinner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="@+id/cl_color_spinner"
+                    app:layout_constraintBottom_toBottomOf="@id/cl_color_spinner"
+                    app:layout_constraintLeft_toLeftOf="@id/cl_color_spinner"
+                    app:layout_constraintRight_toLeftOf="@id/sn_add_project_color_spinner"
+                    android:text="@string/tv_label_add_project_color_picker"
+                    android:textSize="@dimen/eazyTime_text_size_form_labels"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"/>
+
+            <Spinner
+                    android:id="@+id/sn_add_project_color_spinner"
+                    app:layout_constraintRight_toRightOf="@id/cl_color_spinner"
+                    app:layout_constraintLeft_toRightOf="@id/tv_label_add_project_color_spinner"
+                    app:layout_constraintTop_toTopOf="@id/cl_color_spinner"
+                    android:layout_width="@dimen/eazyTime_width_color_tag_list_elements"
+                    android:layout_height="@dimen/eazyTime_height_content_list_elements"
+                    android:layout_marginEnd="@dimen/eazyTime_left_margin_list_elements"
+                    android:selectedItemPosition="@={addProjectViewModel.colorItemPosition}"
+                    android:background="@color/eazyTime_light_gray"/>
+
+        </android.support.constraint.ConstraintLayout>
+
+
+        <View
+                app:layout_constraintTop_toBottomOf="@id/cl_color_spinner"
+                app:layout_constraintBottom_toTopOf="@id/cl_on_widget"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:background="@color/eazyTime_light_gray"/>
+
+        <android.support.constraint.ConstraintLayout
+                android:id="@+id/cl_on_widget"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cl_color_spinner"
+                android:layout_marginTop="@dimen/eazyTime_bottom_margin_form_elements"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/eazyTime_width_color_tag_list_elements">
+
+            <TextView
+                    android:id="@+id/tv_label_add_project_on_widget"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="@+id/cl_on_widget"
+                    app:layout_constraintBottom_toBottomOf="@id/cl_on_widget"
+                    app:layout_constraintLeft_toLeftOf="@id/cl_on_widget"
+                    app:layout_constraintRight_toLeftOf="@id/sw_add_project_on_widget"
+                    android:text="@string/tv_label_add_project_on_widget"
+                    android:textSize="@dimen/eazyTime_text_size_form_labels"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"/>
+
+            <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/sw_add_project_on_widget"
+                    android:layout_width="@dimen/eazyTime_width_color_tag_list_elements"
+                    android:height="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintRight_toRightOf="@id/cl_on_widget"
+                    app:layout_constraintLeft_toRightOf="@id/tv_label_add_project_on_widget"
+                    app:layout_constraintTop_toTopOf="@id/cl_on_widget"
+                    app:layout_constraintBottom_toBottomOf="@id/cl_on_widget"
+                    android:checked="@={addProjectViewModel.onWidget}"
+                    android:layout_marginEnd="@dimen/eazyTime_left_margin_list_elements"/>
+
+
+        </android.support.constraint.ConstraintLayout>
+
+        <View
+                app:layout_constraintTop_toBottomOf="@id/cl_on_widget"
+                app:layout_constraintBottom_toTopOf="@id/cl_default"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:background="@color/eazyTime_light_gray"/>
+
+        <android.support.constraint.ConstraintLayout
+                android:id="@+id/cl_default"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cl_on_widget"
+                android:layout_marginTop="@dimen/eazyTime_bottom_margin_form_elements"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/eazyTime_width_color_tag_list_elements">
+
+            <TextView
+                    android:id="@+id/tv_label_add_project_default"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="@+id/cl_default"
+                    app:layout_constraintBottom_toBottomOf="@id/cl_default"
+                    app:layout_constraintLeft_toLeftOf="@id/cl_default"
+                    app:layout_constraintRight_toLeftOf="@id/sw_add_project_default"
+                    android:text="@string/tv_label_add_project_default"
+                    android:textSize="@dimen/eazyTime_text_size_form_labels"/>
+
+            <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/sw_add_project_default"
+                    android:layout_width="@dimen/eazyTime_width_color_tag_list_elements"
+                    android:height="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintRight_toRightOf="@id/cl_default"
+                    app:layout_constraintLeft_toRightOf="@id/tv_label_add_project_default"
+                    app:layout_constraintTop_toTopOf="@id/cl_default"
+                    app:layout_constraintBottom_toBottomOf="@id/cl_default"
+                    android:checked="@={addProjectViewModel.defaultProject}"
+                    android:layout_marginEnd="@dimen/eazyTime_left_margin_list_elements"/>
+
+
+        </android.support.constraint.ConstraintLayout>
+
+        <!-- TODO: Use nice Buttons from Stefan ;-) -->
+        <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cl_default"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:orientation="vertical">
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hier die schönen Buttons von Stefan ,-)"/>
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/save"
+                    android:onClick="@{() -> addProjectViewModel.onSaveButtonClick()}"/>
+
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/delete"
+                    android:onClick="@{() -> addProjectViewModel.onDeleteButtonClick()}"/>
+
+        </LinearLayout>
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

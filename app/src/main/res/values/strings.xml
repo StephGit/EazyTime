@@ -27,4 +27,12 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="add_project_fragment_title">Projekt hinzufügen...</string>
 
+    <string name="et_hint_add_project_name">Projektname</string>
+    <string name="permission_request_rationale">fehlt?</string>
+    <string name="OK">OK</string>
+    <string name="et_hint_add_project_short_code">Kürzel (maximal 3 Zeichen)</string>
+    <string name="tv_label_add_project_color_picker">Projektfarbe:</string>
+    <string name="tv_label_add_project_on_widget">Soll auf AppWidget erscheinen</string>
+    <string name="tv_label_add_project_default">Als Standasrdprojekt festlegen</string>
+
 </resources>
