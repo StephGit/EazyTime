@@ -1,7 +1,7 @@
-package ch.bfh.mad.eazytime.entity
+package ch.bfh.mad.eazytime.data.entity
 
 import android.arch.persistence.room.*
-import java.time.LocalDateTime
+import org.joda.time.LocalDateTime
 
 @Entity(
     foreignKeys = [

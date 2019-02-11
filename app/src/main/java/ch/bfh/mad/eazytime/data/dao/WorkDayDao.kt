@@ -1,7 +1,7 @@
-package ch.bfh.mad.eazytime.dao
+package ch.bfh.mad.eazytime.data.dao
 
 import android.arch.persistence.room.*
-import ch.bfh.mad.eazytime.entity.WorkDay
+import ch.bfh.mad.eazytime.data.entity.WorkDay
 
 @Dao
 interface WorkDayDao {

@@ -1,7 +1,7 @@
-package ch.bfh.mad.eazytime.dao
+package ch.bfh.mad.eazytime.data.dao
 
 import android.arch.persistence.room.*
-import ch.bfh.mad.eazytime.entity.Project
+import ch.bfh.mad.eazytime.data.entity.Project
 
 @Dao
 interface ProjectDao {

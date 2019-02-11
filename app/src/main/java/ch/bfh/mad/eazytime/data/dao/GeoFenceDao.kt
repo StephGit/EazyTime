@@ -1,7 +1,7 @@
-package ch.bfh.mad.eazytime.dao
+package ch.bfh.mad.eazytime.data.dao
 
 import android.arch.persistence.room.*
-import ch.bfh.mad.eazytime.entity.GeoFence
+import ch.bfh.mad.eazytime.data.entity.GeoFence
 
 @Dao
 interface GeoFenceDao {

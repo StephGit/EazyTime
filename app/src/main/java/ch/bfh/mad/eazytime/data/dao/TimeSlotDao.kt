@@ -1,7 +1,7 @@
-package ch.bfh.mad.eazytime.dao
+package ch.bfh.mad.eazytime.data.dao
 
 import android.arch.persistence.room.*
-import ch.bfh.mad.eazytime.entity.TimeSlot
+import ch.bfh.mad.eazytime.data.entity.TimeSlot
 
 @Dao
 interface TimeSlotDao {

@@ -1,4 +1,4 @@
-package ch.bfh.mad.eazytime.entity
+package ch.bfh.mad.eazytime.data.entity
 
 import android.arch.persistence.room.*
 
