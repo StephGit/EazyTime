@@ -10,12 +10,21 @@
 
 
     <ImageView
+<<<<<<< HEAD:app/src/main/res/layout/fragment_geofence_empty.xml
             android:id="@+id/iv_noGeofence"
             android:src="@drawable/ic_geofence"
             android:layout_width="@dimen/eazyTime_empty_fragment_icon_width"
             android:layout_height="@dimen/eazyTime_empty_fragment_icon_height"
             android:layout_marginTop="@dimen/eazyTime_empty_fragment_icon_marginTop"
             android:layout_marginBottom="@dimen/eazyTime_empty_fragment_icon_marginBottom"
+=======
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="80dp"
+            android:id="@+id/iv_noGeofence"
+            android:src="@drawable/ic_geofence"
+            android:layout_marginBottom="8dp"
+>>>>>>> 7aadd7b... improved no items view in geofence list:app/src/main/res/layout/fragment_geofence.xml
             app:backgroundTint="@color/eazyTime_colorBackgroundText"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -35,8 +44,13 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@id/tv_noGeofenceHint"
+<<<<<<< HEAD:app/src/main/res/layout/fragment_geofence_empty.xml
             app:layout_constraintVertical_bias="@dimen/eazyTime_empty_fragment_vertical_bias"
             android:textColor="@color/eazyTime_colorBackgroundText"/>
+=======
+            android:textSize="18sp"
+            app:layout_constraintVertical_bias="0.3" android:textColor="@color/eazyTime_colorBackgroundText"/>
+>>>>>>> 7aadd7b... improved no items view in geofence list:app/src/main/res/layout/fragment_geofence.xml
     <TextView
             android:id="@+id/tv_noGeofenceHint"
             android:text="@string/no_geofence_added_hint"
@@ -46,8 +60,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_noGeofence"
+<<<<<<< HEAD:app/src/main/res/layout/fragment_geofence_empty.xml
             app:layout_constraintVertical_bias="@dimen/eazyTime_empty_fragment_vertical_bias"
             android:textColor="@color/eazyTime_colorBackgroundText"/>
+=======
+            app:layout_constraintVertical_bias="0.3" android:textColor="@color/eazyTime_colorBackgroundText"/>
+
+    <ListView
+            android:id="@+id/lv_geofences"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+    />
+>>>>>>> 7aadd7b... improved no items view in geofence list:app/src/main/res/layout/fragment_geofence.xml
 
     <android.support.design.widget.FloatingActionButton
             android:id="@+id/btn_addGeofence"
