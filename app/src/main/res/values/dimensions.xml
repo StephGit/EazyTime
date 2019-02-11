@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="eazyTime_empty_fragment_vertical_bias">0.3</dimen>
+    <dimen name="eazyTime_empty_fragment_icon_width">48dp</dimen>
+    <dimen name="eazyTime_empty_fragment_icon_height">48dp</dimen>
+    <dimen name="eazyTime_empty_fragment_icon_marginTop">80dp</dimen>
+    <dimen name="eazyTime_empty_fragment_icon_marginBottom">8dp</dimen>
+
+    <dimen name="eazyTime_empty_fragment_title_marginBottom">30dp</dimen>
+    <dimen name="eazyTime_empty_fragment_title_textSize">18dp</dimen>
+
+    <dimen name="eazyTime_floatingActionButton_margin">16dp</dimen>
+
+
+</resources>
