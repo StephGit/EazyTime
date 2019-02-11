@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_marginTop="@dimen/eazyTime_top_margin_list_elements"
+              android:layout_marginBottom="@dimen/eazyTime_bottom_margin_list_elements"
+              android:layout_marginLeft="@dimen/eazyTime_left_margin_list_elements"
+              android:layout_marginRight="@dimen/eazyTime_right_margin_list_elements"
+              android:padding="@dimen/eazyTime_padding_list_elements"
+              android:background="@color/eazyTime_colorBackground">
+
+        <TextView
+                android:id="@+id/color_spinner_list_item"
+                android:layout_width="@dimen/eazyTime_width_color_tag_list_elements"
+                android:layout_height="@dimen/eazyTime_width_color_tag_list_elements"
+                app:layout_constraintRight_toLeftOf="@id/project_list_item_project_time"
+                app:layout_constraintBottom_toBottomOf="@id/project_list_item_content"
+                app:layout_constraintTop_toBottomOf="@id/project_list_item_project_name"
+                app:layout_constraintLeft_toRightOf="@id/project_list_item_color_tag"
+                android:padding="@dimen/eazyTime_padding_text_views_list_elements"
+                android:textSize="@dimen/eazyTime_text_size_time_project_list_item"/>
+</LinearLayout>
