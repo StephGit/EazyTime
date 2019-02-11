@@ -18,5 +18,9 @@
     <string name="no_geofences">Keine Geofences</string>
     <string name="no_geofence_added_hint">Hinzugefügte Geofences werden hier angezeigt.</string>
     <string name="geofence_icon">geofence icon</string>
+    <string name="permission_request_rationale">Um GeoFences einzurichten und zu verwenden, wird die Lokalisierung
+        benötigt.
+    </string>
+    <string name="OK">OK</string>
 
 </resources>
