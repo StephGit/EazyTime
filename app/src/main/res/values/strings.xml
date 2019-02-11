@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">EazyTime</string>
+
+    <string name="placeholder">Hie chunnt richtig geile scheiss häre</string>
+
+    <string name="project_fragment_title">Projekte</string>
+    <string name="calendar_fragment_title">Kalender</string>
+    <string name="geofence_fragment_title">GeoFence</string>
+
+    <string name="bottom_navigation_project">Projekte</string>
+    <string name="bottom_navigation_calendar">Kalender</string>
+    <string name="bottom_navigation_geofence">Geofence</string>
+
 </resources>
