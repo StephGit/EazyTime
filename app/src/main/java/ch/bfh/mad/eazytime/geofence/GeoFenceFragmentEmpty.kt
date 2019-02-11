@@ -23,7 +23,6 @@ class GeoFenceFragmentEmpty : Fragment() {
 
     private fun addGeofence() {
         // TODO replace with addFragment
-        startActivity(GeoFenceDetailActivity.newIntent(requireContext()))
     }
 
 
