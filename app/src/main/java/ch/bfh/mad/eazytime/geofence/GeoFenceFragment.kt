@@ -14,7 +14,7 @@ class GeoFenceFragment : Fragment() {
     private lateinit var listView: ListView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_geo_fence, container, false)
+        val view = inflater.inflate(R.layout.fragment_geofence, container, false)
         activity!!.title = getString(R.string.geofence_fragment_title)
 
         listView = view.findViewById<ListView>(R.id.lv_geofences)
@@ -22,7 +22,6 @@ class GeoFenceFragment : Fragment() {
         view.findViewById<FloatingActionButton>(R.id.btn_addGeofence).setOnClickListener {
             addGeofence()
         }
-
 
         if (listView.count == 0) showEmptyGeofenceFragment()
 
