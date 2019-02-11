@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".eazytime.geofence.GeoFenceFragmentEmpty"
+        android:id="@+id/geoFenceFragementEmpty">
+
+
+    <ImageView
+            android:id="@+id/iv_noGeofence"
+            android:src="@drawable/ic_geofence"
+            android:layout_width="@dimen/eazyTime_empty_fragment_icon_width"
+            android:layout_height="@dimen/eazyTime_empty_fragment_icon_height"
+            android:layout_marginTop="@dimen/eazyTime_empty_fragment_icon_marginTop"
+            android:layout_marginBottom="@dimen/eazyTime_empty_fragment_icon_marginBottom"
+            app:backgroundTint="@color/eazyTime_colorBackgroundText"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/tv_noGeofence"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintVertical_bias="@dimen/eazyTime_empty_fragment_vertical_bias"
+            android:contentDescription="@string/geofence_icon"/>
+    <TextView
+            android:id="@+id/tv_noGeofence"
+            android:text="@string/no_geofences"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/eazyTime_empty_fragment_title_textSize"
+            android:layout_marginBottom="@dimen/eazyTime_empty_fragment_title_marginBottom"
+            app:layout_constraintTop_toBottomOf="@+id/iv_noGeofence"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/tv_noGeofenceHint"
+            app:layout_constraintVertical_bias="@dimen/eazyTime_empty_fragment_vertical_bias"
+            android:textColor="@color/eazyTime_colorBackgroundText"/>
+    <TextView
+            android:id="@+id/tv_noGeofenceHint"
+            android:text="@string/no_geofence_added_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_noGeofence"
+            app:layout_constraintVertical_bias="@dimen/eazyTime_empty_fragment_vertical_bias"
+            android:textColor="@color/eazyTime_colorBackgroundText"/>
+
+    <android.support.design.widget.FloatingActionButton
+            android:id="@+id/btn_addGeofence"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/eazyTime_floatingActionButton_margin"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:src="@drawable/ic_add"
+            app:backgroundTint="@color/eazyTime_colorBrand"
+    />
+</android.support.constraint.ConstraintLayout>
