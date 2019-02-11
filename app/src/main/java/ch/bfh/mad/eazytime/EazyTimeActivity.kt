@@ -2,6 +2,7 @@ package ch.bfh.mad.eazytime
 
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
+import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.MenuItem
@@ -21,7 +22,7 @@ class EazyTimeActivity : AppCompatActivity() {
         navigation.setOnNavigationItemSelectedListener { clickedMenuItem -> selectMenuItem(clickedMenuItem) }
 
         if (savedInstanceState == null) {
-            showProjectFragment()
+            replaceFragment(ProjectFragment())
         }
     }
 
@@ -29,29 +30,18 @@ class EazyTimeActivity : AppCompatActivity() {
         Log.i(TAG, "selectMenuItem: ${clickedMenuItem.title}")
 
         when (clickedMenuItem.itemId) {
-            R.id.bottom_navigation_project -> showProjectFragment()
-            R.id.bottom_navigation_calendar -> showCalendarFragment()
-            R.id.bottom_navigation_geofence -> showGeofenceFragment()
+            R.id.bottom_navigation_project -> replaceFragment(ProjectFragment())
+            R.id.bottom_navigation_calendar -> replaceFragment(CalendarFragment())
+            R.id.bottom_navigation_geofence -> replaceFragment(GeoFenceFragment())
             else -> throw IllegalArgumentException("Unknown clickedMenuItem.itemId: ${clickedMenuItem.itemId}")
         }
         return true
     }
 
-    private fun showProjectFragment() {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.frame_content, ProjectFragment())
-            .commit()
-    }
-
-    private fun showCalendarFragment() {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.frame_content, CalendarFragment())
-            .commit()
-    }
-
-    private fun showGeofenceFragment() {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.frame_content, GeoFenceFragment())
+    fun replaceFragment(fragment: Fragment) {
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.frame_content, fragment)
             .commit()
     }
 }
