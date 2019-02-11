@@ -1,5 +1,7 @@
 package ch.bfh.mad.eazytime
 
+import android.annotation.SuppressLint
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem

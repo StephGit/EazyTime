@@ -23,10 +23,6 @@ import com.google.android.gms.maps.model.LatLng
 
 class GeoFenceDetailActivity : AppCompatActivity(), OnMapReadyCallback {
 
-    private val permissionFineLocation= Manifest.permission.ACCESS_FINE_LOCATION
-    private var permissionFineLocationGranted:Boolean=false
-    private val permissionRequestCode:Int=202
-
     private val DEFAULT_ZOOM: Float = 15F
 
     private lateinit var map: GoogleMap
@@ -41,7 +37,7 @@ class GeoFenceDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         setContentView(R.layout.activity_geofence_detail)
 
         // TODO move to geofence main activity  -> fragment vs. activity
-        checkForPermissions(permissionFineLocation,permissionRequestCode)
+
 
         val mapFragment: MapFragment = fragmentManager.findFragmentById(R.id.map) as MapFragment
         mapFragment.getMapAsync(this)
@@ -49,36 +45,6 @@ class GeoFenceDetailActivity : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
-    private fun checkForPermissions(requiredPermission: String, permissionRequest: Int) {
-        if (ContextCompat.checkSelfPermission(applicationContext, requiredPermission)
-            != PackageManager.PERMISSION_GRANTED) {
-
-//            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-//                    requiredPermission)) {
-//                // Show an explanation to the user *asynchronously* -- don't block
-//                // this thread waiting for the user's response! After the user
-//                // sees the explanation, try again to request the permission.
-//            } else {
-                ActivityCompat.requestPermissions(this,
-                    arrayOf(requiredPermission),
-                    permissionRequest)
-//            }
-        } else {
-            permissionFineLocationGranted = true
-        }
-    }
-
-    @SuppressLint("MissingPermission")
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == permissionRequestCode) {
-            if (permissions.size == 1 &&
-                permissions[0] == permissionFineLocation &&
-                grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                permissionFineLocationGranted = true
-            }
-        }
-    }
 
     private fun replaceFragment(fragment: Fragment) {
 
