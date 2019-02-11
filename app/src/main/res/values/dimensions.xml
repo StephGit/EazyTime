@@ -10,5 +10,6 @@
     <dimen name="eazyTime_empty_fragment_title_textSize">18sp</dimen>
 
     <dimen name="eazyTime_floatingActionButton_margin">16sp</dimen>
-    
+
+
 </resources>
