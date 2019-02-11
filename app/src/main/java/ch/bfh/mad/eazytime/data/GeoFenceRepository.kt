@@ -13,6 +13,6 @@ class GeoFenceRepository @Inject constructor() {
     fun loadGeoFences(): MutableLiveData<List<GeoFence>> {
         val geoFenceList : MutableLiveData<List<GeoFence>> = MutableLiveData()
 
-        return geoFenceList;
+        return geoFenceList
     }
 }
