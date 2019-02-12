@@ -24,7 +24,6 @@ class GeoFenceFragment : Fragment() {
     private var permissionFineLocationGranted: Boolean = false
     private val permissionHandler = PermissionHandler(this, permissionFineLocation)
 
-    private lateinit var addButton: FloatingActionButton
     private lateinit var listView: ListView
 
 
@@ -32,12 +31,10 @@ class GeoFenceFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_geofence, container, false)
         activity!!.title = getString(R.string.geofence_fragment_title)
 
-        addButton = view.findViewById<FloatingActionButton>(R.id.btn_addGeofence)
-        listView = view.findViewById<ListView>(R.id.lv_geofences)
-
         checkPermission()
-        enableAddButton()
 
+        view.findViewById<FloatingActionButton>(R.id.btn_addGeofence).setOnClickListener { addGeofence() }
+        listView = view.findViewById<ListView>(R.id.lv_geofences)
 
         val factory = ViewModelFactory()
         val viewModel: GeoFenceViewModel = ViewModelProviders.of(this, factory).get(GeoFenceViewModel::class.java)
@@ -55,20 +52,12 @@ class GeoFenceFragment : Fragment() {
 
     private fun addGeofence() {
         // TODO replace with addFragment
-        startActivity(GeoFenceDetailActivity.newIntent(requireContext()))
+        if (permissionFineLocationGranted) {
+            startActivity(GeoFenceDetailActivity.newIntent(requireContext()))
+        }
     }
-
     private fun checkPermission() {
         permissionFineLocationGranted = permissionHandler.checkPermission()
-    }
-
-    private fun enableAddButton() {
-        if (permissionFineLocationGranted) {
-            addButton.isEnabled = true
-            addButton.setOnClickListener { addGeofence() }
-        } else {
-            addButton.isEnabled = false
-        }
     }
 
     private fun showEmptyGeofenceFragment() {
@@ -83,5 +72,6 @@ class GeoFenceFragment : Fragment() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         permissionHandler.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        permissionFineLocationGranted = permissionHandler.permissionGranted
     }
 }
