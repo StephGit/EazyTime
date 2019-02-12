@@ -14,25 +14,30 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
 import ch.bfh.mad.R
+import ch.bfh.mad.eazytime.projects.PermissionHandler
 import ch.bfh.mad.eazytime.util.ViewModelFactory
 
 class GeoFenceFragment : Fragment() {
 
+
     private val permissionFineLocation = Manifest.permission.ACCESS_FINE_LOCATION
     private var permissionFineLocationGranted: Boolean = false
-    private val permissionRequestCode: Int = 302
+    private val permissionHandler = PermissionHandler(this, permissionFineLocation)
 
+    private lateinit var addButton: FloatingActionButton
     private lateinit var listView: ListView
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_geofence, container, false)
         activity!!.title = getString(R.string.geofence_fragment_title)
 
+        addButton = view.findViewById<FloatingActionButton>(R.id.btn_addGeofence)
         listView = view.findViewById<ListView>(R.id.lv_geofences)
 
-        view.findViewById<FloatingActionButton>(R.id.btn_addGeofence).setOnClickListener {
-            addGeofence()
-        }
+        checkPermission()
+        enableAddButton()
+
 
         val factory = ViewModelFactory()
         val viewModel: GeoFenceViewModel = ViewModelProviders.of(this, factory).get(GeoFenceViewModel::class.java)
@@ -48,6 +53,24 @@ class GeoFenceFragment : Fragment() {
         return view
     }
 
+    private fun addGeofence() {
+        // TODO replace with addFragment
+        startActivity(GeoFenceDetailActivity.newIntent(requireContext()))
+    }
+
+    private fun checkPermission() {
+        permissionFineLocationGranted = permissionHandler.checkPermission()
+    }
+
+    private fun enableAddButton() {
+        if (permissionFineLocationGranted) {
+            addButton.isEnabled = true
+            addButton.setOnClickListener { addGeofence() }
+        } else {
+            addButton.isEnabled = false
+        }
+    }
+
     private fun showEmptyGeofenceFragment() {
         activity!!.supportFragmentManager.beginTransaction()
             .replace(R.id.frame_content, GeoFenceFragmentEmpty())
@@ -55,31 +78,10 @@ class GeoFenceFragment : Fragment() {
             .commit()
     }
 
-    private fun addGeofence() {
-        val permissionHandler = PermissionHandler(requireContext(), this)
-        permissionFineLocationGranted = permissionHandler.checkForPermissions(permissionFineLocation, permissionRequestCode)
-
-        if (permissionFineLocationGranted) {
-            // TODO replace with addFragment
-            startActivity(GeoFenceDetailActivity.newIntent(requireContext()))
-        }
-    }
 
     @SuppressLint("MissingPermission")
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == permissionRequestCode) {
-            if (permissions.size == 1 &&
-                permissions[0] == permissionFineLocation &&
-                grantResults[0] == PackageManager.PERMISSION_GRANTED
-            ) {
-                permissionFineLocationGranted = true
-                addGeofence()
-            }
-        }
+        permissionHandler.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
-
-
-
-
 }

@@ -10,47 +10,49 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import ch.bfh.mad.R
+import ch.bfh.mad.eazytime.projects.PermissionHandler
 
 class GeoFenceFragmentEmpty : Fragment() {
 
+
     private val permissionFineLocation = Manifest.permission.ACCESS_FINE_LOCATION
     private var permissionFineLocationGranted: Boolean = false
-    private val permissionRequestCode: Int = 303
+    private val permissionHandler = PermissionHandler(this, permissionFineLocation)
+
+    private lateinit var addButton: FloatingActionButton
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_geofence_empty, container, false)
         activity!!.title = getString(R.string.geofence_fragment_title)
 
-        view.findViewById<FloatingActionButton>(R.id.btn_addGeofence).setOnClickListener {
-            addGeofence()
-        }
+        addButton = view.findViewById<FloatingActionButton>(R.id.btn_addGeofence)
 
+        checkPermission()
+        enableAddButton()
         return view
     }
 
     private fun addGeofence() {
-        val permissionHandler = PermissionHandler(requireContext(), this)
-        permissionFineLocationGranted = permissionHandler.checkForPermissions(permissionFineLocation, permissionRequestCode)
+        // TODO replace with addFragment
+        startActivity(GeoFenceDetailActivity.newIntent(requireContext()))
+    }
 
+    private fun checkPermission() {
+        permissionFineLocationGranted = permissionHandler.checkPermission()
+    }
+
+    private fun enableAddButton() {
         if (permissionFineLocationGranted) {
-            // TODO replace with addFragment
-            startActivity(GeoFenceDetailActivity.newIntent(requireContext()))
+            addButton.isEnabled = true
+            addButton.setOnClickListener { addGeofence() }
+        } else {
+            addButton.isEnabled = false
         }
     }
 
     @SuppressLint("MissingPermission")
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == permissionRequestCode) {
-            if (permissions.size == 1 &&
-                permissions[0] == permissionFineLocation &&
-                grantResults[0] == PackageManager.PERMISSION_GRANTED
-            ) {
-                permissionFineLocationGranted = true
-                addGeofence()
-            }
-        }
+        permissionHandler.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
-
-
 }
