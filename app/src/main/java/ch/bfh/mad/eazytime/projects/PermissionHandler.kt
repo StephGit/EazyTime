@@ -16,7 +16,7 @@ class PermissionHandler {
     private var fragment: Fragment? = null
     private var requiredPermission: String? = null
     private var permissionRequestCode: Int = 300
-    private var permissionGranted: Boolean = false
+    var permissionGranted: Boolean = false
 
 
     constructor(activity: Activity, requiredPermission: String) {
@@ -31,11 +31,11 @@ class PermissionHandler {
 
     fun checkPermission() : Boolean {
         if (!hasPermission()) {
-            activity.let {
-                requestPermissionForActivity(it!!)
+            activity?.let {
+                requestPermissionForActivity(it)
             }
-            fragment.let {
-                requestPermissionsForFragment(it!!)
+            fragment?.let {
+                requestPermissionsForFragment(it)
             }
             return false
         }
@@ -63,14 +63,16 @@ class PermissionHandler {
 
     private fun requestPermissionsForFragment(fragment: Fragment) {
         if (fragment.shouldShowRequestPermissionRationale(requiredPermission!!)) {
-            Snackbar.make(
-                fragment.view!!, currentContext()!!.getString(R.string.permission_request_rationale),
-                Snackbar.LENGTH_INDEFINITE
-            )
-                .setAction(currentContext()!!.getString(R.string.OK)) {
-                    fragment.requestPermissions(arrayOf(requiredPermission!!), permissionRequestCode)
-                }
-                .show()
+            fragment.view?.let {
+                Snackbar.make(
+                    it, currentContext()!!.getString(R.string.permission_request_rationale),
+                    Snackbar.LENGTH_INDEFINITE
+                )
+                    .setAction(currentContext()!!.getString(R.string.OK)) {
+                        fragment.requestPermissions(arrayOf(requiredPermission!!), permissionRequestCode)
+                    }
+                    .show()
+            }
         } else {
             fragment.requestPermissions(arrayOf(requiredPermission), permissionRequestCode)
         }
