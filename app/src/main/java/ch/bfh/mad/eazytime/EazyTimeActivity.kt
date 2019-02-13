@@ -34,7 +34,7 @@ class EazyTimeActivity : AppCompatActivity(), EazyTimeNavigator {
         when (clickedMenuItem.itemId) {
             R.id.bottom_navigation_project -> replaceFragment(ProjectFragment())
             R.id.bottom_navigation_calendar -> replaceFragment(CalendarFragment())
-            R.id.bottom_navigation_geofence -> replaceFragment(GeoFenceFragment())
+            R.id.bottom_navigation_geofence -> replaceFragment(GeoFenceFragment.newFragment())
             else -> throw IllegalArgumentException("Unknown clickedMenuItem.itemId: ${clickedMenuItem.itemId}")
         }
         return true
