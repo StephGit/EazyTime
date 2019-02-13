@@ -1,4 +1,4 @@
-package ch.bfh.mad.eazytime.projects
+package ch.bfh.mad.eazytime.util
 
 import android.app.Activity
 import android.content.Context
