@@ -3,7 +3,7 @@ package ch.bfh.mad.eazytime.geofence
 import android.Manifest
 import android.annotation.SuppressLint
 import android.support.v4.app.Fragment
-import ch.bfh.mad.eazytime.projects.PermissionHandler
+import ch.bfh.mad.eazytime.util.PermissionHandler
 
 open class GeoFenceBaseFragment : Fragment() {
 
