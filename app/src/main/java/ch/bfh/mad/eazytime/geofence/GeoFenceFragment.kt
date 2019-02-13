@@ -5,7 +5,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
@@ -13,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
+import android.widget.ProgressBar
 import ch.bfh.mad.R
 import ch.bfh.mad.eazytime.projects.PermissionHandler
 import ch.bfh.mad.eazytime.util.ViewModelFactory
@@ -25,17 +25,31 @@ class GeoFenceFragment : Fragment() {
     private val permissionHandler = PermissionHandler(this, permissionFineLocation)
 
     private lateinit var listView: ListView
+    private lateinit var progressBar: ProgressBar
+
+    companion object {
+        fun newFragment(): Fragment = GeoFenceFragment()
+    }
+
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_geofence, container, false)
         activity!!.title = getString(R.string.geofence_fragment_title)
 
-        checkPermission()
-
         view.findViewById<FloatingActionButton>(R.id.btn_addGeofence).setOnClickListener { addGeofence() }
-        listView = view.findViewById<ListView>(R.id.lv_geofences)
 
+        listView = view.findViewById(R.id.lv_geofences)
+        progressBar = view.findViewById(R.id.progressBar)
+
+        getListItems(view)
+
+        if (listView.count == 0) showEmptyGeofenceFragment() else showList()
+
+        return view
+    }
+
+    private fun getListItems(view: View) {
         val factory = ViewModelFactory()
         val viewModel: GeoFenceViewModel = ViewModelProviders.of(this, factory).get(GeoFenceViewModel::class.java)
 
@@ -44,10 +58,11 @@ class GeoFenceFragment : Fragment() {
             val customAdapter = GeoFenceAdapter(requireContext(), 0, it!!)
             lvGeofences.adapter = customAdapter
         })
+    }
 
-        if (listView.count == 0) showEmptyGeofenceFragment()
-
-        return view
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        checkPermission()
     }
 
     private fun addGeofence() {
@@ -62,9 +77,14 @@ class GeoFenceFragment : Fragment() {
 
     private fun showEmptyGeofenceFragment() {
         activity!!.supportFragmentManager.beginTransaction()
-            .replace(R.id.frame_content, GeoFenceFragmentEmpty())
+            .replace(R.id.frame_content, GeoFenceFragmentEmpty.newFragment())
             .addToBackStack(null)
             .commit()
+    }
+
+    private fun showList() {
+        progressBar.visibility = View.GONE
+        listView.visibility = View.VISIBLE
     }
 
 
