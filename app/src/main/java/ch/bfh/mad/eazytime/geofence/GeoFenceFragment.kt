@@ -34,7 +34,7 @@ class GeoFenceFragment : GeoFenceBaseFragment() {
 
         getListItems(view)
 
-        if (listView.count != 0) showEmptyGeofenceFragment() else showList()
+        if (listView.count == 0) showEmptyGeofenceFragment() else showList()
 
         return view
     }
