@@ -3,6 +3,7 @@ package ch.bfh.mad.eazytime.geofence
 import android.Manifest
 import android.annotation.SuppressLint
 import android.support.v4.app.Fragment
+import ch.bfh.mad.eazytime.geofence.detail.GeoFenceDetailActivity
 import ch.bfh.mad.eazytime.util.PermissionHandler
 
 open class GeoFenceBaseFragment : Fragment() {
@@ -13,6 +14,7 @@ open class GeoFenceBaseFragment : Fragment() {
 
 
     protected fun addGeofence() {
+        permissionFineLocationGranted = permissionHandler.checkPermission()
         // TODO replace with addFragment
         if (permissionFineLocationGranted) {
             startActivity(GeoFenceDetailActivity.newIntent(requireContext()))
@@ -28,6 +30,5 @@ open class GeoFenceBaseFragment : Fragment() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         permissionHandler.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        permissionFineLocationGranted = permissionHandler.permissionGranted
     }
 }
