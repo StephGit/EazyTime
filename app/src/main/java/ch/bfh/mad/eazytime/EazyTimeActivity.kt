@@ -1,6 +1,8 @@
 package ch.bfh.mad.eazytime
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -16,6 +18,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 class EazyTimeActivity : AppCompatActivity(), EazyTimeNavigator {
 
     private lateinit var navigation: BottomNavigationView
+
+    companion object {
+        fun newIntent(ctx: Context) = Intent(ctx, EazyTimeActivity::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
