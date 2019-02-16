@@ -1,66 +1,54 @@
-package ch.bfh.mad.eazytime.geofence
+package ch.bfh.mad.eazytime.geofence.detail
 
-import android.Manifest
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
-import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
 import ch.bfh.mad.R
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.MapFragment
-import com.google.android.gms.maps.OnMapReadyCallback
+import ch.bfh.mad.eazytime.EazyTimeActivity
+import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
 
 
-class GeoFenceDetailActivity : AppCompatActivity(), OnMapReadyCallback {
-
-    private val DEFAULT_ZOOM: Float = 15F
+class GeoFenceDetailActivity : AppCompatActivity(), GeoFenceFlow, OnMapReadyCallback {
+    private val defaultZoom: Float = 15F
 
     private lateinit var map: GoogleMap
 
     companion object{
-        fun newIntent(ctx: Context)= Intent(ctx,GeoFenceDetailActivity::class.java)
+        fun newIntent(ctx: Context)= Intent(ctx, GeoFenceDetailActivity::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_geofence_detail)
 
-        // TODO move to geofence main activity  -> fragment vs. activity
-
-
-        val mapFragment: MapFragment = fragmentManager.findFragmentById(R.id.map) as MapFragment
+        val mapFragment: SupportMapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-
+        // TODO how to navigate directly to markerFragement?
+        replaceFragment(GeoFenceDetailFragment.newFragment())
     }
-
 
     private fun replaceFragment(fragment: Fragment) {
 
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.geofenceDetail, fragment)
+            .replace(R.id.geofenceFlowContainer, fragment)
+            .addToBackStack(null) // TODO check back navigation on detailActivity
             .commit()
     }
 
     /*
    MapStuff
     */
-
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
-        moveCamera(LatLng(47.031182, 7.854871), DEFAULT_ZOOM)
+        moveCamera(LatLng(47.031182, 7.854871), defaultZoom)
         showGeoFenceOnMap()
     }
 
@@ -86,6 +74,22 @@ class GeoFenceDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         map.moveCamera(
             CameraUpdateFactory.newLatLngZoom(latLng, zoom)
         )
+    }
+
+    override fun goToMarker() {
+        replaceFragment(GeoFenceMarkerFragment.newFragment())
+    }
+
+    override fun goToRadius() {
+        replaceFragment(GeoFenceRadiusFragment.newFragment())
+    }
+
+    override fun goToDetail() {
+        replaceFragment(GeoFenceDetailFragment.newFragment())
+    }
+
+    override fun leaveGeoFenceDetail() {
+        startActivity(EazyTimeActivity.newIntent(this))
     }
 
 
