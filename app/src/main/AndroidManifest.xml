@@ -25,11 +25,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".eazytime.geofence.detail.GeoFenceDetailActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-            </intent-filter>
-        </activity>
+        <activity android:name=".eazytime.geofence.detail.GeoFenceDetailActivity"/>
         <activity android:name=".eazytime.projects.addProject.AddProjectActivity"/>
         <receiver android:name=".eazytime.homeScreenWidget.WidgetProvider">
             <intent-filter>
