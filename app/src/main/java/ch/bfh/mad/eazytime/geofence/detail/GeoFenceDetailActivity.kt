@@ -88,6 +88,16 @@ class GeoFenceDetailActivity : AppCompatActivity(), GeoFenceFlow, OnMapReadyCall
         replaceFragment(GeoFenceDetailFragment.newFragment())
     }
 
+    override fun deleteGeoFence() {
+        // TODO implement delete
+        leaveGeoFenceDetail()
+    }
+
+    override fun saveGeoFence() {
+        // TODO implement save
+        leaveGeoFenceDetail()
+    }
+
     override fun leaveGeoFenceDetail() {
         startActivity(EazyTimeActivity.newIntent(this))
     }
