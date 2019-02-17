@@ -9,4 +9,4 @@ data class Project(@PrimaryKey(autoGenerate = true)
                    var shortCode: String? = null,
                    var color: String? = null,
                    var onWidget: Boolean? = null,
-                   var default: Boolean? = null)
+                   var isDefault: Boolean? = null)
