@@ -32,10 +32,10 @@
             app:layout_constraintBottom_toTopOf="@id/tv_noGeofence"
             app:layout_constraintVertical_chainStyle="packed"
             app:layout_constraintVertical_bias="@dimen/eazyTime_empty_fragment_vertical_bias"
-            android:contentDescription="@string/geofence_icon"/>
+            android:contentDescription="@string/geofence_emtpy_fragment_icon_text"/>
     <TextView
             android:id="@+id/tv_noGeofence"
-            android:text="@string/no_geofences"
+            android:text="@string/geofence_empty_fragment_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/eazyTime_empty_fragment_title_textSize"
@@ -53,7 +53,7 @@
 >>>>>>> 7aadd7b... improved no items view in geofence list:app/src/main/res/layout/fragment_geofence.xml
     <TextView
             android:id="@+id/tv_noGeofenceHint"
-            android:text="@string/no_geofence_added_hint"
+            android:text="@string/geofence_emtpy_fragment_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"

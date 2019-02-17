@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                              xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools"
                                              android:layout_width="match_parent"
                                              android:layout_height="match_parent"
                                              android:id="@+id/geoFenceFragmentDetail">
 
     <TextView
-            android:text="@string/geofence_title_detail"
+            android:text="@string/geofence_detail_fragment_title"
             android:id="@+id/tv_geoFenceDetailTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             app:layout_constraintVertical_chainStyle="packed"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/et_geoFenceName"
-            android:textSize="18sp" app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"/>
+            android:textSize="16sp" app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"/>
 
 
     <EditText
             android:id="@+id/et_geoFenceName"
-            android:hint="Name of your GeoFence"
+            android:hint="@string/geofence_detail_fragment_edittext_hint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="text"
@@ -28,8 +29,7 @@
             app:layout_constraintVertical_chainStyle="packed"
             app:layout_constraintTop_toBottomOf="@id/tv_geoFenceDetailTitle"
             app:layout_constraintBottom_toTopOf="@id/btn_geoFenceSave" android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
-            android:importantForAutofill="no"/>
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp" tools:ignore="Autofill"/>
 
     <Switch
             android:id="@+id/switch1"
@@ -41,7 +41,7 @@
 
     <Button
             android:id="@+id/btn_geoFenceSave"
-            android:text="@string/save"
+            android:text="@string/geofence_detail_fragment_btn_save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
@@ -61,7 +61,7 @@
 
     <Button
             android:id="@+id/btn_geoFenceDelete"
-            android:text="@string/delete"
+            android:text="@string/geofence_detail_fragment_btn_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"

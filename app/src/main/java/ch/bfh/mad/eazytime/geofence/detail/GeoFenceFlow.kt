@@ -4,5 +4,7 @@ interface GeoFenceFlow {
     fun goToMarker()
     fun goToRadius()
     fun goToDetail()
+    fun deleteGeoFence()
+    fun saveGeoFence()
     fun leaveGeoFenceDetail()
 }
