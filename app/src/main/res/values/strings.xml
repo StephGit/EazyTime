@@ -34,6 +34,8 @@
     <string name="tv_label_add_project_color_picker">Projektfarbe:</string>
     <string name="tv_label_add_project_on_widget">Soll auf AppWidget erscheinen</string>
     <string name="tv_label_add_project_default">Als Standasrdprojekt festlegen</string>
-    <string name="error_short_code_lengt">Maximal 3 Zeichen!</string>
+    <string name="error_short_code_length">Maximal 3 Zeichen!</string>
+    <string name="color_picker_dialog_title">Wähle die Projektfarbe</string>
+    <string name="error_project_name_length">Name darf nicht leer sein</string>
 
 </resources>

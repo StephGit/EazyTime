@@ -23,6 +23,9 @@ class ProjectFragment : Fragment() {
     @Inject
     lateinit var fakeProjectProviderService: FakeProjectProviderService
 
+    @Inject
+    lateinit var fakeProjectRepo: FakeProjectRepo
+
     private lateinit var projectListViewModel: ProjectListViewModel
     private lateinit var projectListView: ListView
     private lateinit var createNewProjectButton: FloatingActionButton
@@ -37,7 +40,7 @@ class ProjectFragment : Fragment() {
         createNewProjectButton.setOnClickListener{ openAddNewProjectFragment() }
 
         Injector.appComponent.inject(this)
-        projectListViewModel = ViewModelProviders.of(this, ProjectModelFactory(fakeProjectProviderService)).get(ProjectListViewModel::class.java)
+        projectListViewModel = ViewModelProviders.of(this, ProjectModelFactory(fakeProjectProviderService, fakeProjectRepo)).get(ProjectListViewModel::class.java)
 
         projectListViewModel.projects.observe(this, Observer { projects ->
             Log.i(TAG, "projectListViewModel.projects.observe")

@@ -16,59 +16,80 @@ import android.widget.TextView
 import ch.bfh.mad.R
 import ch.bfh.mad.databinding.FragmentAddProjectBinding
 import ch.bfh.mad.eazytime.TAG
+import ch.bfh.mad.eazytime.di.Injector
+import ch.bfh.mad.eazytime.projects.FakeProjectProviderService
+import ch.bfh.mad.eazytime.projects.FakeProjectRepo
+import ch.bfh.mad.eazytime.projects.ProjectModelFactory
+import com.thebluealliance.spectrum.SpectrumDialog
+import javax.inject.Inject
+import kotlin.random.Random
 
 
 class AddProjectFragment : Fragment() {
 
-    private lateinit var projectNameEditText: EditText
-    private lateinit var shortcode: EditText
+    @Inject
+    lateinit var fakeProjectProviderService: FakeProjectProviderService
+
+    @Inject
+    lateinit var fakeProjectRepo: FakeProjectRepo
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_add_project, container, false)
         requireActivity().title = getString(R.string.add_project_fragment_title)
 
-        view.findViewById<TextView>(R.id.tv_label_add_project_color_spinner).text = "Warum?"
+        Injector.appComponent.inject(this)
+        val addProjectViewModel = ViewModelProviders.of(this, ProjectModelFactory(fakeProjectProviderService, fakeProjectRepo))
+            .get(AddProjectViewModel::class.java)
 
-        projectNameEditText = view.findViewById(R.id.et_add_project_name)
-        shortcode = view.findViewById(R.id.et_add_project_short_code)
-
-
-        val addProjectViewModel = ViewModelProviders.of(this).get(AddProjectViewModel::class.java)
         val dataBinding = DataBindingUtil.setContentView<FragmentAddProjectBinding>(requireActivity(), R.layout.fragment_add_project)
             .apply {
                 this.lifecycleOwner = this@AddProjectFragment
                 this.addProjectViewModel = addProjectViewModel
             }
 
+        val colors = resources.getIntArray(R.array.eazyTime_project_colors)
+        addProjectViewModel.selectProjectColor(colors[Random.nextInt(colors.size)])
+
         addProjectViewModel.shortCode.observe(requireActivity(), Observer { shortCodeText ->
             shortCodeText?.let {
-                if (shortCodeText.length >= 3){
-                    dataBinding.etAddProjectShortCode.error = getString(R.string.error_short_code_lengt)
+                if (shortCodeText.length > 3){
+                    dataBinding.etAddProjectShortCode.error = getString(ch.bfh.mad.R.string.error_short_code_length)
                 }else{
                     dataBinding.etAddProjectShortCode.error = null
                 }
             }
         })
 
-        val otherStrings = arrayOf("#38d9a9", "#69db7c", "#a9e34b").toList()
+        addProjectViewModel.projectName.observe(requireActivity(), Observer { projectName ->
+            projectName?.let {
+                if (projectName.isBlank()){
+                    dataBinding.etAddProjectName.error = getString(R.string.error_project_name_length)
+                }else{
+                    dataBinding.etAddProjectName.error = null
+                }
+            }
+        })
 
-//        val colorSpinnerAdapter = ColorSpinnerAdapter(requireContext(), R.layout.item_color_spinner, otherStrings)
+        addProjectViewModel.colorId.observe(requireActivity(), Observer { colorId ->
+            colorId?.let { dataBinding.buAddProjectColorPicker.setBackgroundColor(colorId) }
+        })
 
-        val colorSpinnerAdapter = ColorSpinnerAdapter(requireContext(), android.R.layout.simple_list_item_1, otherStrings)
-        dataBinding.snAddProjectColorSpinner.adapter = colorSpinnerAdapter
-
-//
-//            ArrayAdapter.createFromResource(
-//                requireContext(),
-//                R.array.eazyTime_project_colors,
-//                android.R.layout.simple_spinner_item
-//            ).also { adapter ->
-//                // Specify the layout to use when the list of choices appears
-//                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-//                // Apply the adapter to the spinner
-//                dataBinding.snAddProjectColorSpinner.adapter = adapter
-//            }
+        dataBinding.buAddProjectColorPicker.setOnClickListener {
+            showColorPickerDialog(addProjectViewModel)
+        }
 
         return view
+    }
+
+    private fun showColorPickerDialog(addProjectViewModel: AddProjectViewModel) {
+        val selectedColor = addProjectViewModel.colorId.value ?: R.color.eazyTime_colorProject1
+        val spectrumDialogBuilder = SpectrumDialog.Builder(requireContext())
+        spectrumDialogBuilder.setTitle(getString(R.string.color_picker_dialog_title))
+            .setColors(R.array.eazyTime_project_colors)
+            .setSelectedColor(selectedColor)
+            .setDismissOnColorSelected(true)
+            .setOnColorSelectedListener { positiveResult, color -> addProjectViewModel.selectProjectColor(color) }
+            .build()
+            .show(requireActivity().supportFragmentManager, "spectrumDialog")
     }
 }

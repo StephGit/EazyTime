@@ -1,5 +1,7 @@
 package ch.bfh.mad.eazytime.projects
 
+import android.util.Log
+import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.data.entity.Project
 
 class FakeProjectRepo() {
@@ -17,6 +19,8 @@ class FakeProjectRepo() {
     fun addProject(name: String, shortCode: String, color: String, onWidget: Boolean? = false, default: Boolean? = false){
         val newProject = Project((projects.size+1).toLong(), name, shortCode,color, onWidget, default)
         projects.add(newProject)
+        Log.i(TAG, "Added new Project: ${newProject}")
+        Log.i(TAG, "List: ${projects}")
     }
 
     private fun getProjectsFromDB(): MutableList<Project> {

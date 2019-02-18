@@ -3,6 +3,7 @@ package ch.bfh.mad.eazytime.di
 import android.app.Application
 import ch.bfh.mad.eazytime.projects.ProjectFragment
 import ch.bfh.mad.eazytime.projects.ProjectListViewModel
+import ch.bfh.mad.eazytime.projects.addProject.AddProjectFragment
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -19,5 +20,7 @@ interface AppComponent {
     }
 
     fun inject(projectFragment: ProjectFragment)
+
+    fun inject(addProjectFragment: AddProjectFragment)
 
 }
