@@ -20,7 +20,7 @@ class TimerServiceTest {
     @Before
     fun createDb() {
         db = Room.inMemoryDatabaseBuilder(InstrumentationRegistry.getContext(), AppDatabase::class.java).build()
-        ts = TimerService(db.timeSlotDao(), db.projectDao())
+        ts = TimerService(db.timeSlotDao(), db.projectDao(), db.workDayDao())
 
         val p1 = Project()
         p1.isDefault = true
@@ -44,22 +44,22 @@ class TimerServiceTest {
 
     @Test
     fun checkinDefaultProject() {
-        val nullTs = db.timeSlotDao().getCurrentTimeSlot()
-        assert(nullTs == null)
+        val emptyTs = db.timeSlotDao().getCurrentTimeSlots()
+        assert(emptyTs.isEmpty())
         val defaultProject = db.projectDao().getDefaultProject()
         ts.checkInDefaultProject()
 
-        val newTs = db.timeSlotDao().getCurrentTimeSlot()
+        val newTs = db.timeSlotDao().getCurrentTimeSlots().first()
         assert(defaultProject.id == newTs?.projectId)
     }
 
     @Test
     fun changeProject() {
         ts.checkInDefaultProject()
-        val oldTs = db.timeSlotDao().getCurrentTimeSlot()
+        val oldTs = db.timeSlotDao().getCurrentTimeSlots().first()
         val otherProject = db.projectDao().getProjects().find { p -> p.shortCode == "moo" }
         ts.changeAndStartProject(otherProject!!)
-        val newTs = db.timeSlotDao().getCurrentTimeSlot()
+        val newTs = db.timeSlotDao().getCurrentTimeSlots().first()
         assert(oldTs != newTs)
     }
 

@@ -6,6 +6,7 @@ import android.content.Context
 import ch.bfh.mad.eazytime.data.AppDatabase
 import ch.bfh.mad.eazytime.data.dao.ProjectDao
 import ch.bfh.mad.eazytime.data.dao.TimeSlotDao
+import ch.bfh.mad.eazytime.data.dao.WorkDayDao
 import ch.bfh.mad.eazytime.util.TimerService
 import dagger.Module
 import dagger.Provides
@@ -30,7 +31,10 @@ class AppModule {
     fun provideProjectDao(database: AppDatabase) = database.projectDao()
 
     @Provides
-    fun provideTimerService(timeSlotDao: TimeSlotDao, projectDao: ProjectDao) = TimerService(timeSlotDao, projectDao)
+    fun provideWorkDayDao(database: AppDatabase) = database.workDayDao()
+
+    @Provides
+    fun provideTimerService(timeSlotDao: TimeSlotDao, projectDao: ProjectDao, workDayDao: WorkDayDao) = TimerService(timeSlotDao, projectDao, workDayDao)
 
 
 }
