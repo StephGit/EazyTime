@@ -22,7 +22,7 @@ class ProjectsListAdapter(context: Context, @LayoutRes itemLayoutRes: Int, items
             Log.i(TAG, "$project")
             view.findViewById<View>(R.id.project_list_item_color_tag).setBackgroundColor(Color.parseColor("#"+project.color))
             view.findViewById<TextView>(R.id.project_list_item_project_name).text = project.name
-            view.findViewById<TextView>(R.id.project_list_item_project_short_code).text = project.shortCode
+            view.findViewById<TextView>(R.id.project_list_item_color_tag).text = project.shortCode
             view.findViewById<TextView>(R.id.project_list_item_project_time).text = project.currentTime
         }
         return view

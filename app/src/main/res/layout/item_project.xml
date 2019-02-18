@@ -14,10 +14,13 @@
             android:id="@+id/project_list_item_content"
             android:layout_width="match_parent"
             android:layout_height="@dimen/eazyTime_height_content_list_elements">
-       <View
+       <TextView
                android:id="@+id/project_list_item_color_tag"
                android:layout_width="@dimen/eazyTime_width_color_tag_list_elements"
                android:layout_height="0dp"
+               android:textColor="@color/eazyTime_colorWhite"
+               android:textSize="@dimen/eazyTime_text_size_project_short_code_project_list_item"
+               android:gravity="center"
                app:layout_constraintLeft_toLeftOf="@id/project_list_item_content"
                app:layout_constraintBottom_toBottomOf="@id/project_list_item_content"
                app:layout_constraintTop_toTopOf="@id/project_list_item_content"

@@ -21,8 +21,8 @@ class FakeProjectRepo() {
 
     private fun getProjectsFromDB(): MutableList<Project> {
         return arrayListOf(
-            Project(1, "DeX", "DeX", "f783ac", true, true),
-            Project(2, "Admin", "DeX", "f783ac", true, false),
+            Project(1, "DeX", "DeX", "a9e34b", true, true),
+            Project(2, "Admin", "ADM", "f783ac", true, false),
             Project(3, "HassProjekt", ":-(", "3bc9db", true, false),
             Project(4, "Ramsch", "RMS", "9775fa", true, false),
             Project(5, "Umelungere", "ULG", "ffa94d", true, false)
