@@ -10,8 +10,9 @@ import ch.bfh.mad.R
 import ch.bfh.mad.eazytime.calendar.CalendarFragment
 import ch.bfh.mad.eazytime.geofence.GeoFenceFragment
 import ch.bfh.mad.eazytime.projects.ProjectFragment
+import ch.bfh.mad.eazytime.projects.addProject.AddProjectActivity
 
-class EazyTimeActivity : AppCompatActivity() {
+class EazyTimeActivity : AppCompatActivity(), EazyTimeNavigator {
 
     private lateinit var navigation: BottomNavigationView
 
@@ -38,10 +39,14 @@ class EazyTimeActivity : AppCompatActivity() {
         return true
     }
 
-    fun replaceFragment(fragment: Fragment) {
+    private fun replaceFragment(fragment: Fragment) {
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.frame_content, fragment)
             .commit()
+    }
+
+    override fun openAddProjectActivity() {
+        startActivity(AddProjectActivity.getAddProjectActivityIntent(this))
     }
 }
