@@ -37,7 +37,7 @@ class ProjectFragment : Fragment() {
         activity!!.title = getString(R.string.project_fragment_title)
         projectListView = view.findViewById(R.id.lv_projects)
         createNewProjectButton = view.findViewById(R.id.fab_projects)
-        createNewProjectButton.setOnClickListener{ openAddNewProjectFragment() }
+        createNewProjectButton.setOnClickListener{ openAddNewProjectActivity() }
 
         Injector.appComponent.inject(this)
         projectListViewModel = ViewModelProviders.of(this, ProjectModelFactory(fakeProjectProviderService, fakeProjectRepo)).get(ProjectListViewModel::class.java)
@@ -52,7 +52,12 @@ class ProjectFragment : Fragment() {
         return view
     }
 
-    private fun openAddNewProjectFragment() {
-        navigator.openAddProjectFragment()
+    override fun onResume() {
+        super.onResume()
+        projectListViewModel.initListItems()
+    }
+
+    private fun openAddNewProjectActivity() {
+        navigator.openAddProjectActivity()
     }
 }

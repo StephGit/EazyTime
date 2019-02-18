@@ -28,7 +28,7 @@ class AddProjectViewModel(private var fakeProjectRepo: FakeProjectRepo) :ViewMod
     }
 
     private fun createAndSaveProject() {
-        fakeProjectRepo.addProject("ProjektName","SCD", "#69db7c")
+        fakeProjectRepo.addProject(projectName.value?: "ProjectName", shortCode.value?: "SCD", "ffd43b")
     }
 
     fun selectProjectColor(selectedColor: Int){
