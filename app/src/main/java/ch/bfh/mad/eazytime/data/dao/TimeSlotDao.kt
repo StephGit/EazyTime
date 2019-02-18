@@ -16,4 +16,7 @@ interface TimeSlotDao {
 
     @Delete
     fun delete(timeSlot: TimeSlot)
+
+    @Query("SELECT * FROM timeslot WHERE endDate is NULL")
+    fun getCurrentTimeSlots(): List<TimeSlot>
 }
