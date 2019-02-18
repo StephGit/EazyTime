@@ -6,14 +6,12 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
 import ch.bfh.mad.R
 import ch.bfh.mad.eazytime.EazyTimeNavigator
-import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.di.Injector
 import javax.inject.Inject
 
@@ -43,18 +41,17 @@ class ProjectFragment : Fragment() {
         projectListViewModel = ViewModelProviders.of(this, ProjectModelFactory(fakeProjectProviderService, fakeProjectRepo)).get(ProjectListViewModel::class.java)
 
         projectListViewModel.projects.observe(this, Observer { projects ->
-            Log.i(TAG, "projectListViewModel.projects.observe")
             val projectsListAdapter = ProjectsListAdapter(requireContext(), android.R.layout.simple_list_item_1, projects!!)
             projectListView.adapter = projectsListAdapter
         })
 
-        projectListViewModel.initListItems()
+        projectListViewModel.refreshListItems()
         return view
     }
 
     override fun onResume() {
         super.onResume()
-        projectListViewModel.initListItems()
+        projectListViewModel.refreshListItems()
     }
 
     private fun openAddNewProjectActivity() {

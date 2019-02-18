@@ -9,7 +9,7 @@ class ProjectListViewModel(private var fakeProjectProviderService: FakeProjectPr
 
     val projects: MutableLiveData<List<ProjectListItem>> = MutableLiveData()
 
-    fun initListItems(){
+    fun refreshListItems(){
         Log.i(TAG, "ProjectListViewModel.getProjectListItems")
         projects.value = fakeProjectProviderService.getFakeProjectList()
     }

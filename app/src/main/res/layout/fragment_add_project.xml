@@ -55,26 +55,25 @@
                 android:layout_height="wrap_content">
 
             <TextView
-                    android:id="@+id/tv_label_add_project_color_spinner"
+                    android:id="@+id/tv_label_add_project_color_picker"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toTopOf="@+id/cl_color_spinner"
                     app:layout_constraintBottom_toBottomOf="@id/cl_color_spinner"
                     app:layout_constraintLeft_toLeftOf="@id/cl_color_spinner"
-                    app:layout_constraintRight_toLeftOf="@id/sn_add_project_color_spinner"
+                    app:layout_constraintRight_toLeftOf="@id/bu_add_project_color_picker"
                     android:text="@string/tv_label_add_project_color_picker"
                     android:textSize="@dimen/eazyTime_text_size_form_labels"
                     app:layout_constraintHorizontal_chainStyle="spread_inside"/>
 
-            <Spinner
-                    android:id="@+id/sn_add_project_color_spinner"
+            <Button
+                    android:id="@+id/bu_add_project_color_picker"
                     app:layout_constraintRight_toRightOf="@id/cl_color_spinner"
-                    app:layout_constraintLeft_toRightOf="@id/tv_label_add_project_color_spinner"
+                    app:layout_constraintLeft_toRightOf="@id/tv_label_add_project_color_picker"
                     app:layout_constraintTop_toTopOf="@id/cl_color_spinner"
                     android:layout_width="@dimen/eazyTime_width_color_tag_list_elements"
                     android:layout_height="@dimen/eazyTime_height_content_list_elements"
                     android:layout_marginEnd="@dimen/eazyTime_left_margin_list_elements"
-                    android:selectedItemPosition="@={addProjectViewModel.colorItemPosition}"
                     android:background="@color/eazyTime_light_gray"/>
 
         </android.support.constraint.ConstraintLayout>
