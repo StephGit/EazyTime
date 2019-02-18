@@ -15,7 +15,7 @@ open class GeoFenceBaseFragment : Fragment() {
     protected fun addGeofence() {
         // TODO replace with addFragment
         if (permissionFineLocationGranted) {
-            startActivity(GeoFenceDetailActivity.newIntent(requireContext()))
+//            startActivity(GeoFenceDetailActivity.newIntent(requireContext()))
         }
     }
 
