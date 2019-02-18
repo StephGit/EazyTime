@@ -16,4 +16,7 @@ interface ProjectDao {
 
     @Delete
     fun delete(project: Project)
+
+    @Query("SELECT * FROM project WHERE isDefault = 1")
+    fun getDefaultProject(): Project
 }
