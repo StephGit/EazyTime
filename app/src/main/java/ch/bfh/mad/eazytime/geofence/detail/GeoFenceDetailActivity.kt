@@ -23,6 +23,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.tasks.Task
 
@@ -31,15 +32,18 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     GeoFenceFlow,
     OnMapReadyCallback,
     GoogleMap.OnMyLocationButtonClickListener,
-    GoogleMap.OnMyLocationClickListener, GoogleMap.OnMapLongClickListener {
+    GoogleMap.OnMyLocationClickListener,
+    GoogleMap.OnMapLongClickListener {
 
     private val defaultZoom: Float = 15F
 
-    private var hasTarget: Boolean = false
-    private var hasGeoFence: Boolean = false
+    private var hasMarker: Boolean = false
+    private var hasRadius: Boolean = false
     private lateinit var geoFence: GeoFence
 
     private lateinit var map: GoogleMap
+    private lateinit var marker: Marker
+
     private lateinit var locationProviderClient: FusedLocationProviderClient
     private lateinit var geofencingClient: GeofencingClient
 
@@ -57,12 +61,13 @@ class GeoFenceDetailActivity : AppCompatActivity(),
         locationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         geofencingClient = LocationServices.getGeofencingClient(this)
 
-        // TODO navigate directly to markerFragement if no item in bundle
+        // TODO handling of existing geofence
         if (intent.hasExtra("GEOFENCE_ITEM")) {
             this.geoFence = intent.getSerializableExtra("GEOFENCE_ITEM") as (GeoFence)
             replaceFragment(GeoFenceDetailFragment.newFragment())
         } else {
             replaceFragment(GeoFenceMarkerFragment.newFragment())
+            showCurrentLocation()
         }
     }
 
@@ -85,7 +90,7 @@ class GeoFenceDetailActivity : AppCompatActivity(),
         map.mapType = GoogleMap.MAP_TYPE_HYBRID
 
         enableLocation()
-        showGeoFenceOnMap()
+//        showGeoFenceOnMap()
 
         with(map) {
             setOnMapLongClickListener(this@GeoFenceDetailActivity)
@@ -103,10 +108,22 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     }
 
     override fun onMapLongClick(p0: LatLng?) {
-        map.addMarker(
-            MarkerOptions()
-                .position(LatLng(p0!!.latitude, p0!!.longitude))
-        )
+        if (!hasMarker) {
+            p0?.let {
+                showMarker(it)
+            }
+        }
+    }
+
+    private fun showMarker(position: LatLng) {
+        if (::marker.isInitialized && marker.isVisible) {
+            this.marker.position = position
+        } else {
+            this.marker = map.addMarker(
+                MarkerOptions()
+                    .position(LatLng(position.latitude, position.longitude))
+            )
+        }
     }
 
     private fun showGeoFenceOnMap() {
@@ -151,7 +168,6 @@ class GeoFenceDetailActivity : AppCompatActivity(),
 
     private fun showCurrentLocation() {
         try {
-
             var locationResult: Task<Location> = locationProviderClient.lastLocation
 
             locationResult.addOnCompleteListener {
@@ -171,14 +187,18 @@ class GeoFenceDetailActivity : AppCompatActivity(),
 
 
     override fun goToMarker() {
+        this.hasMarker = false
         replaceFragment(GeoFenceMarkerFragment.newFragment())
     }
 
     override fun goToRadius() {
+        this.hasMarker = true
+        this.hasRadius = false
         replaceFragment(GeoFenceRadiusFragment.newFragment())
     }
 
     override fun goToDetail() {
+        this.hasRadius = true
         replaceFragment(GeoFenceDetailFragment.newFragment())
     }
 

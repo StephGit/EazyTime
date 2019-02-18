@@ -21,7 +21,7 @@ Follow these steps to connect your device:
 
 1. Connect your device by USB
 2. Enable 'Developer options > USB debugging' on your device (Developer options is hidden by default. To make it available, go to 'Settings > About phone' and tap 'Build number' seven times)
-3. Now you should see your device with `adb device -l`
+3. Now you should see your device with `adb device -l` (if not use `adb usb` to activate usb-connection)
 > optional connection by wifi
 4. Activate Wifi-Connection
 5. `adb tcpip 5555`
