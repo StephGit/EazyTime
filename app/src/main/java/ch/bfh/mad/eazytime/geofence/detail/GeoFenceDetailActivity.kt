@@ -25,7 +25,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.gms.tasks.Task
-
+import java.util.UUID.randomUUID
 
 class GeoFenceDetailActivity : AppCompatActivity(),
     GeoFenceFlow,
@@ -72,24 +72,13 @@ class GeoFenceDetailActivity : AppCompatActivity(),
         if (intent.hasExtra("GEOFENCE_ITEM")) {
             this.step = GeoFenceFlowStep.DETAIL
             this.geoFence = intent.getSerializableExtra("GEOFENCE_ITEM") as (GeoFence)
+//            showGeoFence(geoFence)
             replaceFragment(GeoFenceDetailFragment.newFragment())
         } else {
             this.step = GeoFenceFlowStep.MARKER
-            replaceFragment(GeoFenceMarkerFragment.newFragment())
             showCurrentLocation()
+            replaceFragment(GeoFenceMarkerFragment.newFragment())
         }
-    }
-
-    /**
-     *  prevent dispatching of MotionEvent to handle pinch gesture on map
-     */
-    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
-        var handled = scaleGestureDetector.onTouchEvent(event)
-        // If the scale gesture detector didn't handle the event pass it to super.
-        if (!handled) {
-            return super.onTouchEvent(event)
-        }
-        return super.dispatchTouchEvent(event)
     }
 
     private fun replaceFragment(fragment: Fragment) {
@@ -129,6 +118,18 @@ class GeoFenceDetailActivity : AppCompatActivity(),
         }
     }
 
+    /**
+     *  prevent dispatching of MotionEvent to handle pinch gesture on map
+     */
+    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+        var handled = scaleGestureDetector.onTouchEvent(event)
+        // If the scale gesture detector didn't handle the event pass it to super.
+        if (!handled) {
+            return super.onTouchEvent(event)
+        }
+        return super.dispatchTouchEvent(event)
+    }
+
     override fun onScaleBegin(detector: ScaleGestureDetector?): Boolean {
         if (step == GeoFenceFlowStep.RADIUS) {
             return true
@@ -164,23 +165,6 @@ class GeoFenceDetailActivity : AppCompatActivity(),
         }
     }
 
-
-    private fun showGeoFenceOnMap(location: Location) {
-        var circleOptions: CircleOptions = CircleOptions()
-            .center(LatLng(location.latitude, location.longitude))
-            .radius(50.0)
-            .fillColor(0x40ff0000)
-            .strokeColor(Color.TRANSPARENT)
-            .strokeWidth(2F)
-            .clickable(true)
-
-        map.addCircle(circleOptions)
-        map.setOnCircleClickListener {
-            // TODO edit Geofence
-            Toast.makeText(applicationContext, "circle clicked", Toast.LENGTH_SHORT).show()
-        }
-    }
-
     private fun showCircle(position: LatLng, radius: Double) {
         val circleOptions: CircleOptions = CircleOptions()
             .center(position)
@@ -192,25 +176,31 @@ class GeoFenceDetailActivity : AppCompatActivity(),
         this.circle = map.addCircle(circleOptions)
     }
 
-    private fun buildGeofence(location: Location, radius: Double): Geofence? {
-        val latitude = location.latitude
-        val longitude = location.longitude
+    private fun showGeoFence(position: LatLng, radius: Double) {
+        showMarker(position)
+        showCircle(position, radius)
 
-        return Geofence.Builder()
+        map.setOnCircleClickListener {
+            // TODO edit Geofence
+            Toast.makeText(applicationContext, "circle clicked", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun buildGeofence(position: LatLng, radius: Double) {
+        val gf = Geofence.Builder()
             // string id to identify
-            .setRequestId(location.time.toString())
-
+            .setRequestId(randomUUID().toString())
             .setCircularRegion(
-                latitude,
-                longitude,
+                position.latitude,
+                position.longitude,
                 radius.toFloat()
             )
             // Alerts are generated for these transistions
             .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
             .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_EXIT)
-
             .setExpirationDuration(Geofence.NEVER_EXPIRE)
             .build()
+
     }
 
     private fun moveCamera(latLng: LatLng, zoom: Float) {
@@ -265,13 +255,16 @@ class GeoFenceDetailActivity : AppCompatActivity(),
         if (::marker.isInitialized && marker.isVisible) {
             map.uiSettings.isZoomGesturesEnabled = false
             this.step = GeoFenceFlowStep.RADIUS
-            replaceFragment(GeoFenceRadiusFragment.newFragment())
             showCircle(this.marker.position, this.radius.toDouble())
+            replaceFragment(GeoFenceRadiusFragment.newFragment())
         }
     }
 
     override fun goToDetail() {
-        map.uiSettings.isZoomGesturesEnabled = true
+        map.uiSettings.isZoomGesturesEnabled = false
+        if (::circle.isInitialized && circle.isVisible) {
+            buildGeofence(this.marker.position, this.circle.radius)
+        }
         this.step = GeoFenceFlowStep.DETAIL
         replaceFragment(GeoFenceDetailFragment.newFragment())
     }
