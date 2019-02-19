@@ -26,7 +26,6 @@ class GeoFenceMarkerFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_geofence_marker, container, false)
 
         val proceedButton: Button = view.findViewById(R.id.btn_geoFenceMarkerProceed)
-
         proceedButton.setOnClickListener { callback.goToRadius() }
 
         return view
