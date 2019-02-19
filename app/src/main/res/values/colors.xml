@@ -33,6 +33,19 @@
         <item name="project_color_8">@color/eazyTime_colorProject8</item>
         <item name="project_color_9">@color/eazyTime_colorProject9</item>
     </array>
+
+    <string-array name="eazyTime_project_colors_as_string">
+        <item>#ff8787</item>
+        <item>#f783ac</item>
+        <item>#9775fa</item>
+        <item>#3bc9db</item>
+        <item>#38d9a9</item>
+        <item>#69db7c</item>
+        <item>#a9e34b</item>
+        <item>#ffd43b</item>
+        <item>#ffa94d</item>
+    </string-array>
+
 </resources>
 
 

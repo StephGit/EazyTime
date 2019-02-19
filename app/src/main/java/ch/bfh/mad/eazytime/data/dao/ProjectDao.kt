@@ -15,6 +15,9 @@ interface ProjectDao {
     @Insert
     fun insertAll(projects: List<Project>)
 
+    @Insert
+    fun insert(project: Project)
+
     @Update
     fun update(project: Project)
 
