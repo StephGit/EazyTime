@@ -1,20 +1,18 @@
 package ch.bfh.mad.eazytime.projects
 
+import android.os.AsyncTask
+import android.util.Log
+import ch.bfh.mad.eazytime.TAG
+import ch.bfh.mad.eazytime.data.dao.ProjectDao
 import ch.bfh.mad.eazytime.data.entity.Project
 import javax.inject.Inject
 
-class FakeProjectProviderService @Inject constructor(private val fakeProjectRepo: FakeProjectRepo) {
+class FakeProjectProviderService @Inject constructor(private val projectDao: ProjectDao) {
 
     fun getFakeProjectList(): List<ProjectListItem> {
-        val projects = fakeProjectRepo.getProjects()
+        val projects =projectDao.getProjects()
         val projectListItems = mutableListOf<ProjectListItem>()
-        projects.forEach { project ->
-            when (project.id.toInt()) {
-                1 -> projectListItems.add(createProjectListItem(project, "04:45:78"))
-                3 -> projectListItems.add(createProjectListItem(project, "03.23:45"))
-                else -> projectListItems.add(createProjectListItem(project))
-            }
-        }
+        projects.forEach { projectListItems.add(createProjectListItem(it)) }
         return projectListItems
     }
 

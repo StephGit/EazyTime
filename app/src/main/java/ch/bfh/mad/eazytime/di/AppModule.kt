@@ -30,8 +30,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun providesFakeProjectProviderService(fakeProjectRepo: FakeProjectRepo): FakeProjectProviderService {
-        return FakeProjectProviderService(fakeProjectRepo)
+    fun providesFakeProjectProviderService(projectDao: ProjectDao): FakeProjectProviderService {
+        return FakeProjectProviderService(projectDao)
     }
 
     @Provides
