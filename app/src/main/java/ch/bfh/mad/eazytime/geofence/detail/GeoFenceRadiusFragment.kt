@@ -24,7 +24,7 @@ class GeoFenceRadiusFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_geofence_radius, container, false)
-
+        callback.setStep(GeoFenceFlow.Step.RADIUS)
         val proceedButton: Button = view.findViewById(R.id.btn_geoFenceRadiusProceed)
         val backButton: Button = view.findViewById(R.id.btn_geoFenceRadiusBack)
 

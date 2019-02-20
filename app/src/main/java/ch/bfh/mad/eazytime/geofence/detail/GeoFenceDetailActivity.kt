@@ -40,7 +40,7 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     private val maxZoom: Float = 5F
     private val radius: Float = 100F
 
-    private lateinit var step: GeoFenceFlowStep
+    private lateinit var step: GeoFenceFlow.Step
     private lateinit var geoFence: GeoFence
 
     private lateinit var map: GoogleMap
@@ -70,12 +70,10 @@ class GeoFenceDetailActivity : AppCompatActivity(),
 
         // TODO handling of existing geofence
         if (intent.hasExtra("GEOFENCE_ITEM")) {
-            this.step = GeoFenceFlowStep.DETAIL
             this.geoFence = intent.getSerializableExtra("GEOFENCE_ITEM") as (GeoFence)
 //            showGeoFence(geoFence)
             replaceFragment(GeoFenceDetailFragment.newFragment())
         } else {
-            this.step = GeoFenceFlowStep.MARKER
             showCurrentLocation()
             replaceFragment(GeoFenceMarkerFragment.newFragment())
         }
@@ -93,10 +91,8 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     */
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
-        map.uiSettings.isMyLocationButtonEnabled = true
-        map.uiSettings.isMapToolbarEnabled = true
         map.mapType = GoogleMap.MAP_TYPE_HYBRID
-
+        setMapInteractive(true)
         enableLocation()
 //        showGeoFenceOnMap()
 
@@ -111,7 +107,7 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     }
 
     override fun onMapLongClick(p0: LatLng?) {
-        if (step == GeoFenceFlowStep.MARKER) {
+        if (step == GeoFenceFlow.Step.MARKER) {
             p0?.let {
                 showMarker(it)
             }
@@ -131,17 +127,16 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     }
 
     override fun onScaleBegin(detector: ScaleGestureDetector?): Boolean {
-        if (step == GeoFenceFlowStep.RADIUS) {
+        if (step == GeoFenceFlow.Step.RADIUS) {
             return true
         }
         return false
     }
 
-    override fun onScaleEnd(detector: ScaleGestureDetector?) {
-    }
+    override fun onScaleEnd(detector: ScaleGestureDetector?) {}
 
     override fun onScale(detector: ScaleGestureDetector?): Boolean {
-        if (step == GeoFenceFlowStep.RADIUS) {
+        if (step == GeoFenceFlow.Step.RADIUS) {
             scaleFactor *= detector!!.scaleFactor
             scaleFactor = Math.max(minZoom, Math.min(scaleFactor, maxZoom))
             this.circle.radius = (radius * scaleFactor).toDouble()
@@ -150,8 +145,14 @@ class GeoFenceDetailActivity : AppCompatActivity(),
         return false
     }
 
+    private fun setMapInteractive(state: Boolean) {
+        map.uiSettings.isMyLocationButtonEnabled = state
+        map.uiSettings.isMapToolbarEnabled = state
+        map.uiSettings.setAllGesturesEnabled(state)
+    }
+
     private fun showMarker(position: LatLng) {
-        if (::marker.isInitialized && marker.isVisible) {
+        if (showingMarker()) {
             this.marker.position = position
         } else {
             this.marker = map.addMarker(
@@ -165,6 +166,8 @@ class GeoFenceDetailActivity : AppCompatActivity(),
         }
     }
 
+    private fun showingMarker() = ::marker.isInitialized && marker.isVisible
+
     private fun showCircle(position: LatLng, radius: Double) {
         val circleOptions: CircleOptions = CircleOptions()
             .center(position)
@@ -175,6 +178,14 @@ class GeoFenceDetailActivity : AppCompatActivity(),
 
         this.circle = map.addCircle(circleOptions)
     }
+
+    private fun removeCircle() {
+        if (showingCircle()) {
+            circle.remove()
+        }
+    }
+
+    private fun showingCircle(): Boolean = ::circle.isInitialized && circle.isVisible
 
     private fun showGeoFence(position: LatLng, radius: Double) {
         showMarker(position)
@@ -216,7 +227,6 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     private fun enableLocation() {
         with(map) {
             isMyLocationEnabled = true
-            uiSettings.isMyLocationButtonEnabled = true
             setOnMyLocationButtonClickListener(this@GeoFenceDetailActivity)
         }
     }
@@ -243,29 +253,24 @@ class GeoFenceDetailActivity : AppCompatActivity(),
      **/
 
     override fun goToMarker() {
-        map.uiSettings.isZoomGesturesEnabled = true
-        if (::circle.isInitialized && circle.isVisible) {
-            circle.remove()
-        }
-        this.step = GeoFenceFlowStep.MARKER
+        setMapInteractive(true)
+        removeCircle()
         replaceFragment(GeoFenceMarkerFragment.newFragment())
     }
 
     override fun goToRadius() {
-        if (::marker.isInitialized && marker.isVisible) {
-            map.uiSettings.isZoomGesturesEnabled = false
-            this.step = GeoFenceFlowStep.RADIUS
+        if (showingMarker()) {
+            setMapInteractive(false)
             showCircle(this.marker.position, this.radius.toDouble())
             replaceFragment(GeoFenceRadiusFragment.newFragment())
         }
     }
 
     override fun goToDetail() {
-        map.uiSettings.isZoomGesturesEnabled = false
-        if (::circle.isInitialized && circle.isVisible) {
+        setMapInteractive(false)
+        if (showingCircle()) {
             buildGeofence(this.marker.position, this.circle.radius)
         }
-        this.step = GeoFenceFlowStep.DETAIL
         replaceFragment(GeoFenceDetailFragment.newFragment())
     }
 
@@ -277,6 +282,10 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     override fun saveGeoFence() {
         // TODO implement save
         leaveGeoFenceDetail()
+    }
+
+    override fun setStep(step: GeoFenceFlow.Step) {
+        this.step = step
     }
 
     override fun leaveGeoFenceDetail() {
