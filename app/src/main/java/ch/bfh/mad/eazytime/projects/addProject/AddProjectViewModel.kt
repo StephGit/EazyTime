@@ -4,42 +4,29 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.util.Log
 import ch.bfh.mad.eazytime.TAG
-import ch.bfh.mad.eazytime.projects.FakeProjectRepo
+import ch.bfh.mad.eazytime.data.dao.ProjectDao
+import ch.bfh.mad.eazytime.data.entity.Project
 
-class AddProjectViewModel(private var fakeProjectRepo: FakeProjectRepo) :ViewModel() {
+class AddProjectViewModel(private var projectDao: ProjectDao) :ViewModel() {
 
+    val projectId = MutableLiveData<Long>()
     var projectName = MutableLiveData<String>()
     val shortCode = MutableLiveData<String>()
     val colorId = MutableLiveData<Int>()
     val onWidget = MutableLiveData<Boolean>()
     val defaultProject = MutableLiveData<Boolean>()
 
-    fun onDeleteButtonClick() {
-        logTheShit()
-    }
-
-    fun onSaveButtonClick() {
-        logTheShit()
-        if (projectName.value == null){
-            projectName.value = ""
-        } else {
-            createAndSaveProject()
-        }
-    }
-
-    private fun createAndSaveProject() {
-        fakeProjectRepo.addProject(projectName.value?: "ProjectName", shortCode.value?: "SCD", "ffd43b")
-    }
 
     fun selectProjectColor(selectedColor: Int){
         colorId.value = selectedColor
     }
 
-    private fun logTheShit(){
-        Log.i(TAG, "projectName: ${projectName.value}")
-        Log.i(TAG, "shortCode: ${shortCode.value}")
-        Log.i(TAG, "colorItemPosition: ${colorId.value}")
-        Log.i(TAG, "onWidget: ${onWidget.value}")
-        Log.i(TAG, "defaultProject: ${defaultProject.value}")
+    fun initializeWithProjectData(project: Project){
+        Log.i(TAG, "initializeWithProjectData: $project")
+        projectId.postValue(project.id)
+        projectName.postValue(project.name)
+        shortCode.postValue(project.shortCode)
+        onWidget.postValue(project.onWidget)
+        defaultProject.postValue(project.isDefault)
     }
 }

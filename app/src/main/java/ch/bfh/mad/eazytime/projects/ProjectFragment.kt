@@ -6,12 +6,16 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ListView
 import ch.bfh.mad.R
 import ch.bfh.mad.eazytime.EazyTimeNavigator
+import ch.bfh.mad.eazytime.TAG
+import ch.bfh.mad.eazytime.data.dao.ProjectDao
 import ch.bfh.mad.eazytime.di.Injector
 import javax.inject.Inject
 
@@ -22,7 +26,7 @@ class ProjectFragment : Fragment() {
     lateinit var fakeProjectProviderService: FakeProjectProviderService
 
     @Inject
-    lateinit var fakeProjectRepo: FakeProjectRepo
+    lateinit var projectDao: ProjectDao
 
     private lateinit var projectListViewModel: ProjectListViewModel
     private lateinit var projectListView: ListView
@@ -38,11 +42,14 @@ class ProjectFragment : Fragment() {
         createNewProjectButton.setOnClickListener{ openAddNewProjectActivity() }
 
         Injector.appComponent.inject(this)
-        projectListViewModel = ViewModelProviders.of(this, ProjectModelFactory(fakeProjectProviderService, fakeProjectRepo)).get(ProjectListViewModel::class.java)
+        projectListViewModel = ViewModelProviders.of(this, ProjectModelFactory(fakeProjectProviderService, projectDao)).get(ProjectListViewModel::class.java)
 
         projectListViewModel.projects.observe(this, Observer { projects ->
             val projectsListAdapter = ProjectsListAdapter(requireContext(), android.R.layout.simple_list_item_1, projects!!)
             projectListView.adapter = projectsListAdapter
+            projectListView.setOnItemLongClickListener{parent, view, position, id ->
+                openUpdateNewProjectActivity(projectsListAdapter.getItem(position))
+            }
         })
 
         projectListViewModel.refreshListItems()
@@ -52,6 +59,19 @@ class ProjectFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         projectListViewModel.refreshListItems()
+    }
+
+
+    private fun openUpdateNewProjectActivity(projectListItem: ProjectListItem?): Boolean {
+        projectListItem?.let {listItem ->
+            if (listItem.id != null) {
+                Log.i(TAG, "Start UpdateProjectActivity for $listItem")
+                navigator.openUpdateProjectActivity(listItem.id)
+            }else{
+                Log.wtf(TAG, "invalid projectListItem: $listItem")
+            }
+        }
+        return true
     }
 
     private fun openAddNewProjectActivity() {

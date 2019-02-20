@@ -49,4 +49,8 @@ class EazyTimeActivity : AppCompatActivity(), EazyTimeNavigator {
     override fun openAddProjectActivity() {
         startActivity(AddProjectActivity.getAddProjectActivityIntent(this))
     }
+
+    override fun openUpdateProjectActivity(projectId: Long) {
+        startActivity(AddProjectActivity.getUpdateProjectActivityIntent(this, projectId))
+    }
 }

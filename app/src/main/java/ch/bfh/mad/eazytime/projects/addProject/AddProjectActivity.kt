@@ -18,7 +18,6 @@ import ch.bfh.mad.eazytime.data.dao.ProjectDao
 import ch.bfh.mad.eazytime.data.entity.Project
 import ch.bfh.mad.eazytime.di.Injector
 import ch.bfh.mad.eazytime.projects.FakeProjectProviderService
-import ch.bfh.mad.eazytime.projects.FakeProjectRepo
 import ch.bfh.mad.eazytime.projects.ProjectModelFactory
 import com.thebluealliance.spectrum.SpectrumDialog
 import javax.inject.Inject
@@ -31,9 +30,6 @@ class AddProjectActivity : AppCompatActivity() {
     lateinit var fakeProjectProviderService: FakeProjectProviderService
 
     @Inject
-    lateinit var fakeProjectRepo: FakeProjectRepo
-
-    @Inject
     lateinit var projectDao: ProjectDao
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,7 +38,7 @@ class AddProjectActivity : AppCompatActivity() {
         title = getString(R.string.add_project_fragment_title)
 
         Injector.appComponent.inject(this)
-        val addProjectViewModel = ViewModelProviders.of(this, ProjectModelFactory(fakeProjectProviderService, fakeProjectRepo))
+        val addProjectViewModel = ViewModelProviders.of(this, ProjectModelFactory(fakeProjectProviderService, projectDao))
             .get(AddProjectViewModel::class.java)
 
         val dataBinding = DataBindingUtil.setContentView<ActivityAddProjectBinding>(this, R.layout.activity_add_project)
@@ -51,10 +47,15 @@ class AddProjectActivity : AppCompatActivity() {
                 this.addProjectViewModel = addProjectViewModel
             }
 
-        val colors = resources.getIntArray(R.array.eazyTime_project_colors)
-        addProjectViewModel.selectProjectColor(colors[Random.nextInt(colors.size)])
-        dataBinding.buAddProjectSave.isEnabled = false
-
+        val extras = intent.extras
+        val projectId = extras?.get(INTENT_EXTRA_KEY_PROJECT_ID) as Long?
+        projectId?.let { id ->
+            Log.i(TAG, "initViewModelWithSelectedProjectInformation")
+            initViewModelWithSelectedProjectInformation(addProjectViewModel, dataBinding, id)
+        } ?: run {
+            Log.i(TAG, "initViewModelWithDefaultValues")
+            initViewModelWithDefaultValues(addProjectViewModel, dataBinding)
+        }
 
         addProjectViewModel.shortCode.observe(this, Observer { shortCodeText ->
             shortCodeText?.let {
@@ -88,20 +89,41 @@ class AddProjectActivity : AppCompatActivity() {
             showColorPickerDialog(addProjectViewModel)
         }
 
-        dataBinding.buAddProjectSave.setOnClickListener { createAndSaveProject(addProjectViewModel) }
+        dataBinding.buAddProjectSave.setOnClickListener { createOrUpdateProject(addProjectViewModel) }
 
         dataBinding.buAddProjectDelete.setOnClickListener { deleteProject(addProjectViewModel) }
     }
 
-    private fun deleteProject(addProjectViewModel: AddProjectViewModel) {
-        Toast.makeText(this, "Not yet implemented!!", Toast.LENGTH_SHORT).show()
+    private fun initViewModelWithDefaultValues(addProjectViewModel: AddProjectViewModel, dataBinding: ActivityAddProjectBinding) {
+        val colors = resources.getIntArray(R.array.eazyTime_project_colors)
+        addProjectViewModel.selectProjectColor(colors[Random.nextInt(colors.size)])
+        dataBinding.buAddProjectSave.isEnabled = false
+
     }
 
-    private fun createAndSaveProject(addProjectViewModel: AddProjectViewModel) {
+    private fun
+            initViewModelWithSelectedProjectInformation(addProjectViewModel: AddProjectViewModel, dataBinding: ActivityAddProjectBinding, projectId: Long) {
+        val getProjectAsyncTask = GetProjectAsyncTask(projectDao)
+        getProjectAsyncTask.addProjectViewModel = addProjectViewModel
+        getProjectAsyncTask.execute(projectId)
+        dataBinding.buAddProjectSave.isEnabled = true
+    }
+
+    private fun deleteProject(addProjectViewModel: AddProjectViewModel) {
+        Toast.makeText(this, "Delete Cascade?", Toast.LENGTH_SHORT).show()
+        addProjectViewModel.projectId.value.let { id ->
+            DeleteAsyncTask(projectDao).execute(id)
+            Log.i(TAG, "Delete Project started in InsertAsyncTask, close the Activity")
+            finish()
+        }
+    }
+
+    private fun createOrUpdateProject(addProjectViewModel: AddProjectViewModel) {
         Toast.makeText(this, "Todo: only oneDefaultProject???", Toast.LENGTH_SHORT).show()
         // Todo: only oneDefaultProject???
         // Todo: Move this to a Service/Repo???
         val tmpProject = Project()
+        tmpProject.id = addProjectViewModel.projectId.value ?: 0
         tmpProject.name = addProjectViewModel.projectName.value ?: getString(R.string.default_projectName)
         tmpProject.shortCode = addProjectViewModel.shortCode.value ?: ""
         tmpProject.isDefault = addProjectViewModel.defaultProject.value ?: false
@@ -153,14 +175,48 @@ class AddProjectActivity : AppCompatActivity() {
     }
 
     companion object {
+
+        private const val INTENT_EXTRA_KEY_PROJECT_ID = "Constants"
+
         fun getAddProjectActivityIntent(ctx: Context) = Intent(ctx, AddProjectActivity::class.java)
+
+        fun getUpdateProjectActivityIntent(ctx: Context, projectId: Long): Intent {
+            return Intent(ctx, AddProjectActivity::class.java).also { intent ->
+                intent.putExtra(INTENT_EXTRA_KEY_PROJECT_ID, projectId)
+            }
+        }
     }
 
     private class InsertAsyncTask internal constructor(private val mAsyncTaskDao: ProjectDao) : AsyncTask<Project, Void, Void>() {
         override fun doInBackground(vararg params: Project): Void? {
             val project = params[0]
-            mAsyncTaskDao.insert(project)
-            Log.i(TAG, "Saved Project: $project")
+            if (params[0].id > 0) {
+                Log.i(TAG, "Update Project: $project")
+                mAsyncTaskDao.update(project)
+            } else {
+                Log.i(TAG, "Insert Project: $project")
+                mAsyncTaskDao.insert(project)
+            }
+            return null
+        }
+    }
+
+    private class GetProjectAsyncTask internal constructor(private val projectDao: ProjectDao) : AsyncTask<Long, Void, Void>() {
+        var addProjectViewModel: AddProjectViewModel? = null
+        override fun doInBackground(vararg params: Long?): Void? {
+            params[0]?.let { id ->
+                val project = projectDao.getProjectById(id)
+                addProjectViewModel?.initializeWithProjectData(project)
+            }
+            return null
+        }
+    }
+
+    private class DeleteAsyncTask internal constructor(private val mAsyncTaskDao: ProjectDao) : AsyncTask<Long, Void, Void>() {
+        override fun doInBackground(vararg params: Long?): Void? {
+            params[0]?.let { id ->
+                mAsyncTaskDao.deleteProjectById(id)
+            }
             return null
         }
     }

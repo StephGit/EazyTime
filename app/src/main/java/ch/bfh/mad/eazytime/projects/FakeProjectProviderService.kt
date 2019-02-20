@@ -17,6 +17,6 @@ class FakeProjectProviderService @Inject constructor(private val projectDao: Pro
     }
 
     private fun createProjectListItem(project: Project, currentTime: String = ""): ProjectListItem {
-        return ProjectListItem(project.name, project.shortCode, currentTime, project.color)
+        return ProjectListItem(project.id, project.name, project.shortCode, currentTime, project.color)
     }
 }

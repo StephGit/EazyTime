@@ -4,7 +4,6 @@ import android.app.Application
 import android.arch.persistence.room.Room
 import android.content.Context
 import ch.bfh.mad.eazytime.projects.FakeProjectProviderService
-import ch.bfh.mad.eazytime.projects.FakeProjectRepo
 import ch.bfh.mad.eazytime.data.AppDatabase
 import ch.bfh.mad.eazytime.data.dao.ProjectDao
 import ch.bfh.mad.eazytime.data.dao.TimeSlotDao
@@ -21,12 +20,6 @@ class AppModule {
     @Provides
     @Singleton
     fun provideContext(application: Application): Context = application
-
-    @Provides
-    @Singleton
-    fun providesFakeProjectRepo(): FakeProjectRepo {
-        return FakeProjectRepo()
-    }
 
     @Provides
     @Singleton
