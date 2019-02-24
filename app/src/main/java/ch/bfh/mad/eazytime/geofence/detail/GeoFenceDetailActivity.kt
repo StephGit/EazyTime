@@ -35,10 +35,10 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     ScaleGestureDetector.OnScaleGestureListener {
 
     private val defaultZoom: Float = 15F
+    private var defaultRadius: Double = 0.0
     private var scaleFactor: Float = 1.0F
     private val minZoom: Float = 0F
-    private val maxZoom: Float = 5F
-    private val radius: Float = 100F
+    private val maxZoom: Float = 8F
 
     private lateinit var step: GeoFenceFlow.Step
     private lateinit var geoFence: GeoFence
@@ -50,7 +50,6 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     private lateinit var locationProviderClient: FusedLocationProviderClient
     private lateinit var geofencingClient: GeofencingClient
     private lateinit var scaleGestureDetector: ScaleGestureDetector
-
 
     companion object{
         fun newIntent(ctx: Context)= Intent(ctx, GeoFenceDetailActivity::class.java)
@@ -139,7 +138,7 @@ class GeoFenceDetailActivity : AppCompatActivity(),
         if (step == GeoFenceFlow.Step.RADIUS) {
             scaleFactor *= detector!!.scaleFactor
             scaleFactor = Math.max(minZoom, Math.min(scaleFactor, maxZoom))
-            this.circle.radius = (radius * scaleFactor).toDouble()
+            this.circle.radius = (defaultRadius * scaleFactor)
             return true
         }
         return false
@@ -175,7 +174,6 @@ class GeoFenceDetailActivity : AppCompatActivity(),
             .fillColor(R.color.eazyTime_colorGeoFenceRadius)
             .strokeColor(Color.TRANSPARENT)
             .strokeWidth(2F)
-
         this.circle = map.addCircle(circleOptions)
     }
 
@@ -221,6 +219,18 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     }
 
     /**
+     * Calculates the defaultRadius relative to meter per pixel on the current camera latitude and zoom level
+     *  Formula from Chris Broadfoot https://groups.google.com/d/msg/google-maps-js-api-v3/hDRO4oHVSeM/osOYQYXg2oUJ
+     */
+    private fun calcRadiusForZoomLevel(): Double {
+        val level: Double = map.cameraPosition.zoom.toDouble()
+        val lat: Double = map.cameraPosition.target.latitude
+        val metersPerPixel = 156543.03392 * Math.cos(lat * Math.PI / 180) / Math.pow(2.0, level)
+        defaultRadius = 100 * metersPerPixel
+        return defaultRadius
+    }
+
+    /**
      * Location handling
      */
     @SuppressLint("MissingPermission")
@@ -261,7 +271,7 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     override fun goToRadius() {
         if (showingMarker()) {
             setMapInteractive(false)
-            showCircle(this.marker.position, this.radius.toDouble())
+            showCircle(this.marker.position, calcRadiusForZoomLevel())
             replaceFragment(GeoFenceRadiusFragment.newFragment())
         }
     }
