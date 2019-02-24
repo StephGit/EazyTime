@@ -14,7 +14,9 @@ import android.view.ScaleGestureDetector
 import android.widget.Toast
 import ch.bfh.mad.R
 import ch.bfh.mad.eazytime.TAG
+import ch.bfh.mad.eazytime.data.GeoFenceRepository
 import ch.bfh.mad.eazytime.data.entity.GeoFence
+import ch.bfh.mad.eazytime.di.Injector
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingClient
@@ -26,6 +28,11 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.gms.tasks.Task
 import java.util.UUID.randomUUID
+import javax.inject.Inject
+
+// TODO wrap text on steps
+// TODO disable buttons on steps?
+// TODO add Geofence to entity? as one or properties?
 
 class GeoFenceDetailActivity : AppCompatActivity(),
     GeoFenceFlow,
@@ -33,6 +40,9 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     GoogleMap.OnMyLocationButtonClickListener,
     GoogleMap.OnMapLongClickListener,
     ScaleGestureDetector.OnScaleGestureListener {
+
+    @Inject
+    lateinit var geoFenceRepository: GeoFenceRepository
 
     private val defaultZoom: Float = 15F
     private var defaultRadius: Double = 0.0
@@ -57,6 +67,7 @@ class GeoFenceDetailActivity : AppCompatActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Injector.appComponent.inject(this)
         setContentView(R.layout.activity_geofence_detail)
 
         val mapFragment: SupportMapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
@@ -276,11 +287,16 @@ class GeoFenceDetailActivity : AppCompatActivity(),
         }
     }
 
-    override fun goToDetail() {
+    override fun goToEdit() {
         setMapInteractive(false)
         if (showingCircle()) {
             buildGeofence(this.marker.position, this.circle.radius)
         }
+        replaceFragment(GeoFenceEditFragment.newFragment())
+    }
+
+    override fun goToDetail() {
+        setMapInteractive(false)
         replaceFragment(GeoFenceDetailFragment.newFragment())
     }
 
@@ -290,6 +306,7 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     }
 
     override fun saveGeoFence() {
+        geoFenceRepository.saveGeoFence(GeoFence())
         // TODO implement save
         leaveGeoFenceDetail()
     }

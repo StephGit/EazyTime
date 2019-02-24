@@ -9,12 +9,12 @@ import android.view.ViewGroup
 import android.widget.Button
 import ch.bfh.mad.R
 
-class GeoFenceDetailFragment : Fragment() {
+class GeoFenceEditFragment : Fragment() {
 
     private lateinit var callback: GeoFenceFlow
 
     companion object {
-        fun newFragment(): Fragment = GeoFenceDetailFragment()
+        fun newFragment(): Fragment = GeoFenceEditFragment()
     }
 
     override fun onAttach(context: Context?) {
@@ -23,13 +23,13 @@ class GeoFenceDetailFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_geofence_detail, container, false)
+        val view = inflater.inflate(R.layout.fragment_geofence_edit, container, false)
         callback.setStep(GeoFenceFlow.Step.DETAIL)
-        val backButton: Button = view.findViewById(R.id.btn_geoFenceDetailBack)
-        val editButton: Button = view.findViewById(R.id.btn_geoFenceEdit)
+        val editButton: Button = view.findViewById(R.id.btn_geoFenceChange)
+        val saveButton: Button = view.findViewById(R.id.btn_geoFenceSave)
 
-        backButton.setOnClickListener { callback.leaveGeoFenceDetail() }
-        editButton.setOnClickListener { callback.goToEdit() }
+        editButton.setOnClickListener { callback.goToMarker() }
+        saveButton.setOnClickListener { callback.saveGeoFence() }
 
         return view
     }

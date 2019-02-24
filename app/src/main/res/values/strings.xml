@@ -19,9 +19,13 @@
     <string name="geofence_detail_fragment_title">Geofence Detail</string>
     <string name="geofence_detail_fragment_item_name">Name</string>
     <string name="geofence_detail_fragment_item_name_desc">Geofence Name</string>
-    <string name="geofence_detail_fragment_edittext_hint">Name of your GeoFence</string>
-    <string name="geofence_detail_fragment_btn_delete">Löschen</string>
-    <string name="geofence_detail_fragment_btn_save">Speichern</string>
+    <string name="geofence_detail_fragment_btn_edit">Ändern</string>
+    <string name="geofence_detail_fragment_btn_back">Zurück</string>
+
+    <string name="geofence_edit_fragment_title">Geofence bearbeiten</string>
+    <string name="geofence_edit_fragment_edittext_hint">Name of your GeoFence</string>
+    <string name="geofence_edit_fragment_btn_change">Geofence ändern</string>
+    <string name="geofence_edit_fragment_btn_save">Speichern</string>
 
     <string name="geofence_empty_fragment_title">Keine Geofences</string>
     <string name="geofence_emtpy_fragment_info">Hinzugefügte Geofences werden hier angezeigt.</string>

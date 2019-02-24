@@ -28,7 +28,7 @@ class GeoFenceRadiusFragment : Fragment() {
         val proceedButton: Button = view.findViewById(R.id.btn_geoFenceRadiusProceed)
         val backButton: Button = view.findViewById(R.id.btn_geoFenceRadiusBack)
 
-        proceedButton.setOnClickListener { callback.goToDetail() }
+        proceedButton.setOnClickListener { callback.goToEdit() }
         backButton.setOnClickListener { callback.goToMarker() }
 
         return view

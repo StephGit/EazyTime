@@ -13,6 +13,7 @@ interface GeoFenceFlow {
     fun setStep(step: GeoFenceFlow.Step)
     fun goToMarker()
     fun goToRadius()
+    fun goToEdit()
     fun goToDetail()
     fun deleteGeoFence()
     fun saveGeoFence()
