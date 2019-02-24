@@ -10,7 +10,7 @@ import javax.inject.Inject
 class FakeProjectProviderService @Inject constructor(private val projectDao: ProjectDao) {
 
     fun getFakeProjectList(): List<ProjectListItem> {
-        val projects =projectDao.getProjects()
+        val projects = projectDao.getProjects()
         val projectListItems = mutableListOf<ProjectListItem>()
         projects.forEach { projectListItems.add(createProjectListItem(it)) }
         return projectListItems

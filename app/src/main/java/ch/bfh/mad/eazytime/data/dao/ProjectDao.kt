@@ -28,7 +28,7 @@ interface ProjectDao {
     fun getDefaultProject(): Project
 
     @Query("SELECT * FROM project WHERE id == :projectId")
-    fun getProjectById(projectId: Long): Project
+    fun getProjectById(projectId: Long): Project?
 
     @Query("DELETE FROM project WHERE id == :projectId")
     fun deleteProjectById(projectId: Long)

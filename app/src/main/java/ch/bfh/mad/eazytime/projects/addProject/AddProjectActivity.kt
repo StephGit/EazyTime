@@ -19,6 +19,7 @@ import ch.bfh.mad.eazytime.data.entity.Project
 import ch.bfh.mad.eazytime.di.Injector
 import ch.bfh.mad.eazytime.projects.FakeProjectProviderService
 import ch.bfh.mad.eazytime.projects.ProjectModelFactory
+import ch.bfh.mad.eazytime.util.EazyTimeColorUtil
 import com.thebluealliance.spectrum.SpectrumDialog
 import javax.inject.Inject
 import kotlin.random.Random
@@ -31,6 +32,9 @@ class AddProjectActivity : AppCompatActivity() {
 
     @Inject
     lateinit var projectDao: ProjectDao
+
+    @Inject
+    lateinit var colorUtil: EazyTimeColorUtil
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -101,10 +105,10 @@ class AddProjectActivity : AppCompatActivity() {
 
     }
 
-    private fun
-            initViewModelWithSelectedProjectInformation(addProjectViewModel: AddProjectViewModel, dataBinding: ActivityAddProjectBinding, projectId: Long) {
+    private fun initViewModelWithSelectedProjectInformation(addProjectViewModel: AddProjectViewModel, dataBinding: ActivityAddProjectBinding, projectId: Long) {
         val getProjectAsyncTask = GetProjectAsyncTask(projectDao)
         getProjectAsyncTask.addProjectViewModel = addProjectViewModel
+        getProjectAsyncTask.colorUtil = colorUtil
         getProjectAsyncTask.execute(projectId)
         dataBinding.buAddProjectSave.isEnabled = true
     }
@@ -128,41 +132,17 @@ class AddProjectActivity : AppCompatActivity() {
         tmpProject.shortCode = addProjectViewModel.shortCode.value ?: ""
         tmpProject.isDefault = addProjectViewModel.defaultProject.value ?: false
         tmpProject.onWidget = addProjectViewModel.onWidget.value ?: false
-        tmpProject.color = getColorStringFromViewModel(addProjectViewModel)
+        tmpProject.color = colorUtil.getColorString(addProjectViewModel.colorId.value?:0)
         Log.i(TAG, "project to save: $tmpProject")
         InsertAsyncTask(projectDao).execute(tmpProject)
         Log.i(TAG, "Save Project started in InsertAsyncTask, close the Activity")
         finish()
     }
 
-    private fun getColorStringFromViewModel(addProjectViewModel: AddProjectViewModel): String {
-        try {
-            // This seem a bit odd, but te return-value from the colorPicker is the id form the color of the array.
-            // This is not the same id as the id of the same color not in the array
-            val colorId = addProjectViewModel.colorId.value ?: 0
-            var color = getString(R.string.defaul_color_string)
-            val intArray = resources.getIntArray(R.array.eazyTime_project_colors)
-            val stringArray = resources.getStringArray(R.array.eazyTime_project_colors_as_string)
-            for (i in 0 until intArray.size) {
-                if (colorId == intArray[i]) {
-                    color = stringArray[i]
-                    Log.i(TAG, "found color by resources: $color")
-                    break
-                }
-            }
-            return color
-
-        } catch (e: Exception) {
-            Log.e(TAG, "getColorStringFromViewModel failed: ${e.message}", e)
-            return getString(R.string.defaul_color_string)
-        }
-    }
-
-
     private fun showColorPickerDialog(addProjectViewModel: AddProjectViewModel) {
         val selectedColor = addProjectViewModel.colorId.value ?: R.color.eazyTime_colorProject1
-        val spectrumDialogBuilder = SpectrumDialog.Builder(this)
-        spectrumDialogBuilder.setTitle(getString(R.string.color_picker_dialog_title))
+        SpectrumDialog.Builder(this)
+            .setTitle(getString(R.string.color_picker_dialog_title))
             .setColors(R.array.eazyTime_project_colors)
             .setSelectedColor(selectedColor)
             .setDismissOnColorSelected(true)
@@ -203,10 +183,14 @@ class AddProjectActivity : AppCompatActivity() {
 
     private class GetProjectAsyncTask internal constructor(private val projectDao: ProjectDao) : AsyncTask<Long, Void, Void>() {
         var addProjectViewModel: AddProjectViewModel? = null
+        var colorUtil: EazyTimeColorUtil? = null
         override fun doInBackground(vararg params: Long?): Void? {
             params[0]?.let { id ->
-                val project = projectDao.getProjectById(id)
-                addProjectViewModel?.initializeWithProjectData(project)
+                projectDao.getProjectById(id)?.let { project ->
+                    addProjectViewModel?.initializeWithProjectData(project, colorUtil)
+                } ?: kotlin.run {
+                    Log.e(TAG, "No project found with id: $id")
+                }
             }
             return null
         }

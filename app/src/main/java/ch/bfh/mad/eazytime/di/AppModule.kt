@@ -8,6 +8,7 @@ import ch.bfh.mad.eazytime.data.AppDatabase
 import ch.bfh.mad.eazytime.data.dao.ProjectDao
 import ch.bfh.mad.eazytime.data.dao.TimeSlotDao
 import ch.bfh.mad.eazytime.data.dao.WorkDayDao
+import ch.bfh.mad.eazytime.util.EazyTimeColorUtil
 import ch.bfh.mad.eazytime.util.TimerService
 import dagger.Module
 import dagger.Provides
@@ -26,6 +27,10 @@ class AppModule {
     fun providesFakeProjectProviderService(projectDao: ProjectDao): FakeProjectProviderService {
         return FakeProjectProviderService(projectDao)
     }
+
+    @Provides
+    @Singleton
+    fun providesEazyTimeColorUtil(context: Context) =  EazyTimeColorUtil(context)
 
     @Provides
     fun provideAppDatabase(context: Context): AppDatabase =

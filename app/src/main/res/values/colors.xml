@@ -12,6 +12,7 @@
     <color name="eazyTime_colorBackgroundText">#CED4DA</color>
     <color name="eazyTime_colorBackground">#F1F3F5</color>
     <color name="eazyTime_light_gray">#808080</color>
+    <color name="eazyTime_default_colorProject">#ff8787</color>
     <color name="eazyTime_colorProject1">#ff8787</color>
     <color name="eazyTime_colorProject2">#f783ac</color>
     <color name="eazyTime_colorProject3">#9775fa</color>

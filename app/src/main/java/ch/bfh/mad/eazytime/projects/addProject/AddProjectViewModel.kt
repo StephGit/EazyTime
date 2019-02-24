@@ -6,6 +6,7 @@ import android.util.Log
 import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.data.dao.ProjectDao
 import ch.bfh.mad.eazytime.data.entity.Project
+import ch.bfh.mad.eazytime.util.EazyTimeColorUtil
 
 class AddProjectViewModel(private var projectDao: ProjectDao) :ViewModel() {
 
@@ -21,12 +22,13 @@ class AddProjectViewModel(private var projectDao: ProjectDao) :ViewModel() {
         colorId.value = selectedColor
     }
 
-    fun initializeWithProjectData(project: Project){
+    fun initializeWithProjectData(project: Project, eazyTimeColorUtil: EazyTimeColorUtil?){
         Log.i(TAG, "initializeWithProjectData: $project")
         projectId.postValue(project.id)
         projectName.postValue(project.name)
         shortCode.postValue(project.shortCode)
         onWidget.postValue(project.onWidget)
         defaultProject.postValue(project.isDefault)
+        colorId.postValue(eazyTimeColorUtil?.getColorArrayId(project.color ?: ""))
     }
 }
