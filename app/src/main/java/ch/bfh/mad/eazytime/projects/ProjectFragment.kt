@@ -10,13 +10,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ListView
+import android.widget.Toast
 import ch.bfh.mad.R
 import ch.bfh.mad.eazytime.EazyTimeNavigator
 import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.data.dao.ProjectDao
 import ch.bfh.mad.eazytime.di.Injector
+import ch.bfh.mad.eazytime.util.TimerService
 import javax.inject.Inject
 
 
@@ -27,6 +28,9 @@ class ProjectFragment : Fragment() {
 
     @Inject
     lateinit var projectDao: ProjectDao
+
+    @Inject
+    lateinit var timerService: TimerService
 
     private lateinit var projectListViewModel: ProjectListViewModel
     private lateinit var projectListView: ListView
@@ -50,6 +54,9 @@ class ProjectFragment : Fragment() {
             projectListView.setOnItemLongClickListener{parent, view, position, id ->
                 openUpdateNewProjectActivity(projectsListAdapter.getItem(position))
             }
+            projectListView.setOnItemClickListener { parent, view, position, id ->
+                activateOrChangeProject(projectsListAdapter.getItem(position))
+            }
         })
 
         projectListViewModel.refreshListItems()
@@ -59,6 +66,14 @@ class ProjectFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         projectListViewModel.refreshListItems()
+    }
+
+
+    private fun activateOrChangeProject(projectLostItem: ProjectListItem?) {
+        projectLostItem?.let { item ->
+            Toast.makeText(requireContext(),"Change Timerservice to accept only the id", Toast.LENGTH_SHORT).show()
+            //            timerService.changeAndStartProject(item.id)
+        }
     }
 
 
