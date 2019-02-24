@@ -16,6 +16,6 @@ interface GeoFenceFlow {
     fun goToEdit()
     fun goToDetail()
     fun deleteGeoFence()
-    fun saveGeoFence()
+    fun saveGeoFence(geoFenceName: String)
     fun leaveGeoFenceDetail()
 }

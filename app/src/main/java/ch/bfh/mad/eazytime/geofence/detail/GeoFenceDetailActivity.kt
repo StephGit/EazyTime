@@ -1,6 +1,7 @@
 package ch.bfh.mad.eazytime.geofence.detail
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -284,6 +285,9 @@ class GeoFenceDetailActivity : AppCompatActivity(),
             setMapInteractive(false)
             showCircle(this.marker.position, calcRadiusForZoomLevel())
             replaceFragment(GeoFenceRadiusFragment.newFragment())
+        } else {
+            Toast.makeText(this, getString(R.string.geofence_detail_activity_toast_marker_error), Toast.LENGTH_SHORT)
+                .show()
         }
     }
 
@@ -305,9 +309,11 @@ class GeoFenceDetailActivity : AppCompatActivity(),
         leaveGeoFenceDetail()
     }
 
-    override fun saveGeoFence() {
-        geoFenceRepository.saveGeoFence(GeoFence())
-        // TODO implement save
+    override fun saveGeoFence(geoFenceName: String) {
+        geoFenceRepository.saveGeoFence(GeoFence(geoFenceName, false, "die324"))
+        var returnIntent = Intent()
+        returnIntent.putExtra("result", true)
+        setResult(Activity.RESULT_OK, returnIntent)
         leaveGeoFenceDetail()
     }
 

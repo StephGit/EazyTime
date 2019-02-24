@@ -17,7 +17,7 @@ class GeoFenceEmptyFragment : GeoFenceBaseFragment() {
         val view = inflater.inflate(R.layout.fragment_geofence_empty, container, false)
         activity!!.title = getString(R.string.geofence_fragment_title)
 
-        view.findViewById<FloatingActionButton>(R.id.btn_addGeofence).setOnClickListener { super.addGeofence() }
+        view.findViewById<FloatingActionButton>(R.id.btn_addGeofence).setOnClickListener { super.addGeoFence() }
         return view
     }
 
@@ -26,4 +26,15 @@ class GeoFenceEmptyFragment : GeoFenceBaseFragment() {
         super.checkPermission(this)
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (super.hasResult) showGeofenceFragment()
+    }
+
+    private fun showGeofenceFragment() {
+        activity!!.supportFragmentManager.beginTransaction()
+            .replace(R.id.frame_content, GeoFenceFragment.newFragment())
+            .addToBackStack(null)
+            .commit()
+    }
 }

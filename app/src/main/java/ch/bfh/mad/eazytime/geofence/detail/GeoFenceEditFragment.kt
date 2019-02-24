@@ -7,11 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import ch.bfh.mad.R
 
 class GeoFenceEditFragment : Fragment() {
 
     private lateinit var callback: GeoFenceFlow
+    private lateinit var geoFenceName: EditText
 
     companion object {
         fun newFragment(): Fragment = GeoFenceEditFragment()
@@ -28,9 +30,26 @@ class GeoFenceEditFragment : Fragment() {
         val editButton: Button = view.findViewById(R.id.btn_geoFenceChange)
         val saveButton: Button = view.findViewById(R.id.btn_geoFenceSave)
 
+        geoFenceName = view.findViewById(R.id.tv_geoFenceEditName)
+
         editButton.setOnClickListener { callback.goToMarker() }
-        saveButton.setOnClickListener { callback.saveGeoFence() }
+        saveButton.setOnClickListener { onSave() }
 
         return view
+    }
+
+    private fun isValid(): Boolean {
+        return when {
+            geoFenceName.text.trim().isBlank() -> {
+                geoFenceName.error = getString(R.string.geofence_edit_error_no_name)
+                false
+            }
+            else -> true
+        }
+    }
+
+    private fun onSave() {
+        var name = geoFenceName.text.toString().trim()
+        if (isValid()) callback.saveGeoFence(name)
     }
 }

@@ -28,7 +28,7 @@ class GeoFenceFragment : GeoFenceBaseFragment() {
         val view = inflater.inflate(R.layout.fragment_geofence, container, false)
         activity!!.title = getString(R.string.geofence_fragment_title)
 
-        view.findViewById<FloatingActionButton>(R.id.btn_addGeofence).setOnClickListener { super.addGeofence() }
+        view.findViewById<FloatingActionButton>(R.id.btn_addGeofence).setOnClickListener { super.addGeoFence() }
 
         listView = view.findViewById(R.id.lv_geofences)
         progressBar = view.findViewById(R.id.progressBar)
@@ -59,9 +59,11 @@ class GeoFenceFragment : GeoFenceBaseFragment() {
         val viewModel: GeoFenceViewModel = ViewModelProviders.of(this, factory).get(GeoFenceViewModel::class.java)
 
         viewModel.geoFenceItems.observe(this, Observer {
-            val lvGeofences = view.findViewById<ListView>(R.id.lv_geofences)
-            val customAdapter = GeoFenceAdapter(requireContext(), 0, it!!)
-            lvGeofences.adapter = customAdapter
+            if (!it.isNullOrEmpty()) {
+                val lvGeofences = view.findViewById<ListView>(R.id.lv_geofences)
+                val customAdapter = GeoFenceAdapter(requireContext(), 0, it)
+                lvGeofences.adapter = customAdapter
+            }
         })
     }
 
