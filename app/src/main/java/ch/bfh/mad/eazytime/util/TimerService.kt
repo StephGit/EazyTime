@@ -25,11 +25,11 @@ class TimerService constructor(private val timeSlotDao: TimeSlotDao, private val
         timeSlotDao.insertAll(listOf(ts))
     }
 
-    fun changeAndStartProject(project: Project) {
+    fun changeAndStartProject(projectId: Long) {
         stopCurrentTimeSlots()
 
         val newTs = TimeSlot()
-        newTs.projectId = project.id
+        newTs.projectId = projectId
         newTs.startDate = LocalDateTime()
         newTs.workDayId = getWorkDayId()
         timeSlotDao.insertAll(listOf(newTs))

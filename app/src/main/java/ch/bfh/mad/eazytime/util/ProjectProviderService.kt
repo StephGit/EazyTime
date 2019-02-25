@@ -47,7 +47,7 @@ class ProjectProviderService(private val projectDao: ProjectDao, private val tim
                 mappedTimeSlotSeconds?.plus(currentSeconds)
             }
 
-            ProjectListItem(project.name, project.shortCode, mappedTimeSlotSeconds?.seconds, project.color, project.isDefault, isActive)
+            ProjectListItem(project.id, project.name, project.shortCode, mappedTimeSlotSeconds?.seconds, project.color, project.isDefault, isActive)
         }
 
     }

@@ -11,12 +11,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
-import android.widget.Toast
 import ch.bfh.mad.R
 import ch.bfh.mad.eazytime.EazyTimeNavigator
 import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.data.dao.ProjectDao
 import ch.bfh.mad.eazytime.di.Injector
+import ch.bfh.mad.eazytime.util.ProjectProviderService
 import ch.bfh.mad.eazytime.util.TimerService
 import javax.inject.Inject
 
@@ -24,7 +24,7 @@ import javax.inject.Inject
 class ProjectFragment : Fragment() {
 
     @Inject
-    lateinit var fakeProjectProviderService: FakeProjectProviderService
+    lateinit var projectProviderService: ProjectProviderService
 
     @Inject
     lateinit var projectDao: ProjectDao
@@ -46,7 +46,7 @@ class ProjectFragment : Fragment() {
         createNewProjectButton.setOnClickListener{ openAddNewProjectActivity() }
 
         Injector.appComponent.inject(this)
-        projectListViewModel = ViewModelProviders.of(this, ProjectModelFactory(fakeProjectProviderService, projectDao)).get(ProjectListViewModel::class.java)
+        projectListViewModel = ViewModelProviders.of(this, ProjectModelFactory(projectProviderService, projectDao)).get(ProjectListViewModel::class.java)
 
         projectListViewModel.projects.observe(this, Observer { projects ->
             val projectsListAdapter = ProjectsListAdapter(requireContext(), android.R.layout.simple_list_item_1, projects!!)
@@ -58,21 +58,12 @@ class ProjectFragment : Fragment() {
                 activateOrChangeProject(projectsListAdapter.getItem(position))
             }
         })
-
-        projectListViewModel.refreshListItems()
         return view
     }
 
-    override fun onResume() {
-        super.onResume()
-        projectListViewModel.refreshListItems()
-    }
-
-
     private fun activateOrChangeProject(projectLostItem: ProjectListItem?) {
-        projectLostItem?.let { item ->
-            Toast.makeText(requireContext(),"Change Timerservice to accept only the id", Toast.LENGTH_SHORT).show()
-            //            timerService.changeAndStartProject(item.id)
+        projectLostItem?.id?.let { projectId ->
+            timerService.changeAndStartProject(projectId)
         }
     }
 

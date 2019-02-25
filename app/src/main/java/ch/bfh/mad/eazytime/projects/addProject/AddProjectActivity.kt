@@ -17,9 +17,9 @@ import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.data.dao.ProjectDao
 import ch.bfh.mad.eazytime.data.entity.Project
 import ch.bfh.mad.eazytime.di.Injector
-import ch.bfh.mad.eazytime.projects.FakeProjectProviderService
 import ch.bfh.mad.eazytime.projects.ProjectModelFactory
 import ch.bfh.mad.eazytime.util.EazyTimeColorUtil
+import ch.bfh.mad.eazytime.util.ProjectProviderService
 import com.thebluealliance.spectrum.SpectrumDialog
 import javax.inject.Inject
 import kotlin.random.Random
@@ -28,7 +28,7 @@ import kotlin.random.Random
 class AddProjectActivity : AppCompatActivity() {
 
     @Inject
-    lateinit var fakeProjectProviderService: FakeProjectProviderService
+    lateinit var projectProviderService: ProjectProviderService
 
     @Inject
     lateinit var projectDao: ProjectDao
@@ -45,7 +45,7 @@ class AddProjectActivity : AppCompatActivity() {
         title = getString(R.string.add_project_fragment_title)
 
         Injector.appComponent.inject(this)
-        val addProjectViewModel = ViewModelProviders.of(this, ProjectModelFactory(fakeProjectProviderService, projectDao))
+        val addProjectViewModel = ViewModelProviders.of(this, ProjectModelFactory(projectProviderService, projectDao))
             .get(AddProjectViewModel::class.java)
 
         val dataBinding = DataBindingUtil.setContentView<ActivityAddProjectBinding>(this, R.layout.activity_add_project)
