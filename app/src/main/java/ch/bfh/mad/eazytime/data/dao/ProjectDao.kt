@@ -21,6 +21,9 @@ interface ProjectDao {
     @Update
     fun update(project: Project)
 
+    @Update
+    fun updateAll(projects: List<Project>)
+
     @Delete
     fun delete(project: Project)
 

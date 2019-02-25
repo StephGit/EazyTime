@@ -36,6 +36,9 @@ class AddProjectActivity : AppCompatActivity() {
     @Inject
     lateinit var colorUtil: EazyTimeColorUtil
 
+    @Inject
+    lateinit var saveOrUpdateService: ProjectSaveOrUpdateService
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_project)
@@ -123,9 +126,6 @@ class AddProjectActivity : AppCompatActivity() {
     }
 
     private fun createOrUpdateProject(addProjectViewModel: AddProjectViewModel) {
-        Toast.makeText(this, "Todo: only oneDefaultProject???", Toast.LENGTH_SHORT).show()
-        // Todo: only oneDefaultProject???
-        // Todo: Move this to a Service/Repo???
         val tmpProject = Project()
         tmpProject.id = addProjectViewModel.projectId.value ?: 0
         tmpProject.name = addProjectViewModel.projectName.value ?: getString(R.string.default_projectName)
@@ -134,7 +134,7 @@ class AddProjectActivity : AppCompatActivity() {
         tmpProject.onWidget = addProjectViewModel.onWidget.value ?: false
         tmpProject.color = colorUtil.getColorString(addProjectViewModel.colorId.value?:0)
         Log.i(TAG, "project to save: $tmpProject")
-        InsertAsyncTask(projectDao).execute(tmpProject)
+        InsertAsyncTask(saveOrUpdateService).execute(tmpProject)
         Log.i(TAG, "Save Project started in InsertAsyncTask, close the Activity")
         finish()
     }
@@ -167,16 +167,11 @@ class AddProjectActivity : AppCompatActivity() {
         }
     }
 
-    private class InsertAsyncTask internal constructor(private val mAsyncTaskDao: ProjectDao) : AsyncTask<Project, Void, Void>() {
+    private class InsertAsyncTask internal constructor(private val saveOrUpdateService: ProjectSaveOrUpdateService) : AsyncTask<Project, Void, Void>() {
         override fun doInBackground(vararg params: Project): Void? {
             val project = params[0]
-            if (params[0].id > 0) {
-                Log.i(TAG, "Update Project: $project")
-                mAsyncTaskDao.update(project)
-            } else {
-                Log.i(TAG, "Insert Project: $project")
-                mAsyncTaskDao.insert(project)
-            }
+            Log.i(TAG, "InsertAsyncTask")
+            saveOrUpdateService.saveOrUpdateProject(project)
             return null
         }
     }
