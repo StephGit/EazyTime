@@ -15,7 +15,6 @@ open class GeoFenceBaseFragment : Fragment() {
     private lateinit var permissionHandler: PermissionHandler
     protected var hasResult: Boolean = false
 
-
     protected fun addGeoFence() {
         permissionFineLocationGranted = permissionHandler.checkPermission()
         // TODO replace with addFragment

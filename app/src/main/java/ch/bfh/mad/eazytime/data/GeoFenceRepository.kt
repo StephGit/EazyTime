@@ -1,18 +1,34 @@
 package ch.bfh.mad.eazytime.data
 
-import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.LiveData
+import android.util.Log
+import ch.bfh.mad.eazytime.TAG
+import ch.bfh.mad.eazytime.data.dao.GeoFenceDao
 import ch.bfh.mad.eazytime.data.entity.GeoFence
+import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class GeoFenceRepository @Inject constructor() {
+class GeoFenceRepository @Inject constructor(private val geoFenceDao: GeoFenceDao) {
 
     fun saveGeoFence(geoFence: GeoFence) {
-        // TODO implement saveGeoFence
+        Observable.fromCallable {
+            geoFenceDao.insert(geoFence)
+        }
+            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.io())
+            .subscribe {
+                Log.i(TAG, "Inserted Geofence to db with id: " + it)
+            }
     }
 
-    fun loadGeoFences(): MutableLiveData<List<GeoFence>> {
-        val geoFenceList : MutableLiveData<List<GeoFence>> = MutableLiveData()
+    fun loadGeoFences(): LiveData<List<GeoFence>> {
+//        val geoFenceList : MutableLiveData<List<GeoFence>> = MutableLiveData()
+//        geoFenceDao.getGeoFences().observe(this, Observer {
+//            geoFenceList.value = it
+//        })
+        return geoFenceDao.getGeoFences()
 
-        return geoFenceList
+//        return geoFenceList
     }
 }

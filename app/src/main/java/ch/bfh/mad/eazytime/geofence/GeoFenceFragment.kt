@@ -2,6 +2,7 @@ package ch.bfh.mad.eazytime.geofence
 
 
 import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
@@ -11,7 +12,10 @@ import android.view.ViewGroup
 import android.widget.ListView
 import android.widget.ProgressBar
 import ch.bfh.mad.R
+import ch.bfh.mad.eazytime.data.entity.GeoFence
+import ch.bfh.mad.eazytime.di.Injector
 import ch.bfh.mad.eazytime.geofence.detail.GeoFenceDetailActivity
+import javax.inject.Inject
 import ch.bfh.mad.eazytime.util.ViewModelFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -20,12 +24,16 @@ class GeoFenceFragment : GeoFenceBaseFragment() {
     private lateinit var listView: ListView
     private lateinit var progressBar: ProgressBar
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
     companion object {
         fun newFragment(): androidx.fragment.app.Fragment = GeoFenceFragment()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_geofence, container, false)
+        Injector.appComponent.inject(this)
         activity!!.title = getString(R.string.geofence_fragment_title)
 
         view.findViewById<FloatingActionButton>(R.id.btn_addGeofence).setOnClickListener { super.addGeoFence() }
@@ -45,7 +53,7 @@ class GeoFenceFragment : GeoFenceBaseFragment() {
     }
 
     private fun onListItemClick(parent: ListView, position: Int, id: Long) {
-        val item = parent.getItemAtPosition(position)
+        val item: GeoFence = parent.getItemAtPosition(position) as GeoFence
         showGeoFenceDetail(item)
     }
 
@@ -55,8 +63,8 @@ class GeoFenceFragment : GeoFenceBaseFragment() {
     }
 
     private fun getListItems(view: View) {
-        val factory = ViewModelFactory()
-        val viewModel: GeoFenceViewModel = ViewModelProviders.of(this, factory).get(GeoFenceViewModel::class.java)
+        val viewModel: GeoFenceViewModel =
+            ViewModelProviders.of(this, viewModelFactory).get(GeoFenceViewModel::class.java)
 
         viewModel.geoFenceItems.observe(this, Observer {
             if (!it.isNullOrEmpty()) {
@@ -81,7 +89,7 @@ class GeoFenceFragment : GeoFenceBaseFragment() {
     }
 
 
-    private fun showGeoFenceDetail(item: Any) {
+    private fun showGeoFenceDetail(item: GeoFence) {
         var intent = Intent(activity?.baseContext, GeoFenceDetailActivity::class.java)
 //        intent.putExtra("GEOFENCE_ITEM", item)
         startActivity(intent)
