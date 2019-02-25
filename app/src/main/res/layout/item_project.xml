@@ -43,19 +43,19 @@
                 app:layout_constraintRight_toRightOf="@id/project_list_item_content"
                 app:layout_constraintBottom_toBottomOf="@id/project_list_item_content"
                 app:layout_constraintTop_toBottomOf="@id/project_list_item_project_name"
-                app:layout_constraintLeft_toRightOf="@id/project_list_item_project_short_code"
+                app:layout_constraintLeft_toRightOf="@id/project_list_item_project_isDefault"
                 android:padding="@dimen/eazyTime_padding_text_views_list_elements"
                 android:textSize="@dimen/eazyTime_text_size_time_project_list_item"
                 android:textAlignment="viewEnd"/>
         <TextView
-                android:id="@+id/project_list_item_project_short_code"
+                android:id="@+id/project_list_item_project_isDefault"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 app:layout_constraintRight_toLeftOf="@id/project_list_item_project_time"
                 app:layout_constraintBottom_toBottomOf="@id/project_list_item_content"
                 app:layout_constraintTop_toBottomOf="@id/project_list_item_project_name"
                 app:layout_constraintLeft_toRightOf="@id/project_list_item_color_tag"
-                android:layout_marginLeft="@dimen/eazyTime_left_margin_list_elements"
+                android:layout_marginStart="@dimen/eazyTime_left_margin_list_elements"
                 android:padding="@dimen/eazyTime_padding_text_views_list_elements"
                 android:textSize="@dimen/eazyTime_text_size_time_project_list_item"/>
     </android.support.constraint.ConstraintLayout>

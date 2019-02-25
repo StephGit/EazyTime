@@ -39,5 +39,6 @@
     <string name="bu_delete_project">Löschen</string>
     <string name="default_projectName">MyProject</string>
     <string name="defaul_color_string">#ff8787</string>
-    
+    <string name="is_default_project">Standardprojekt</string>
+
 </resources>
