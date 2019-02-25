@@ -1,5 +1,6 @@
 package ch.bfh.mad.eazytime.data.dao
 
+import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.*
 import ch.bfh.mad.eazytime.data.entity.TimeSlot
 
@@ -19,4 +20,7 @@ interface TimeSlotDao {
 
     @Query("SELECT * FROM timeslot WHERE endDate is NULL")
     fun getCurrentTimeSlots(): List<TimeSlot>
+
+    @Query("SELECT * FROM timeslot")
+    fun getTimeSlotsLiveData(): LiveData<List<TimeSlot>>
 }
