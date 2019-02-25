@@ -1,5 +1,6 @@
 package ch.bfh.mad.eazytime.data.dao
 
+import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.*
 import ch.bfh.mad.eazytime.data.entity.Project
 
@@ -7,6 +8,9 @@ import ch.bfh.mad.eazytime.data.entity.Project
 interface ProjectDao {
     @Query("SELECT * FROM project")
     fun getProjects(): List<Project>
+
+    @Query("SELECT * FROM project")
+    fun getProjectsLiveData(): LiveData<List<Project>>
 
     @Insert
     fun insertAll(projects: List<Project>)
