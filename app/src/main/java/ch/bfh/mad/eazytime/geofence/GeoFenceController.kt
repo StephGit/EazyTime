@@ -18,6 +18,9 @@ class GeoFenceController @Inject constructor(private val context: Context) {
 
     private val geofencingClient: GeofencingClient = LocationServices.getGeofencingClient(context)
 
+    /**
+     * Creates a GoogleGeofence
+     */
     private fun buildGeofence(id: String, latitude: Double, longitude: Double, radius: Double): Geofence? {
         return Geofence.Builder()
             // string id to identify
@@ -34,6 +37,9 @@ class GeoFenceController @Inject constructor(private val context: Context) {
             .build()
     }
 
+    /**
+     * Add Geofence to GeofencingClient
+     */
     fun add(
         geoFence: GeoFence,
         success: () -> Unit,
@@ -57,6 +63,21 @@ class GeoFenceController @Inject constructor(private val context: Context) {
         }
     }
 
+    fun remove(
+        geoFence: GeoFence,
+        success: () -> Unit,
+        failure: (error: String) -> Unit
+    ) {
+        geofencingClient
+            .removeGeofences(listOf(geoFence.gfId))
+            .addOnSuccessListener {
+                success()
+            }
+            .addOnFailureListener {
+                failure(GeofenceErrorMessages.getErrorString(context, it))
+            }
+    }
+
     /**
      *  Setting the value to 0 indicates that you don’t want to trigger a GEOFENCE_TRANSITION_ENTER event if the device is already inside the geofence
      */
@@ -67,6 +88,9 @@ class GeoFenceController @Inject constructor(private val context: Context) {
             .build()
     }
 
+    /**
+     * PendingIntent to trigger TransitionsIntentService
+     */
     private val geofencePendingIntent: PendingIntent by lazy {
         val intent = Intent(context, GeoFenceTransitionsIntentService::class.java)
         PendingIntent.getService(

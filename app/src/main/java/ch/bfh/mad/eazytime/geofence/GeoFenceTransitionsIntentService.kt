@@ -4,13 +4,18 @@ import android.app.IntentService
 import android.content.Intent
 import android.util.Log
 import ch.bfh.mad.eazytime.TAG
+import ch.bfh.mad.eazytime.util.NotificationHandler
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingEvent
 
-class GeoFenceTransitionsIntentService : IntentService("GeoTrIntentService") {
+/**
+ * Handles transition events when entering or leaving a geofence
+ */
+class GeoFenceTransitionsIntentService : IntentService("GeoFenceTransitionIntentService") {
 
-    companion object {
-    }
+    companion object {}
+
+    private var notificationHandler: NotificationHandler = NotificationHandler()
 
     override fun onHandleIntent(intent: Intent?) {
         val geofencingEvent = GeofencingEvent.fromIntent(intent)
@@ -26,8 +31,13 @@ class GeoFenceTransitionsIntentService : IntentService("GeoTrIntentService") {
     }
 
     private fun handleEvent(event: GeofencingEvent) {
-        if (event.geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER) {
+        if ((event.geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER) ||
+            (event.geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT)
+        ) {
             // TODO handle it
+            Log.i(TAG, "FancyFenci")
+            notificationHandler.sendNotification(this, "FancyFenci")
+            // timerService.startDefault/stopDefault
         }
     }
 }

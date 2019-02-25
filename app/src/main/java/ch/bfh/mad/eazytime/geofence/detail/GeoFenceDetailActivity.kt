@@ -7,6 +7,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.location.Location
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -301,8 +302,15 @@ class GeoFenceDetailActivity : AppCompatActivity(),
                 this.marker.position.latitude,
                 this.marker.position.longitude
             )
+        geoFenceController.add(geoFence,
+            success = {
+                Log.d(TAG, "GeoFence added successfully")
+                geoFence.active = true // TODO success callback to late for saving
+            },
+            failure = { err ->
+                Snackbar.make(window.decorView.rootView, err, Snackbar.LENGTH_LONG).show()
+            })
         geoFenceRepository.saveGeoFence(this.geoFence)
-//        geoFenceController.add(this.geoFence)
         val returnIntent = Intent()
         returnIntent.putExtra("result", true)
         setResult(Activity.RESULT_OK, returnIntent)

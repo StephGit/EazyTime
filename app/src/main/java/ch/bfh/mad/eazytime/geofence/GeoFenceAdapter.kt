@@ -2,6 +2,8 @@ package ch.bfh.mad.eazytime.geofence
 
 import android.content.Context
 import android.support.annotation.LayoutRes
+import android.support.design.widget.Snackbar
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +11,7 @@ import android.widget.ArrayAdapter
 import android.widget.Switch
 import android.widget.TextView
 import ch.bfh.mad.R
+import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.data.GeoFenceRepository
 import ch.bfh.mad.eazytime.data.entity.GeoFence
 import ch.bfh.mad.eazytime.di.Injector
@@ -20,6 +23,9 @@ class GeoFenceAdapter (context: Context, @LayoutRes itemLayoutRes: Int, items: L
 
     @Inject
     lateinit var geoFenceRepository: GeoFenceRepository
+
+    @Inject
+    lateinit var geoFenceController: GeoFenceController
 
     init {
         Injector.appComponent.inject(this)
@@ -36,6 +42,11 @@ class GeoFenceAdapter (context: Context, @LayoutRes itemLayoutRes: Int, items: L
             if (it.active) {
                 switch.text = context.resources.getString(R.string.geofence_listitem_switch_text)
                 switch.setTextColor(context.getColor(R.color.eazyTime_colorBrand))
+                geoFenceController.add(it,
+                    success = { Log.d(TAG, "GeoFence added successfully") },
+                    failure = { err ->
+                        Snackbar.make(view, err, Snackbar.LENGTH_LONG).show()
+                    })
             } else {
                 view.findViewById<Switch>(R.id.sw_geoFenceActive).textOff
             }
