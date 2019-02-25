@@ -1,28 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="3dp"
-        android:layout_margin="5dp">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_marginTop="@dimen/eazyTime_top_margin_list_elements"
+              android:layout_marginBottom="@dimen/eazyTime_bottom_margin_list_elements"
+              android:layout_marginLeft="@dimen/eazyTime_left_margin_list_elements"
+              android:layout_marginRight="@dimen/eazyTime_right_margin_list_elements"
+              android:padding="@dimen/eazyTime_padding_list_elements"
+              android:background="@color/eazyTime_colorBackground">
+
+    <android.support.constraint.ConstraintLayout
+            android:id="@+id/geofence_list_item_content"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/eazyTime_height_content_list_elements">
 
 
     <TextView
             android:id="@+id/tv_geoFenceItemText"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp"
-            android:paddingRight="5dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginStart="8dp"
-            app:layout_constraintStart_toStartOf="parent"
-            android:textStyle="bold"
-            android:textSize="14sp"/>
+            android:layout_height="@dimen/eazyTime_height_half_content_list_elements"
+            android:padding="@dimen/eazyTime_padding_text_views_list_elements"
+            android:textSize="@dimen/eazyTime_text_size_geofence_name_list_item"
+            app:layout_constraintLeft_toLeftOf="@id/geofence_list_item_content"
+            app:layout_constraintBottom_toBottomOf="@id/geofence_list_item_content"
+            app:layout_constraintTop_toTopOf="@id/geofence_list_item_content"/>
 
     <Switch
             android:id="@+id/sw_geoFenceActive"
@@ -32,9 +34,11 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/tv_geoFenceItemText"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="@id/geofence_list_item_content"
+            app:layout_constraintBottom_toBottomOf="@id/geofence_list_item_content"
+            app:layout_constraintTop_toTopOf="@id/geofence_list_item_content"
+            android:padding="@dimen/eazyTime_padding_text_views_list_elements"
     />
 
-</android.support.constraint.ConstraintLayout>
+    </android.support.constraint.ConstraintLayout>
+</LinearLayout>

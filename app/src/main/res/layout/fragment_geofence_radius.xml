@@ -12,10 +12,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
             app:layout_constraintVertical_chainStyle="packed"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/tv_geoFenceRadiusInfo"
-            android:textSize="16sp" app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"/>
+            android:textSize="16sp" app:layout_constraintStart_toStartOf="parent"/>
 
 
     <TextView
@@ -24,16 +25,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintVertical_chainStyle="packed"
             app:layout_constraintTop_toBottomOf="@id/tv_geoFenceRadiusTitle"
-            app:layout_constraintBottom_toTopOf="@id/btn_geoFenceRadiusProceed" android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"/>
+            app:layout_constraintBottom_toTopOf="@id/btn_geoFenceRadiusProceed"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"/>
 
     <Button
             android:id="@+id/btn_geoFenceRadiusProceed"
             android:text="@string/geofence_radius_fragment_btn_proceed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"
@@ -62,9 +67,9 @@
             app:layout_constraintVertical_chainStyle="packed"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_geoFenceRadiusInfo"
+            app:layout_constraintTop_toTopOf="@+id/btn_geoFenceRadiusProceed"
             app:layout_constraintStart_toEndOf="@id/btn_geoFenceRadiusProceed"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintVertical_bias="0.0"
-            android:layout_marginTop="8dp"/>
+    />
 </android.support.constraint.ConstraintLayout>

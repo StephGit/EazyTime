@@ -26,6 +26,7 @@
     <dimen name="eazyTime_width_time_list_elements">100dp</dimen>
 
     <dimen name="eazyTime_text_size_project_name_project_list_item">20sp</dimen>
+    <dimen name="eazyTime_text_size_geofence_name_list_item">20sp</dimen>
     <dimen name="eazyTime_text_size_time_project_list_item">16sp</dimen>
     <dimen name="eazyTime_text_size_project_short_code_project_list_item">20sp</dimen>
 

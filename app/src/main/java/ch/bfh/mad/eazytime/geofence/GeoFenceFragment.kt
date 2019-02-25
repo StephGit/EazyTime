@@ -23,7 +23,7 @@ class GeoFenceFragment : GeoFenceBaseFragment() {
 
     private lateinit var listView: ListView
     private lateinit var progressBar: ProgressBar
-    private var emptyList: Boolean = true
+    private lateinit var viewModel: GeoFenceViewModel
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -38,24 +38,18 @@ class GeoFenceFragment : GeoFenceBaseFragment() {
         activity!!.title = getString(R.string.geofence_fragment_title)
 
         view.findViewById<FloatingActionButton>(R.id.btn_addGeofence).setOnClickListener { super.addGeoFence() }
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(GeoFenceViewModel::class.java)
 
         listView = view.findViewById(R.id.lv_geofences)
         progressBar = view.findViewById(R.id.progressBar)
 
-        getListItems(view)
+        if (viewModel.hasGeoFenceInDatabase) getListItems(view) else showEmptyGeoFenceFragment()
 
-        if (emptyList) showEmptyGeofenceFragment() else showList()
-
-        listView.setOnItemClickListener { parent, view, position, id ->
-            onListItemClick(parent as ListView, position, id)
-        }
+//        listView.setOnItemClickListener { parent, view, position, id ->
+//            onListItemClick(parent as ListView, position, id)
+//        }
 
         return view
-    }
-
-    private fun onListItemClick(parent: ListView, position: Int, id: Long) {
-        val item: GeoFence = parent.getItemAtPosition(position) as GeoFence
-        showGeoFenceDetail(item)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -64,20 +58,23 @@ class GeoFenceFragment : GeoFenceBaseFragment() {
     }
 
     private fun getListItems(view: View) {
-        val viewModel: GeoFenceViewModel =
-            ViewModelProviders.of(this, viewModelFactory).get(GeoFenceViewModel::class.java)
-
         viewModel.geoFenceItems.observe(this, Observer {
-            emptyList = it.isNullOrEmpty()
-            if (!emptyList) {
-                val lvGeofences = view.findViewById<ListView>(R.id.lv_geofences)
-                val customAdapter = GeoFenceAdapter(requireContext(), 0, it!!)
-                lvGeofences.adapter = customAdapter
+            val listViewGeoFence = view.findViewById<ListView>(R.id.lv_geofences)
+            val customAdapter = GeoFenceAdapter(requireContext(), 0, it!!)
+            listViewGeoFence.adapter = customAdapter
+            listViewGeoFence.setOnItemClickListener { parent, _, position, id ->
+                onListItemClick(parent as ListView, position, id)
             }
+            showList()
         })
     }
 
-    private fun showEmptyGeofenceFragment() {
+    private fun onListItemClick(parent: ListView, position: Int, id: Long) {
+        val item: GeoFence = parent.getItemAtPosition(position) as GeoFence
+        showGeoFenceDetail(item)
+    }
+
+    private fun showEmptyGeoFenceFragment() {
         activity!!.supportFragmentManager.beginTransaction()
             .replace(R.id.frame_content, GeoFenceEmptyFragment.newFragment())
             .addToBackStack(null)
@@ -89,11 +86,12 @@ class GeoFenceFragment : GeoFenceBaseFragment() {
         listView.visibility = View.VISIBLE
     }
 
-
     private fun showGeoFenceDetail(item: GeoFence) {
-        var intent = Intent(activity?.baseContext, GeoFenceDetailActivity::class.java)
-//        intent.putExtra("GEOFENCE_ITEM", item)
+        val intent = Intent(activity?.baseContext, GeoFenceDetailActivity::class.java)
+        intent.putExtra("GEOFENCE_NAME", item.name)
+        intent.putExtra("GEOFENCE_RADIUS", item.radius)
+        intent.putExtra("GEOFENCE_LAT", item.latitude)
+        intent.putExtra("GEOFENCE_LONG", item.longitude)
         startActivity(intent)
     }
-
 }

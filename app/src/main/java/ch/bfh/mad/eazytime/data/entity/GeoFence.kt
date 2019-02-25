@@ -2,15 +2,15 @@ package ch.bfh.mad.eazytime.data.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.google.android.gms.maps.model.LatLng
 
 @Entity
 data class GeoFence(
-    val name: String,
-    val active: Boolean = false,
-    val gfId: String,
-    val radius: Double,
-    val position: LatLng,
+    var name: String,
+    var active: Boolean = false,
+    var gfId: String,
+    var radius: Double,
+    var latitude: Double,
+    var longitude: Double,
     @PrimaryKey(autoGenerate = true)
     val id: Long? = null
 )

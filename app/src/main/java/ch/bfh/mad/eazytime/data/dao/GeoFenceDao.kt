@@ -7,6 +7,9 @@ import ch.bfh.mad.eazytime.data.entity.GeoFence
 
 @Dao
 interface GeoFenceDao {
+    @Query("SELECT * FROM geofence LIMIT 1")
+    fun getAnyGeoFence(): GeoFence?
+
     @Query("SELECT * FROM geofence")
     fun getGeoFences(): LiveData<List<GeoFence>>
 

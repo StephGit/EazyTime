@@ -11,7 +11,6 @@ import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingClient
 import com.google.android.gms.location.GeofencingRequest
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.model.LatLng
 import javax.inject.Inject
 
 
@@ -19,13 +18,13 @@ class GeoFenceController @Inject constructor(private val context: Context) {
 
     private val geofencingClient: GeofencingClient = LocationServices.getGeofencingClient(context)
 
-    private fun buildGeofence(id: String, position: LatLng, radius: Double): Geofence? {
+    private fun buildGeofence(id: String, latitude: Double, longitude: Double, radius: Double): Geofence? {
         return Geofence.Builder()
             // string id to identify
             .setRequestId(id)
             .setCircularRegion(
-                position.latitude,
-                position.longitude,
+                latitude,
+                longitude,
                 radius.toFloat()
             )
             // Alerts are generated for these transistions
@@ -40,7 +39,7 @@ class GeoFenceController @Inject constructor(private val context: Context) {
         success: () -> Unit,
         failure: (error: String) -> Unit
     ) {
-        val gf = buildGeofence(geoFence.gfId, geoFence.position, geoFence.radius)
+        val gf = buildGeofence(geoFence.gfId, geoFence.latitude, geoFence.longitude, geoFence.radius)
         if (gf != null
             && ContextCompat.checkSelfPermission(
                 this.context,

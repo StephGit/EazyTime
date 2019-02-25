@@ -12,10 +12,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
             app:layout_constraintVertical_chainStyle="packed"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/tv_geoFenceMarkerInfo"
-            android:textSize="16sp" app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"/>
+            android:textSize="16sp" app:layout_constraintStart_toStartOf="parent"/>
 
 
     <TextView
@@ -24,16 +25,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintVertical_chainStyle="packed"
             app:layout_constraintTop_toBottomOf="@id/tv_geoFenceMarkerTitle"
-            app:layout_constraintBottom_toTopOf="@id/btn_geoFenceMarkerProceed" android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"/>
+            app:layout_constraintBottom_toTopOf="@id/btn_geoFenceMarkerProceed"
+            android:textSize="14sp"
+            android:height="14sp"
+            app:layout_constraintStart_toStartOf="parent"/>
 
     <Button
             android:id="@+id/btn_geoFenceMarkerProceed"
             android:text="@string/geofence_marker_fragment_btn_proceed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"

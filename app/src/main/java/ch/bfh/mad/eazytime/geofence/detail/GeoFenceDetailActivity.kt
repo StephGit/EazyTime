@@ -81,7 +81,7 @@ class GeoFenceDetailActivity : AppCompatActivity(),
         // TODO handling of existing geofence
         if (intent.hasExtra("GEOFENCE_ITEM")) {
             this.geoFence = intent.getSerializableExtra("GEOFENCE_ITEM") as (GeoFence)
-            showGeoFenceOnMap(geoFence.position, geoFence.radius)
+            showGeoFenceOnMap(LatLng(geoFence.latitude, geoFence.longitude), geoFence.radius)
             replaceFragment(GeoFenceDetailFragment.newFragment())
         } else {
             showCurrentLocation()
@@ -263,6 +263,7 @@ class GeoFenceDetailActivity : AppCompatActivity(),
 
     override fun goToRadius() {
         if (showingMarker()) {
+            moveCamera(this.marker.position, this.map.cameraPosition.zoom)
             setMapInteractive(false)
             showCircle(this.marker.position, calcRadiusForZoomLevel())
             replaceFragment(GeoFenceRadiusFragment.newFragment())
@@ -285,13 +286,20 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     }
 
     override fun deleteGeoFence() {
-        // TODO implement delete
+        // TODO implement delete on list
         leaveGeoFenceDetail()
     }
 
     override fun saveGeoFence(geoFenceName: String) {
         this.geoFence =
-            GeoFence(geoFenceName, false, geoFenceName + UUID.randomUUID(), this.circle.radius, this.marker.position)
+            GeoFence(
+                geoFenceName,
+                false,
+                geoFenceName + UUID.randomUUID(),
+                this.circle.radius,
+                this.marker.position.latitude,
+                this.marker.position.longitude
+            )
         geoFenceRepository.saveGeoFence(this.geoFence)
 //        geoFenceController.add(this.geoFence)
         val returnIntent = Intent()

@@ -40,8 +40,18 @@ class SimpleEntityReadWriteTest : LifecycleOwner {
     }
 
     @Test
+    fun getAnyGeoFence() {
+        assert(db.geoFenceDao().getAnyGeoFence() == null)
+
+        val tmpGeoFence = GeoFence(randomUuid(), true, randomUuid(), randomDouble(), randomDouble(), randomDouble())
+        val entityId = db.geoFenceDao().insert(tmpGeoFence)
+        assert(entityId >= 0)
+        assert(db.geoFenceDao().getAnyGeoFence() != null)
+    }
+
+    @Test
     fun insertGeoFence() {
-        val tmpGeoFence = GeoFence(randomUuid(), true, randomUuid())
+        val tmpGeoFence = GeoFence(randomUuid(), true, randomUuid(), randomDouble(), randomDouble(), randomDouble())
         val entityId = db.geoFenceDao().insert(tmpGeoFence)
 
         assert(entityId >= 0)
@@ -83,5 +93,9 @@ class SimpleEntityReadWriteTest : LifecycleOwner {
 
     fun randomUuid(): String {
         return java.util.UUID.randomUUID().toString()
+    }
+
+    fun randomDouble(): Double {
+        return randomInt().toDouble()
     }
 }
