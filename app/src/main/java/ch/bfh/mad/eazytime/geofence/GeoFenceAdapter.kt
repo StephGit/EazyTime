@@ -34,7 +34,8 @@ class GeoFenceAdapter (context: Context, @LayoutRes itemLayoutRes: Int, items: L
             val switch = view.findViewById<Switch>(R.id.sw_geoFenceActive)
             switch.isChecked = it.active
             if (it.active) {
-                view.findViewById<Switch>(R.id.sw_geoFenceActive).textOn
+                switch.text = context.resources.getString(R.string.geofence_listitem_switch_text)
+                switch.setTextColor(context.getColor(R.color.eazyTime_colorBrand))
             } else {
                 view.findViewById<Switch>(R.id.sw_geoFenceActive).textOff
             }

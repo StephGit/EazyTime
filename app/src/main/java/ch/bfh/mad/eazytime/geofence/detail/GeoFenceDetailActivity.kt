@@ -72,7 +72,8 @@ class GeoFenceDetailActivity : AppCompatActivity(),
         Injector.appComponent.inject(this)
         setContentView(R.layout.activity_geofence_detail)
 
-        val mapFragment: SupportMapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        val mapFragment: SupportMapFragment =
+            supportFragmentManager.findFragmentById(R.id.map_geoFence) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
         locationProviderClient = LocationServices.getFusedLocationProviderClient(this)

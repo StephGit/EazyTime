@@ -16,5 +16,4 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
-    xmlns:tools="http://schemas.android.com/tools"
 </androidx.constraintlayout.widget.ConstraintLayout>
