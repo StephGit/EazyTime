@@ -7,7 +7,8 @@ import ch.bfh.mad.eazytime.data.dao.TimeSlotDao
 import ch.bfh.mad.eazytime.data.entity.Project
 import ch.bfh.mad.eazytime.data.entity.TimeSlot
 import ch.bfh.mad.eazytime.projects.ProjectListItem
-import org.joda.time.Minutes
+import org.joda.time.LocalDateTime
+import org.joda.time.Seconds
 
 class ProjectProviderService(private val projectDao: ProjectDao, private val timeSlotDao: TimeSlotDao) {
 
@@ -34,13 +35,19 @@ class ProjectProviderService(private val projectDao: ProjectDao, private val tim
 
     private fun mergeLiveData(projects: List<Project>?, timeslots: List<TimeSlot>?): List<ProjectListItem>? {
         return projects?.map {project ->
-            val mappedTimeSlotMinutes = timeslots
+            var isActive = false
+            val mappedTimeSlotSeconds = timeslots
                 ?.filter { it.projectId == project.id && it.endDate != null }
-                ?.map { Minutes.minutesBetween(it.startDate, it.endDate) }
-                ?.fold(Minutes.minutes(0)) { acc, minutes -> acc.plus(minutes)}
+                ?.map { Seconds.secondsBetween(it.startDate, it.endDate) }
+                ?.fold(Seconds.seconds(0)) { acc, minutes -> acc.plus(minutes)}
 
+            timeslots?.filter { it.projectId == project.id && it.endDate == null }?.firstOrNull()?.let {
+                val currentSeconds = Seconds.secondsBetween(it.startDate, LocalDateTime())
+                isActive = true
+                mappedTimeSlotSeconds?.plus(currentSeconds)
+            }
 
-            ProjectListItem(project.name, project.shortCode, "${mappedTimeSlotMinutes?.minutes} minuten", project.color)
+            ProjectListItem(project.name, project.shortCode, mappedTimeSlotSeconds?.seconds, project.color, project.isDefault, isActive)
         }
 
     }
