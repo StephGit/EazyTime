@@ -18,9 +18,8 @@ import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.data.GeoFenceRepository
 import ch.bfh.mad.eazytime.data.entity.GeoFence
 import ch.bfh.mad.eazytime.di.Injector
+import ch.bfh.mad.eazytime.geofence.GeoFenceController
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.Geofence
-import com.google.android.gms.location.GeofencingClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -28,7 +27,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.gms.tasks.Task
-import java.util.UUID.randomUUID
+import java.util.*
 import javax.inject.Inject
 
 // TODO wrap text on steps
@@ -45,6 +44,9 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     @Inject
     lateinit var geoFenceRepository: GeoFenceRepository
 
+    @Inject
+    lateinit var geoFenceController: GeoFenceController
+
     private val defaultZoom: Float = 15F
     private var defaultRadius: Double = 0.0
     private var scaleFactor: Float = 1.0F
@@ -59,7 +61,6 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     private lateinit var circle: Circle
 
     private lateinit var locationProviderClient: FusedLocationProviderClient
-    private lateinit var geofencingClient: GeofencingClient
     private lateinit var scaleGestureDetector: ScaleGestureDetector
 
     companion object{
@@ -75,14 +76,12 @@ class GeoFenceDetailActivity : AppCompatActivity(),
         mapFragment.getMapAsync(this)
 
         locationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-        geofencingClient = LocationServices.getGeofencingClient(this)
-
         scaleGestureDetector = ScaleGestureDetector(applicationContext, this)
 
         // TODO handling of existing geofence
         if (intent.hasExtra("GEOFENCE_ITEM")) {
             this.geoFence = intent.getSerializableExtra("GEOFENCE_ITEM") as (GeoFence)
-//            showGeoFence(geoFence)
+            showGeoFenceOnMap(geoFence.position, geoFence.radius)
             replaceFragment(GeoFenceDetailFragment.newFragment())
         } else {
             showCurrentLocation()
@@ -129,7 +128,7 @@ class GeoFenceDetailActivity : AppCompatActivity(),
      *  prevent dispatching of MotionEvent to handle pinch gesture on map
      */
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
-        var handled = scaleGestureDetector.onTouchEvent(event)
+        val handled = scaleGestureDetector.onTouchEvent(event)
         // If the scale gesture detector didn't handle the event pass it to super.
         if (!handled) {
             return super.onTouchEvent(event)
@@ -197,31 +196,14 @@ class GeoFenceDetailActivity : AppCompatActivity(),
 
     private fun showingCircle(): Boolean = ::circle.isInitialized && circle.isVisible
 
-    private fun showGeoFence(position: LatLng, radius: Double) {
+    private fun showGeoFenceOnMap(position: LatLng, radius: Double) {
         showMarker(position)
         showCircle(position, radius)
 
-        map.setOnCircleClickListener {
-            // TODO edit Geofence
-            Toast.makeText(applicationContext, "circle clicked", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun buildGeofence(position: LatLng, radius: Double) {
-        val gf = Geofence.Builder()
-            // string id to identify
-            .setRequestId(randomUUID().toString())
-            .setCircularRegion(
-                position.latitude,
-                position.longitude,
-                radius.toFloat()
-            )
-            // Alerts are generated for these transistions
-            .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
-            .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_EXIT)
-            .setExpirationDuration(Geofence.NEVER_EXPIRE)
-            .build()
-
+//        map.setOnCircleClickListener {
+//            // TODO edit Geofence
+//            Toast.makeText(applicationContext, "circle clicked", Toast.LENGTH_SHORT).show()
+//        }
     }
 
     private fun moveCamera(latLng: LatLng, zoom: Float) {
@@ -255,7 +237,7 @@ class GeoFenceDetailActivity : AppCompatActivity(),
 
     private fun showCurrentLocation() {
         try {
-            var locationResult: Task<Location> = locationProviderClient.lastLocation
+            val locationResult: Task<Location> = locationProviderClient.lastLocation
 
             locationResult.addOnCompleteListener {
                 if (it.isComplete && it.isSuccessful) {
@@ -273,7 +255,6 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     /**
      *  Callback methodes from fragments
      **/
-
     override fun goToMarker() {
         setMapInteractive(true)
         removeCircle()
@@ -294,9 +275,8 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     override fun goToEdit() {
         setMapInteractive(false)
         if (showingCircle()) {
-            buildGeofence(this.marker.position, this.circle.radius)
+            replaceFragment(GeoFenceEditFragment.newFragment())
         }
-        replaceFragment(GeoFenceEditFragment.newFragment())
     }
 
     override fun goToDetail() {
@@ -310,8 +290,11 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     }
 
     override fun saveGeoFence(geoFenceName: String) {
-        geoFenceRepository.saveGeoFence(GeoFence(geoFenceName, false, "die324"))
-        var returnIntent = Intent()
+        this.geoFence =
+            GeoFence(geoFenceName, false, geoFenceName + UUID.randomUUID(), this.circle.radius, this.marker.position)
+        geoFenceRepository.saveGeoFence(this.geoFence)
+//        geoFenceController.add(this.geoFence)
+        val returnIntent = Intent()
         returnIntent.putExtra("result", true)
         setResult(Activity.RESULT_OK, returnIntent)
         leaveGeoFenceDetail()

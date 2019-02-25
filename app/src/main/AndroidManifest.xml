@@ -47,6 +47,7 @@
                 <action android:name="ET_WIDGET_BUTTON_FIVE"/>
             </intent-filter>
         </receiver>
+        <service android:name=".eazytime.geofence.GeoFenceTransitionsIntentService"/>
     </application>
 
 </manifest>

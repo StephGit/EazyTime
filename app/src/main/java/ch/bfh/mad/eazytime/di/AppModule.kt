@@ -4,20 +4,7 @@ import android.app.Application
 import android.content.Context
 import androidx.room.Room
 import ch.bfh.mad.eazytime.data.AppDatabase
-import ch.bfh.mad.eazytime.data.dao.ProjectDao
-import ch.bfh.mad.eazytime.data.dao.TimeSlotDao
-import ch.bfh.mad.eazytime.data.dao.WorkDayDao
-import ch.bfh.mad.eazytime.data.repo.ProjectRepo
-import ch.bfh.mad.eazytime.data.repo.TimeSlotRepo
-import ch.bfh.mad.eazytime.data.repo.WorkDayRepo
-import ch.bfh.mad.eazytime.projects.addProject.ProjectSaveOrUpdateService
-import ch.bfh.mad.eazytime.util.EazyTimeColorUtil
-import ch.bfh.mad.eazytime.util.ProjectProviderService
-import ch.bfh.mad.eazytime.util.TimerService
-import ch.bfh.mad.eazytime.util.WidgetProviderUtils
-import ch.bfh.mad.eazytime.data.AppDatabase
 import ch.bfh.mad.eazytime.data.GeoFenceRepository
-import ch.bfh.mad.eazytime.data.dao.GeoFenceDao
 import ch.bfh.mad.eazytime.data.dao.GeoFenceDao
 import dagger.Module
 import dagger.Provides
@@ -88,4 +75,8 @@ class AppModule {
     @Provides
     @Singleton
     fun provideGeoFenceDao(database: AppDatabase): GeoFenceDao = database.geoFenceDao()
+
+    @Provides
+    @Singleton
+    fun provideGeoFenceController(context: Context): GeoFenceController = GeoFenceController(context)
 }

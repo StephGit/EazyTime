@@ -69,4 +69,14 @@
     <string name="ExtraKeyProjectName">KEY_PROJECT_NAME</string>
     <string name="ExtraKeyProjectShortCode">SHORT_CODE</string>
 
+    <string name="geofence_unknown_error">Unbekannter Fehler: Der Geofence-Service ist zur Zeit nicht erreichbar.
+    </string>
+    <string name="geofence_not_available">Der Geofence-Service ist nicht erreichbar. Wählen Sie in Einstellungen >
+        Standort > Suchmethode \'Hohe Genauigkeit\'.
+    </string>
+    <string name="geofence_too_many_geofences">Die App hat zuviele Geofences registriert.</string>
+    <string name="geofence_too_many_pending_intents">You have provided too many PendingIntents to the addGeofences()
+        call.
+    </string>
+
 </resources>

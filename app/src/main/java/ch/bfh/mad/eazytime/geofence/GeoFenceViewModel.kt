@@ -4,7 +4,6 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.ViewModel
 import ch.bfh.mad.eazytime.data.GeoFenceRepository
 import ch.bfh.mad.eazytime.data.entity.GeoFence
-import ch.bfh.mad.eazytime.di.Injector
 import javax.inject.Inject
 
 class GeoFenceViewModel @Inject constructor(geofenceRepository: GeoFenceRepository) : ViewModel() {
@@ -12,7 +11,7 @@ class GeoFenceViewModel @Inject constructor(geofenceRepository: GeoFenceReposito
     val geoFenceItems: LiveData<List<GeoFence>>
 
     init {
-        Injector.appComponent.inject(this)
-        geoFenceItems = geofenceRepository.loadGeoFences()
+
+        geoFenceItems = geofenceRepository.geoFences
     }
 }

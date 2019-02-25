@@ -23,6 +23,7 @@ class GeoFenceFragment : GeoFenceBaseFragment() {
 
     private lateinit var listView: ListView
     private lateinit var progressBar: ProgressBar
+    private var emptyList: Boolean = true
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -43,7 +44,7 @@ class GeoFenceFragment : GeoFenceBaseFragment() {
 
         getListItems(view)
 
-        if (listView.count == 0) showEmptyGeofenceFragment() else showList()
+        if (emptyList) showEmptyGeofenceFragment() else showList()
 
         listView.setOnItemClickListener { parent, view, position, id ->
             onListItemClick(parent as ListView, position, id)
@@ -67,9 +68,10 @@ class GeoFenceFragment : GeoFenceBaseFragment() {
             ViewModelProviders.of(this, viewModelFactory).get(GeoFenceViewModel::class.java)
 
         viewModel.geoFenceItems.observe(this, Observer {
-            if (!it.isNullOrEmpty()) {
+            emptyList = it.isNullOrEmpty()
+            if (!emptyList) {
                 val lvGeofences = view.findViewById<ListView>(R.id.lv_geofences)
-                val customAdapter = GeoFenceAdapter(requireContext(), 0, it)
+                val customAdapter = GeoFenceAdapter(requireContext(), 0, it!!)
                 lvGeofences.adapter = customAdapter
             }
         })
@@ -85,7 +87,6 @@ class GeoFenceFragment : GeoFenceBaseFragment() {
     private fun showList() {
         progressBar.visibility = View.GONE
         listView.visibility = View.VISIBLE
-
     }
 
 

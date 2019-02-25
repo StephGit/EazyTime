@@ -9,7 +9,11 @@ import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class GeoFenceRepository @Inject constructor(private val geoFenceDao: GeoFenceDao) {
+class GeoFenceRepository @Inject constructor(geoFenceDao: GeoFenceDao) {
+
+    var geoFenceDao: GeoFenceDao = geoFenceDao
+
+    val geoFences: LiveData<List<GeoFence>> = geoFenceDao.getGeoFences()
 
     fun saveGeoFence(geoFence: GeoFence) {
         Observable.fromCallable {
@@ -22,13 +26,5 @@ class GeoFenceRepository @Inject constructor(private val geoFenceDao: GeoFenceDa
             }
     }
 
-    fun loadGeoFences(): LiveData<List<GeoFence>> {
-//        val geoFenceList : MutableLiveData<List<GeoFence>> = MutableLiveData()
-//        geoFenceDao.getGeoFences().observe(this, Observer {
-//            geoFenceList.value = it
-//        })
-        return geoFenceDao.getGeoFences()
 
-//        return geoFenceList
-    }
 }
