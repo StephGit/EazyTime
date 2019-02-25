@@ -1,8 +1,5 @@
 package ch.bfh.mad.eazytime.projects
 
-import android.os.AsyncTask
-import android.util.Log
-import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.data.dao.ProjectDao
 import ch.bfh.mad.eazytime.data.entity.Project
 import javax.inject.Inject
@@ -17,6 +14,7 @@ class FakeProjectProviderService @Inject constructor(private val projectDao: Pro
     }
 
     private fun createProjectListItem(project: Project, currentTime: String = ""): ProjectListItem {
-        return ProjectListItem(project.id, project.name, project.shortCode, currentTime, project.color, project.isDefault )
+        val active = project.onWidget == true
+        return ProjectListItem(project.id, project.name, project.shortCode, currentTime, project.color, project.isDefault, active)
     }
 }
