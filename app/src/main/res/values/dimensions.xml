@@ -37,4 +37,9 @@
     <dimen name="eazyTime_bottom_margin_form_elements">20dp</dimen>
     <dimen name="eazyTime_text_size_form_labels">18sp</dimen>
 
+    <dimen name="widget_margin">10dp</dimen>
+    <dimen name="widget_button_margin">5dp</dimen>
+    <dimen name="widget_min_max_height">40dp</dimen>
+    <dimen name="widget_min_width">40dp</dimen>
+
 </resources>

@@ -30,6 +30,9 @@ interface ProjectDao {
     @Query("SELECT * FROM project WHERE isDefault = 1")
     fun getDefaultProject(): Project
 
+    @Query("SELECT * FROM project WHERE onWidget = 1")
+    fun geProjectsForWidget(): List<Project>
+
     @Query("SELECT * FROM project WHERE id == :projectId")
     fun getProjectById(projectId: Long): Project?
 

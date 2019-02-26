@@ -41,4 +41,13 @@
     <string name="defaul_color_string">#ff8787</string>
     <string name="is_default_project">Standardprojekt</string>
 
+    <string name="action_widget_button_one">ET_WIDGET_BUTTON_ONE</string>
+    <string name="action_widget_button_two">ET_WIDGET_BUTTON_TWO</string>
+    <string name="action_widget_button_three">ET_WIDGET_BUTTON_THREE</string>
+    <string name="action_widget_button_four">ET_WIDGET_BUTTON_FOUR</string>
+    <string name="action_widget_button_five">ET_WIDGET_BUTTON_FIVE</string>
+    <string name="ExtraKeyProjectId">KEY_PROJECT_ID</string>
+    <string name="ExtraKeyProjectName">KEY_PROJECT_NAME</string>
+    <string name="ExtraKeyProjectShortCode">SHORT_CODE</string>
+
 </resources>
