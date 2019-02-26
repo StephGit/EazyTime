@@ -38,4 +38,7 @@ interface ProjectDao {
 
     @Query("DELETE FROM project WHERE id == :projectId")
     fun deleteProjectById(projectId: Long)
+
+    @Query("SELECT * FROM project WHERE onWidget = 1")
+    fun geProjectsForWidget(): List<Project>
 }
