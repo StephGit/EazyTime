@@ -3,6 +3,7 @@ package ch.bfh.mad.eazytime.di
 import android.app.Application
 import ch.bfh.mad.eazytime.geofence.GeoFenceAdapter
 import ch.bfh.mad.eazytime.geofence.GeoFenceFragment
+import ch.bfh.mad.eazytime.geofence.GeoFenceTransitionsIntentService
 import ch.bfh.mad.eazytime.geofence.GeoFenceViewModel
 import ch.bfh.mad.eazytime.geofence.detail.GeoFenceDetailActivity
 import ch.bfh.mad.eazytime.homeScreenWidget.WidgetBroadCastReceiver
@@ -35,4 +36,7 @@ interface AppComponent {
     fun inject(geoFenceDetailActivity: GeoFenceDetailActivity)
     fun inject(geoFenceFragment: GeoFenceFragment)
     fun inject(geoFenceAdapter: GeoFenceAdapter)
+    fun inject(geoFenceTransitionsIntentService: GeoFenceTransitionsIntentService) {
+
+    }
 }

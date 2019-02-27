@@ -49,6 +49,23 @@
             </intent-filter>
         </receiver>
         <service android:name=".eazytime.geofence.GeoFenceTransitionsIntentService"/>
+        <receiver
+                android:name=".eazytime.service.GeoFenceReceiver"
+                android:enabled="true"
+                android:exported="false">
+            <intent-filter>
+                <action android:name="ch.eazytime.geofence.ACTION_RECEIVE_GEOFENCE"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".eazytime.service.BootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+
+        <uses-library android:name="com.google.android.maps"/>
+        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
     </application>
 
 </manifest>

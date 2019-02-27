@@ -1,11 +1,12 @@
 package ch.bfh.mad.eazytime.di
 
 import android.app.Application
+import android.arch.persistence.room.Room
 import android.content.Context
-import androidx.room.Room
 import ch.bfh.mad.eazytime.data.AppDatabase
 import ch.bfh.mad.eazytime.data.GeoFenceRepository
 import ch.bfh.mad.eazytime.data.dao.GeoFenceDao
+import ch.bfh.mad.eazytime.geofence.GeoFenceController
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -79,4 +80,8 @@ class AppModule {
     @Provides
     @Singleton
     fun provideGeoFenceController(context: Context): GeoFenceController = GeoFenceController(context)
+
+    @Provides
+    @Singleton
+    fun notificationHandler(): NotificationHandler = NotificationHandler()
 }

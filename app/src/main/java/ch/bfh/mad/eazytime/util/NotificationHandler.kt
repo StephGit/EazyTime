@@ -12,7 +12,6 @@ import ch.bfh.mad.R
 import ch.bfh.mad.eazytime.EazyTimeActivity
 import java.util.*
 
-// TODO make usages by di
 class NotificationHandler {
 
     private val notificationChannelId = BuildConfig.APPLICATION_ID + ".channel"

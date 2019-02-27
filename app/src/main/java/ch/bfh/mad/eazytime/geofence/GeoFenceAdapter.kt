@@ -39,22 +39,39 @@ class GeoFenceAdapter (context: Context, @LayoutRes itemLayoutRes: Int, items: L
             view.findViewById<TextView>(R.id.tv_geoFenceItemText).text = it.name
             val switch = view.findViewById<Switch>(R.id.sw_geoFenceActive)
             switch.isChecked = it.active
-            if (it.active) {
-                switch.text = context.resources.getString(R.string.geofence_listitem_switch_text)
-                switch.setTextColor(context.getColor(R.color.eazyTime_colorBrand))
-                geoFenceController.add(it,
-                    success = { Log.d(TAG, "GeoFence added successfully") },
-                    failure = { err ->
-                        Snackbar.make(view, err, Snackbar.LENGTH_LONG).show()
-                    })
-            } else {
-                view.findViewById<Switch>(R.id.sw_geoFenceActive).textOff
-            }
+
             switch.setOnCheckedChangeListener { buttonView, isChecked ->
-                it.active = isChecked
-                this.geoFenceRepository.updateGeoFenceItem(it)
+                onCheckChange(it, isChecked, switch, view)
             }
         }
         return view
+    }
+
+    private fun onCheckChange(
+        it: GeoFence,
+        isChecked: Boolean,
+        switch: Switch,
+        view: View
+    ) {
+        it.active = isChecked
+        this.geoFenceRepository.updateGeoFenceItem(it)
+        if (it.active) {
+            switch.text = context.resources.getString(R.string.geofence_listitem_switch_text)
+            switch.setTextColor(context.getColor(R.color.eazyTime_colorBrand))
+            geoFenceController.add(
+                it,
+                success = { Log.d(TAG, "GeoFence " + it.name + " added successfully") },
+                failure = { err ->
+                    Snackbar.make(view, err, Snackbar.LENGTH_LONG).show()
+                })
+        } else {
+            view.findViewById<Switch>(R.id.sw_geoFenceActive).textOff
+            geoFenceController.remove(
+                it,
+                success = { Log.d(TAG, "GeoFence " + it.name + " removed successfully") },
+                failure = { err ->
+                    Snackbar.make(view, err, Snackbar.LENGTH_LONG).show()
+                })
+        }
     }
 }
