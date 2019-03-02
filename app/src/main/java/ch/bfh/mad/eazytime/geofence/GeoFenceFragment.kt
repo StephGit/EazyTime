@@ -20,9 +20,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class GeoFenceFragment : GeoFenceBaseFragment() {
 
-    private lateinit var listView: ListView
+    private lateinit var recyclerView: RecyclerView
+    //    private lateinit var listView: ListView
     private lateinit var progressBar: ProgressBar
     private lateinit var viewModel: GeoFenceViewModel
+    private lateinit var linearLayoutManager: LinearLayoutManager
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -36,17 +38,31 @@ class GeoFenceFragment : GeoFenceBaseFragment() {
         Injector.appComponent.inject(this)
         activity!!.title = getString(R.string.geofence_fragment_title)
 
-        view.findViewById<FloatingActionButton>(R.id.btn_addGeofence).setOnClickListener { super.addGeoFence() }
+        recyclerView = view.findViewById(R.id.lv_geofences)
+        progressBar = view.findViewById(R.id.progressBar)
+
+        view.findViewById<FloatingActionButton>(R.id.btn_addGeofence).setOnClickListener {
+            super.addGeoFence()
+        }
+
+        linearLayoutManager = LinearLayoutManager(context)
+        recyclerView.layoutManager = linearLayoutManager
+        recyclerView.setHasFixedSize(true)
+
+        val recyclerAdapter = GeoFenceRecyclerAdapter()
+//        recyclerView.adapter = recyclerAdapter
+        recyclerAdapter.onItemClick = { showGeoFenceDetail(it) }
+
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(GeoFenceViewModel::class.java)
 
         if (viewModel.hasGeoFenceInDatabase) subscribeViewModel(recyclerAdapter) else showEmptyGeoFenceFragment()
-        listView.isClickable = true
+//        listView.isClickable = true
 
         initSwipe()
 
-        listView.setOnItemClickListener { parent, view, position, id ->
-            onListItemClick(parent as ListView, position, id)
-        }
+//        listView.setOnItemClickListener { parent, view, position, id ->
+//            onListItemClick(parent as ListView, position, id)
+//        }
 
         return view
     }
@@ -56,22 +72,40 @@ class GeoFenceFragment : GeoFenceBaseFragment() {
         super.checkPermission(this)
     }
 
-    private fun getListItems(view: View) {
+    private fun subscribeViewModel(recyclerAdapter: GeoFenceRecyclerAdapter) {
         viewModel.geoFenceItems.observe(this, Observer {
-            val listViewGeoFence = view.findViewById<ListView>(R.id.lv_geofences)
-            val customAdapter = GeoFenceAdapter(requireContext(), 0, it!!)
-            listViewGeoFence.adapter = customAdapter
-            listViewGeoFence.setOnItemClickListener { parent, _, position, id ->
-                onListItemClick(parent as ListView, position, id)
-            }
+            recyclerAdapter.submitList(it!!)
+//            val customAdapter = GeoFenceAdapter(context, 0, it!!)
+//            listView.recyclerAdapter = customAdapter
             showList()
         })
     }
 
-    private fun onListItemClick(parent: ListView, position: Int, id: Long) {
-        val item: GeoFence = parent.getItemAtPosition(position) as GeoFence
-        showGeoFenceDetail(item)
+    private fun initSwipe() {
+        val simpleItemTouchCallback = object :
+            ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+            override fun onMove(
+                recyclerView: RecyclerView?,
+                viewHolder: RecyclerView.ViewHolder?,
+                target: RecyclerView.ViewHolder?
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+
+            }
+
+        }
+        val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
+        itemTouchHelper.attachToRecyclerView(recyclerView)
     }
+//
+//    private fun onListItemClick(parent: ListView, position: Int, id: Long) {
+//        val item: GeoFence = parent.getItemAtPosition(position) as GeoFence
+//        showGeoFenceDetail(item)
+//    }
 
     private fun showEmptyGeoFenceFragment() {
         activity!!.supportFragmentManager.beginTransaction()
@@ -82,7 +116,8 @@ class GeoFenceFragment : GeoFenceBaseFragment() {
 
     private fun showList() {
         progressBar.visibility = View.GONE
-        listView.visibility = View.VISIBLE
+//        listView.visibility = View.VISIBLE
+        recyclerView.visibility = View.VISIBLE
     }
 
     private fun showGeoFenceDetail(item: GeoFence) {

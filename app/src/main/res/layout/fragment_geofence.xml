@@ -18,7 +18,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="@+id/btn_addGeofence"/>
 
-    <ListView
+    <android.support.v7.widget.RecyclerView
             android:id="@+id/lv_geofences"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
