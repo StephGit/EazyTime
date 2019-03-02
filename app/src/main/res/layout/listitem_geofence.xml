@@ -22,6 +22,7 @@
             android:layout_height="@dimen/eazyTime_height_half_content_list_elements"
             android:padding="@dimen/eazyTime_padding_text_views_list_elements"
             android:textSize="@dimen/eazyTime_text_size_geofence_name_list_item"
+            android:layout_marginTop="8dp"
             app:layout_constraintLeft_toLeftOf="@id/geofence_list_item_content"
             app:layout_constraintBottom_toBottomOf="@id/geofence_list_item_content"
             app:layout_constraintTop_toTopOf="@id/geofence_list_item_content"/>
@@ -37,6 +38,7 @@
             app:layout_constraintBottom_toBottomOf="@id/geofence_list_item_content"
             app:layout_constraintTop_toTopOf="@id/geofence_list_item_content"
             android:padding="@dimen/eazyTime_padding_text_views_list_elements"
+            android:focusable="false"
     />
 
     </android.support.constraint.ConstraintLayout>

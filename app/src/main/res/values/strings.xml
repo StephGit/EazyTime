@@ -23,7 +23,7 @@
     <string name="geofence_detail_fragment_btn_back">Zurück</string>
 
     <string name="geofence_edit_fragment_title">Geofence bearbeiten</string>
-    <string name="geofence_edit_fragment_edittext_hint">Name of your GeoFence</string>
+    <string name="geofence_edit_fragment_edittext_hint">Name des GeoFence</string>
     <string name="geofence_edit_fragment_btn_change">Geofence ändern</string>
     <string name="geofence_edit_fragment_btn_save">Speichern</string>
     <string name="geofence_edit_error_no_name">Bitte geben Sie einen Namen ein!</string>
@@ -78,5 +78,6 @@
     <string name="geofence_too_many_pending_intents">You have provided too many PendingIntents to the addGeofences()
         call.
     </string>
+    <string name="title_activity_maps">Map</string>
 
 </resources>

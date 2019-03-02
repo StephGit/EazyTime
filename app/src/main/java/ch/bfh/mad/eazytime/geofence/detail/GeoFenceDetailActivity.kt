@@ -28,11 +28,12 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.gms.tasks.Task
+import com.google.maps.android.SphericalUtil
 import java.util.*
 import javax.inject.Inject
 
 // TODO wrap text on steps
-// TODO disable buttons on steps?
+// TODO Styling position of buttons and title
 // TODO add Geofence to entity? as one or properties?
 
 class GeoFenceDetailActivity : AppCompatActivity(),
@@ -80,15 +81,24 @@ class GeoFenceDetailActivity : AppCompatActivity(),
         locationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         scaleGestureDetector = ScaleGestureDetector(applicationContext, this)
 
-        // TODO handling of existing geofence
-        if (intent.hasExtra("GEOFENCE_ITEM")) {
-            this.geoFence = intent.getSerializableExtra("GEOFENCE_ITEM") as (GeoFence)
-            showGeoFenceOnMap(LatLng(geoFence.latitude, geoFence.longitude), geoFence.radius)
+        if (intent.hasExtra("GEOFENCE_NAME")) {
+            getGeoFenceFromIntent()
             replaceFragment(GeoFenceDetailFragment.newFragment())
         } else {
-            showCurrentLocation()
             replaceFragment(GeoFenceMarkerFragment.newFragment())
         }
+    }
+
+    private fun getGeoFenceFromIntent() {
+        this.geoFence = GeoFence(
+            intent.getStringExtra("GEOFENCE_NAME"),
+            intent.getBooleanExtra("GEOFENCE_ACTIVE", false),
+            intent.getStringExtra("GEOFENCE_GFID"),
+            intent.getDoubleExtra("GEOFENCE_RADIUS", 0.0),
+            intent.getDoubleExtra("GEOFENCE_LAT", 0.0),
+            intent.getDoubleExtra("GEOFENCE_LONG", 0.0),
+            intent.getLongExtra("GEOFENCE_ID", 0L)
+        )
     }
 
     private fun replaceFragment(fragment: Fragment) {
@@ -106,10 +116,14 @@ class GeoFenceDetailActivity : AppCompatActivity(),
         map.mapType = GoogleMap.MAP_TYPE_HYBRID
         setMapInteractive(true)
         enableLocation()
-//        showGeoFenceOnMap()
 
         with(map) {
             setOnMapLongClickListener(this@GeoFenceDetailActivity)
+        }
+        if (::geoFence.isInitialized) {
+            showGeoFenceOnMap(LatLng(geoFence.latitude, geoFence.longitude), geoFence.radius)
+        } else {
+            showCurrentLocation()
         }
     }
 
@@ -201,17 +215,17 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     private fun showGeoFenceOnMap(position: LatLng, radius: Double) {
         showMarker(position)
         showCircle(position, radius)
-
-//        map.setOnCircleClickListener {
-//            // TODO edit Geofence
-//            Toast.makeText(applicationContext, "circle clicked", Toast.LENGTH_SHORT).show()
-//        }
+        moveCameraToBounds(calcLatLngBounds(position, radius))
     }
 
     private fun moveCamera(latLng: LatLng, zoom: Float) {
         map.moveCamera(
             CameraUpdateFactory.newLatLngZoom(latLng, zoom)
         )
+    }
+
+    private fun moveCameraToBounds(bounds: LatLngBounds) {
+        map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 12))
     }
 
     /**
@@ -224,6 +238,16 @@ class GeoFenceDetailActivity : AppCompatActivity(),
         val metersPerPixel = 156543.03392 * Math.cos(lat * Math.PI / 180) / Math.pow(2.0, level)
         defaultRadius = 100 * metersPerPixel
         return defaultRadius
+    }
+
+    /**
+     * Calculates two corner points from center of the circle and radius to get LatLngBounds
+     */
+    private fun calcLatLngBounds(center: LatLng, radius: Double): LatLngBounds {
+        val distanceCenterToCorner = radius * Math.sqrt(2.0)
+        val swCorner = SphericalUtil.computeOffset(center, distanceCenterToCorner, 225.0)
+        val neCorner = SphericalUtil.computeOffset(center, distanceCenterToCorner, 45.0)
+        return LatLngBounds(swCorner, neCorner)
     }
 
     /**
@@ -257,6 +281,11 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     /**
      *  Callback methodes from fragments
      **/
+    override fun getFenceName(): String {
+        if (::geoFence.isInitialized) return this.geoFence.name
+        return ""
+    }
+
     override fun goToMarker() {
         setMapInteractive(true)
         removeCircle()

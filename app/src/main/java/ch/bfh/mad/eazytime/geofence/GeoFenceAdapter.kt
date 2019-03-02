@@ -1,6 +1,7 @@
 package ch.bfh.mad.eazytime.geofence
 
 import android.content.Context
+import android.os.Build
 import android.support.annotation.LayoutRes
 import android.support.design.widget.Snackbar
 import android.util.Log
@@ -39,9 +40,18 @@ class GeoFenceAdapter (context: Context, @LayoutRes itemLayoutRes: Int, items: L
             view.findViewById<TextView>(R.id.tv_geoFenceItemText).text = it.name
             val switch = view.findViewById<Switch>(R.id.sw_geoFenceActive)
             switch.isChecked = it.active
+            if (it.active) {
+                switch.text = context.resources.getString(R.string.geofence_listitem_switch_text)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    switch.setTextColor(context.getColor(R.color.eazyTime_colorBrand))
+                }
+                addGeoFence(it, view)
+            } else {
+                removeGeoFence(it, view)
+            }
 
-            switch.setOnCheckedChangeListener { buttonView, isChecked ->
-                onCheckChange(it, isChecked, switch, view)
+            switch.setOnCheckedChangeListener { _, isChecked ->
+                onCheckChange(it, isChecked, view)
             }
         }
         return view
@@ -50,28 +60,33 @@ class GeoFenceAdapter (context: Context, @LayoutRes itemLayoutRes: Int, items: L
     private fun onCheckChange(
         it: GeoFence,
         isChecked: Boolean,
-        switch: Switch,
         view: View
     ) {
         it.active = isChecked
         this.geoFenceRepository.updateGeoFenceItem(it)
         if (it.active) {
-            switch.text = context.resources.getString(R.string.geofence_listitem_switch_text)
-            switch.setTextColor(context.getColor(R.color.eazyTime_colorBrand))
-            geoFenceController.add(
-                it,
-                success = { Log.d(TAG, "GeoFence " + it.name + " added successfully") },
-                failure = { err ->
-                    Snackbar.make(view, err, Snackbar.LENGTH_LONG).show()
-                })
+            addGeoFence(it, view)
         } else {
             view.findViewById<Switch>(R.id.sw_geoFenceActive).textOff
-            geoFenceController.remove(
-                it,
-                success = { Log.d(TAG, "GeoFence " + it.name + " removed successfully") },
-                failure = { err ->
-                    Snackbar.make(view, err, Snackbar.LENGTH_LONG).show()
-                })
+            removeGeoFence(it, view)
         }
+    }
+
+    private fun removeGeoFence(it: GeoFence, view: View) {
+        geoFenceController.remove(
+            it,
+            success = { Log.d(TAG, "GeoFence " + it.name + " removed successfully") },
+            failure = { err ->
+                Snackbar.make(view, err, Snackbar.LENGTH_LONG).show()
+            })
+    }
+
+    private fun addGeoFence(it: GeoFence, view: View) {
+        geoFenceController.add(
+            it,
+            success = { Log.d(TAG, "GeoFence " + it.name + " added successfully") },
+            failure = { err ->
+                Snackbar.make(view, err, Snackbar.LENGTH_LONG).show()
+            })
     }
 }

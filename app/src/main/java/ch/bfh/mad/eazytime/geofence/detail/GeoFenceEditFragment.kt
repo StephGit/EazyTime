@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import ch.bfh.mad.R
 
 class GeoFenceEditFragment : Fragment() {
@@ -26,11 +27,13 @@ class GeoFenceEditFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_geofence_edit, container, false)
-        callback.setStep(GeoFenceFlow.Step.DETAIL)
+        callback.setStep(GeoFenceFlow.Step.EDIT)
         val editButton: Button = view.findViewById(R.id.btn_geoFenceChange)
         val saveButton: Button = view.findViewById(R.id.btn_geoFenceSave)
 
         geoFenceName = view.findViewById(R.id.tv_geoFenceEditName)
+
+        geoFenceName.setText(callback.getFenceName(), TextView.BufferType.EDITABLE)
 
         editButton.setOnClickListener { callback.goToMarker() }
         saveButton.setOnClickListener { onSave() }

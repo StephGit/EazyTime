@@ -85,7 +85,7 @@ class GeoFenceController @Inject constructor(private val context: Context) {
     private fun buildGeofencingRequest(geofence: Geofence): GeofencingRequest {
         return GeofencingRequest.Builder()
             .setInitialTrigger(0)
-            .addGeofences(listOf(geofence))
+            .addGeofence(geofence)
             .build()
     }
 
@@ -94,11 +94,6 @@ class GeoFenceController @Inject constructor(private val context: Context) {
      */
     private val geofencePendingIntent: PendingIntent by lazy {
         val intent = Intent(context, GeoFenceReceiver::class.java)
-        PendingIntent.getBroadcast(
-            context,
-            0,
-            intent,
-            PendingIntent.FLAG_UPDATE_CURRENT
-        )
+        PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
     }
 }

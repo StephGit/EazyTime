@@ -3,8 +3,8 @@
           xmlns:tools="http://schemas.android.com/tools"
           package="ch.bfh.mad">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
             android:name=".eazytime.EazyTimeApp"
@@ -18,7 +18,7 @@
 
         <meta-data
                 android:name="com.google.android.geo.API_KEY"
-                android:value="@string/google_maps_key" />
+                android:value="@string/google_maps_key"/>
 
         <activity android:name=".eazytime.EazyTimeActivity">
             <intent-filter>
@@ -27,6 +27,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".eazytime.geofence.detail.GeoFenceDetailActivity"/>
+
         <activity android:name=".eazytime.projects.addProject.AddProjectActivity"/>
         <receiver android:name=".eazytime.homeScreenWidget.WidgetProvider">
             <intent-filter>
@@ -49,6 +50,7 @@
             </intent-filter>
         </receiver>
         <service android:name=".eazytime.geofence.GeoFenceTransitionsIntentService"/>
+
         <receiver
                 android:name=".eazytime.service.GeoFenceReceiver"
                 android:enabled="true"
@@ -57,7 +59,6 @@
                 <action android:name="ch.eazytime.geofence.ACTION_RECEIVE_GEOFENCE"/>
             </intent-filter>
         </receiver>
-
         <receiver android:name=".eazytime.service.BootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>

@@ -3,7 +3,7 @@ package ch.bfh.mad.eazytime.geofence.detail
 interface GeoFenceFlow {
 
     enum class Step {
-        MARKER, RADIUS, DETAIL;
+        MARKER, RADIUS, EDIT, DETAIL;
 
         companion object {
             fun getStepByName(name: String) = valueOf(name.toUpperCase())
@@ -11,6 +11,7 @@ interface GeoFenceFlow {
     }
 
     fun setStep(step: GeoFenceFlow.Step)
+    fun getFenceName(): String
     fun goToMarker()
     fun goToRadius()
     fun goToEdit()
