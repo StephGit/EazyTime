@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ListView
 import android.widget.ProgressBar
 import ch.bfh.mad.R
 import ch.bfh.mad.eazytime.data.entity.GeoFence
@@ -40,14 +39,14 @@ class GeoFenceFragment : GeoFenceBaseFragment() {
         view.findViewById<FloatingActionButton>(R.id.btn_addGeofence).setOnClickListener { super.addGeoFence() }
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(GeoFenceViewModel::class.java)
 
-        listView = view.findViewById(R.id.lv_geofences)
-        progressBar = view.findViewById(R.id.progressBar)
+        if (viewModel.hasGeoFenceInDatabase) subscribeViewModel(recyclerAdapter) else showEmptyGeoFenceFragment()
+        listView.isClickable = true
 
-        if (viewModel.hasGeoFenceInDatabase) getListItems(view) else showEmptyGeoFenceFragment()
+        initSwipe()
 
-//        listView.setOnItemClickListener { parent, view, position, id ->
-//            onListItemClick(parent as ListView, position, id)
-//        }
+        listView.setOnItemClickListener { parent, view, position, id ->
+            onListItemClick(parent as ListView, position, id)
+        }
 
         return view
     }
@@ -89,9 +88,12 @@ class GeoFenceFragment : GeoFenceBaseFragment() {
     private fun showGeoFenceDetail(item: GeoFence) {
         val intent = Intent(activity?.baseContext, GeoFenceDetailActivity::class.java)
         intent.putExtra("GEOFENCE_NAME", item.name)
+        intent.putExtra("GEOFENCE_ACTIVE", item.active)
+        intent.putExtra("GEOFENCE_GFID", item.gfId)
         intent.putExtra("GEOFENCE_RADIUS", item.radius)
         intent.putExtra("GEOFENCE_LAT", item.latitude)
         intent.putExtra("GEOFENCE_LONG", item.longitude)
+        intent.putExtra("GEOFENCE_ID", item.id)
         startActivity(intent)
     }
 }
