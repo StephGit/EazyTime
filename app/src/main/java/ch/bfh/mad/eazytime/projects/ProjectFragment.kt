@@ -37,6 +37,7 @@ class ProjectFragment : Fragment() {
     private lateinit var createNewProjectButton: FloatingActionButton
     private lateinit var navigator: EazyTimeNavigator
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_project, container, false)
         navigator = requireContext() as? EazyTimeNavigator ?: throw IllegalStateException("Context of ProjectFragment is not an Instance of EazyTimeNavigator")
@@ -48,16 +49,22 @@ class ProjectFragment : Fragment() {
         Injector.appComponent.inject(this)
         projectListViewModel = ViewModelProviders.of(this, ProjectModelFactory(projectProviderService, projectDao)).get(ProjectListViewModel::class.java)
 
+        val projectsListAdapter = ProjectsListAdapter(requireContext(), android.R.layout.simple_list_item_1)
+        projectListView.adapter = projectsListAdapter
+        projectListView.setOnItemLongClickListener{parent, view, position, id ->
+            openUpdateNewProjectActivity(projectsListAdapter.getItem(position))
+        }
+        projectListView.setOnItemClickListener { parent, view, position, id ->
+            activateOrChangeProject(projectsListAdapter.getItem(position))
+        }
+
         projectListViewModel.projects.observe(this, Observer { projects ->
-            val projectsListAdapter = ProjectsListAdapter(requireContext(), android.R.layout.simple_list_item_1, projects!!)
-            projectListView.adapter = projectsListAdapter
-            projectListView.setOnItemLongClickListener{parent, view, position, id ->
-                openUpdateNewProjectActivity(projectsListAdapter.getItem(position))
-            }
-            projectListView.setOnItemClickListener { parent, view, position, id ->
-                activateOrChangeProject(projectsListAdapter.getItem(position))
+            projects?.let {
+                projectsListAdapter.clear()
+                projectsListAdapter.addAll(projects)
             }
         })
+
         return view
     }
 

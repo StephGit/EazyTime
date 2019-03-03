@@ -2,35 +2,39 @@ package ch.bfh.mad.eazytime.util
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MediatorLiveData
-import ch.bfh.mad.eazytime.data.dao.ProjectDao
-import ch.bfh.mad.eazytime.data.dao.TimeSlotDao
 import ch.bfh.mad.eazytime.data.entity.Project
 import ch.bfh.mad.eazytime.data.entity.TimeSlot
+import ch.bfh.mad.eazytime.data.repo.ProjectRepo
+import ch.bfh.mad.eazytime.data.repo.TimeSlotRepo
 import ch.bfh.mad.eazytime.projects.ProjectListItem
 import org.joda.time.LocalDateTime
 import org.joda.time.Seconds
 
-class ProjectProviderService(private val projectDao: ProjectDao, private val timeSlotDao: TimeSlotDao) {
+class ProjectProviderService(projectRepo: ProjectRepo, timeSlotRepo: TimeSlotRepo) {
 
-    private var _projects: List<Project>? = listOf()
-    private var _timeSlots: List<TimeSlot>? = listOf()
+    private var _projects: List<Project>? = emptyList()
+    private var _timeSlots: List<TimeSlot>? = emptyList()
+
+    private val projectItemList: MediatorLiveData<List<ProjectListItem>>
+
+    init {
+        val projectsLd: LiveData<List<Project>> = projectRepo.allProjects
+        val timeSlotsLd: LiveData<List<TimeSlot>> = timeSlotRepo.allTimeSlots
+
+        projectItemList = MediatorLiveData()
+        projectItemList.addSource(projectsLd) {projects ->
+            _projects = projects
+            projectItemList.value = mergeLiveData(projects, _timeSlots)
+        }
+        projectItemList.addSource(timeSlotsLd) {timeslots ->
+            _timeSlots = timeslots
+            projectItemList.value = mergeLiveData(_projects, timeslots)
+        }
+    }
 
 
     fun getProjectListitems(): LiveData<List<ProjectListItem>> {
-        val projectsLd: LiveData<List<Project>> = projectDao.getProjectsLiveData()
-        val timeSlotsLd: LiveData<List<TimeSlot>> = timeSlotDao.getTimeSlotsLiveData()
-
-        val result = MediatorLiveData<List<ProjectListItem>>()
-        result.addSource(projectsLd) {projects ->
-            _projects = projects
-            result.value = mergeLiveData(projects, _timeSlots)
-        }
-        result.addSource(timeSlotsLd) {timeslots ->
-            _timeSlots = timeslots
-            result.value = mergeLiveData(_projects, timeslots)
-        }
-
-        return result
+        return projectItemList
     }
 
     private fun mergeLiveData(projects: List<Project>?, timeslots: List<TimeSlot>?): List<ProjectListItem>? {

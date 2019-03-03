@@ -13,8 +13,10 @@ import ch.bfh.mad.R
 import ch.bfh.mad.eazytime.util.EazyTimeDateUtil
 import java.util.*
 
-class ProjectsListAdapter(context: Context, @LayoutRes itemLayoutRes: Int, items: List<ProjectListItem>) :
-    ArrayAdapter<ProjectListItem>(context, itemLayoutRes, items) {
+class ProjectsListAdapter(context: Context, @LayoutRes itemLayoutRes: Int) :
+    ArrayAdapter<ProjectListItem>(context, itemLayoutRes) {
+
+    val timers:MutableList<MyUpdateTimer> = mutableListOf()
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.item_project, parent, false)
@@ -22,14 +24,22 @@ class ProjectsListAdapter(context: Context, @LayoutRes itemLayoutRes: Int, items
             view.findViewById<View>(R.id.project_list_item_color_tag).setBackgroundColor(Color.parseColor(project.color))
             val nameTV = view.findViewById<TextView>(R.id.project_list_item_project_name)
             nameTV.text = project.name
+            nameTV.setTypeface(null, Typeface.NORMAL)
             val timeTV = view.findViewById<TextView>(R.id.project_list_item_project_time)
             timeTV.text = getCurrentTime(project)
+            timeTV.setTypeface(null, Typeface.NORMAL)
             view.findViewById<TextView>(R.id.project_list_item_color_tag).text = project.shortCode
             view.findViewById<TextView>(R.id.project_list_item_project_isDefault).text = getMarkerForDefaultProject(context, project)
             if (project.active){
                 nameTV.setTypeface(null, Typeface.BOLD)
                 timeTV.setTypeface(null, Typeface.BOLD)
-              Timer().scheduleAtFixedRate(MyUpdateTimer(view), 0 ,1000)
+                val newTimer = MyUpdateTimer(view, project.currentTime)
+                timers.forEach {
+                    it.cancel()
+                }
+                timers.clear()
+                timers.add(newTimer)
+                Timer().scheduleAtFixedRate(newTimer, 0 ,1000)
             }
         }
         return view
@@ -38,7 +48,9 @@ class ProjectsListAdapter(context: Context, @LayoutRes itemLayoutRes: Int, items
     private fun getCurrentTime(project: ProjectListItem): CharSequence? {
         return if (project.active){
             "--:--:--"
-        }else{
+        } else if (project.currentTime != null) {
+            EazyTimeDateUtil.fromSecondsToHHmmSS(project.currentTime)
+        } else {
             "??"
         }
     }
@@ -51,8 +63,14 @@ class ProjectsListAdapter(context: Context, @LayoutRes itemLayoutRes: Int, items
         }
     }
 
-    class MyUpdateTimer(val view: View):TimerTask(){
+    class MyUpdateTimer(val view: View, val startTime: Int? = 0):TimerTask(){
         var counter = 0
+
+        init {
+            startTime?.let {
+                counter = it
+            }
+        }
         override fun run() {
             counter++
             view.findViewById<TextView>(R.id.project_list_item_project_time).text = EazyTimeDateUtil.fromSecondsToHHmmSS(counter)
