@@ -1,7 +1,7 @@
 package ch.bfh.mad.eazytime.data
 
-import android.arch.lifecycle.LiveData
 import android.os.AsyncTask
+import androidx.lifecycle.LiveData
 import ch.bfh.mad.eazytime.data.dao.GeoFenceDao
 import ch.bfh.mad.eazytime.data.entity.GeoFence
 import javax.inject.Inject
@@ -19,8 +19,12 @@ class GeoFenceRepository @Inject constructor(geoFenceDao: GeoFenceDao) {
         InsertAsyncTask(geoFenceDao).execute(geoFence)
     }
 
-    fun updateGeoFenceItem(geoFence: GeoFence) {
+    fun updateGeoFence(geoFence: GeoFence) {
         UpdateAsyncTask(geoFenceDao).execute(geoFence)
+    }
+
+    fun deleteGeoFence(geoFence: GeoFence) {
+        DeleteAsyncTask(geoFenceDao).execute(geoFence)
     }
 
     private class InsertAsyncTask internal constructor(private val geoFenceDao: GeoFenceDao) :
@@ -44,6 +48,15 @@ class GeoFenceRepository @Inject constructor(geoFenceDao: GeoFenceDao) {
         override fun doInBackground(vararg params: GeoFence): Void? {
             val geoFence = params[0]
             geoFenceDao.update(geoFence)
+            return null
+        }
+    }
+
+    private class DeleteAsyncTask internal constructor(private val geoFenceDao: GeoFenceDao) :
+        AsyncTask<GeoFence, Void, Void>() {
+        override fun doInBackground(vararg params: GeoFence): Void? {
+            val geoFence = params[0]
+            geoFenceDao.delete(geoFence)
             return null
         }
     }

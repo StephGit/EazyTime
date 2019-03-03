@@ -5,7 +5,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import ch.bfh.mad.eazytime.data.entity.GeoFence
 import ch.bfh.mad.eazytime.service.GeoFenceReceiver
 import com.google.android.gms.location.Geofence

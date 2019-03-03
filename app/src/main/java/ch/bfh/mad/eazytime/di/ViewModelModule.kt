@@ -1,7 +1,7 @@
 package ch.bfh.mad.eazytime.di
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import ch.bfh.mad.eazytime.geofence.GeoFenceViewModel
 import ch.bfh.mad.eazytime.util.ViewModelFactory
 import dagger.Binds

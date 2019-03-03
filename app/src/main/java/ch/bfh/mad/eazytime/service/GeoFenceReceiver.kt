@@ -3,8 +3,8 @@ package ch.bfh.mad.eazytime.service
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.support.v4.content.LocalBroadcastManager
 import android.util.Log
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.geofence.GeofenceErrorMessages
 import ch.bfh.mad.eazytime.util.NotificationHandler
@@ -15,7 +15,7 @@ class GeoFenceReceiver : BroadcastReceiver() {
 
     private var notificationHandler: NotificationHandler = NotificationHandler()
 
-    val GEOFENCE_ACTION: String = "ch.eazytime.geofence.ACTION_RECEIVE_GEOFENCE";
+    private val geofenceAction: String = "ch.eazytime.geofence.ACTION_RECEIVE_GEOFENCE"
 
     override fun onReceive(context: Context, intent: Intent) {
         val geofencingEvent = GeofencingEvent.fromIntent(intent)
@@ -39,8 +39,8 @@ class GeoFenceReceiver : BroadcastReceiver() {
                 // TODO handle each
                 Log.i(TAG, "FancyFenci")
                 notificationHandler.sendNotification(context, "FancyFenci")
-                var broadcastIntent: Intent = Intent()
-                    .setAction(GEOFENCE_ACTION)
+                val broadcastIntent: Intent = Intent()
+                    .setAction(geofenceAction)
                     .putExtra("GEOFENCE_ID", it.requestId)
                     .putExtra("GEOFENCE_TRANSITION_TYPE", event.geofenceTransition)
                 LocalBroadcastManager.getInstance(context).sendBroadcast(broadcastIntent)

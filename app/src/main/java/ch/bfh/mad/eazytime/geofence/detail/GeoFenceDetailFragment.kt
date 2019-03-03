@@ -2,19 +2,18 @@ package ch.bfh.mad.eazytime.geofence.detail
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import ch.bfh.mad.R
 
-class GeoFenceDetailFragment : Fragment() {
+class GeoFenceDetailFragment : androidx.fragment.app.Fragment() {
 
     private lateinit var callback: GeoFenceFlow
 
     companion object {
-        fun newFragment(): Fragment = GeoFenceDetailFragment()
+        fun newFragment(): androidx.fragment.app.Fragment = GeoFenceDetailFragment()
     }
 
     override fun onAttach(context: Context?) {

@@ -1,7 +1,6 @@
 package ch.bfh.mad.eazytime.data.dao
 
-import android.arch.lifecycle.LiveData
-import android.arch.persistence.room.*
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import ch.bfh.mad.eazytime.data.entity.GeoFence
 

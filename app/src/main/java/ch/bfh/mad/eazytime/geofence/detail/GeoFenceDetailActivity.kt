@@ -7,13 +7,11 @@ import android.content.Intent
 import android.graphics.Color
 import android.location.Location
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import ch.bfh.mad.R
 import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.data.GeoFenceRepository
@@ -28,6 +26,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.gms.tasks.Task
+import com.google.android.material.snackbar.Snackbar
 import com.google.maps.android.SphericalUtil
 import java.util.*
 import javax.inject.Inject
@@ -101,7 +100,7 @@ class GeoFenceDetailActivity : AppCompatActivity(),
         )
     }
 
-    private fun replaceFragment(fragment: Fragment) {
+    private fun replaceFragment(fragment: androidx.fragment.app.Fragment) {
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.geofenceFlowContainer, fragment)
