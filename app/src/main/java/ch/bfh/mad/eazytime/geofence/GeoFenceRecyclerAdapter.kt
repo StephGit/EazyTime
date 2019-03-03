@@ -1,22 +1,21 @@
 package ch.bfh.mad.eazytime.geofence
 
 import android.os.Build
-import android.support.design.widget.Snackbar
-
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Switch
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ch.bfh.mad.R
 import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.data.GeoFenceRepository
 import ch.bfh.mad.eazytime.data.entity.GeoFence
 import ch.bfh.mad.eazytime.di.Injector
+import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
 class  GeoFenceRecyclerAdapter : ListAdapter<GeoFence, GeoFenceRecyclerAdapter.ViewHolder>(GeoFenceDiffCallback()) {
@@ -42,7 +41,7 @@ class  GeoFenceRecyclerAdapter : ListAdapter<GeoFence, GeoFenceRecyclerAdapter.V
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentGeoFence = getItem(position)
         holder.apply {
-            createOnClickListener(currentGeoFence)
+            bind(createOnClickListener(currentGeoFence), currentGeoFence)
             itemText.text = currentGeoFence.name
             switch.isChecked = currentGeoFence.active
 
@@ -71,7 +70,7 @@ class  GeoFenceRecyclerAdapter : ListAdapter<GeoFence, GeoFenceRecyclerAdapter.V
         isChecked: Boolean
     ) {
         it.active = isChecked
-        this.geoFenceRepository.updateGeoFenceItem(it)
+        this.geoFenceRepository.updateGeoFence(it)
         if (it.active) {
             addGeoFence(it)
         } else {
@@ -97,9 +96,27 @@ class  GeoFenceRecyclerAdapter : ListAdapter<GeoFence, GeoFenceRecyclerAdapter.V
             })
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    fun removeItem(viewHolder: RecyclerView.ViewHolder) {
+        var removedPosition = viewHolder.adapterPosition
+        var removedGeoFence = getItem(removedPosition)
+        this.geoFenceRepository.deleteGeoFence(removedGeoFence)
+        notifyItemRemoved(removedPosition)
+        Snackbar.make(viewHolder.itemView, "${removedGeoFence.name} gelöscht.", Snackbar.LENGTH_LONG)
+            .setAction("Rückgängig") {
+                notifyItemInserted(removedPosition)
+                this.geoFenceRepository.saveGeoFence(removedGeoFence)
+            }.show()
+    }
+
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val itemText: TextView = itemView.findViewById(R.id.tv_geoFenceItemText)
         val switch: Switch = itemView.findViewById(R.id.sw_geoFenceActive)
+
+        fun bind(listener: View.OnClickListener, geoFence: GeoFence) {
+            itemView.setOnClickListener {
+                onItemClick?.invoke(geoFence)
+            }
+        }
     }
 }
 

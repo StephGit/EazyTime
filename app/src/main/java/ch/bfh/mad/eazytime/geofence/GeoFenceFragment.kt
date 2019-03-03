@@ -1,30 +1,42 @@
 package ch.bfh.mad.eazytime.geofence
 
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
+import android.graphics.Canvas
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import androidx.core.content.res.ResourcesCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import ch.bfh.mad.R
 import ch.bfh.mad.eazytime.data.entity.GeoFence
 import ch.bfh.mad.eazytime.di.Injector
 import ch.bfh.mad.eazytime.geofence.detail.GeoFenceDetailActivity
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import javax.inject.Inject
 import ch.bfh.mad.eazytime.util.ViewModelFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
+// TODO all items delete show EmptyFragment
+
 class GeoFenceFragment : GeoFenceBaseFragment() {
 
     private lateinit var recyclerView: RecyclerView
-    //    private lateinit var listView: ListView
+    private lateinit var recyclerAdapter: GeoFenceRecyclerAdapter
     private lateinit var progressBar: ProgressBar
     private lateinit var viewModel: GeoFenceViewModel
     private lateinit var linearLayoutManager: LinearLayoutManager
+    private lateinit var swipeBackgroundColor: ColorDrawable
+    private lateinit var deleteIcon: Drawable
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -49,20 +61,15 @@ class GeoFenceFragment : GeoFenceBaseFragment() {
         recyclerView.layoutManager = linearLayoutManager
         recyclerView.setHasFixedSize(true)
 
-        val recyclerAdapter = GeoFenceRecyclerAdapter()
-//        recyclerView.adapter = recyclerAdapter
+        recyclerAdapter = GeoFenceRecyclerAdapter()
+        recyclerView.adapter = recyclerAdapter
         recyclerAdapter.onItemClick = { showGeoFenceDetail(it) }
 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(GeoFenceViewModel::class.java)
 
         if (viewModel.hasGeoFenceInDatabase) subscribeViewModel(recyclerAdapter) else showEmptyGeoFenceFragment()
-//        listView.isClickable = true
 
         initSwipe()
-
-//        listView.setOnItemClickListener { parent, view, position, id ->
-//            onListItemClick(parent as ListView, position, id)
-//        }
 
         return view
     }
@@ -75,37 +82,71 @@ class GeoFenceFragment : GeoFenceBaseFragment() {
     private fun subscribeViewModel(recyclerAdapter: GeoFenceRecyclerAdapter) {
         viewModel.geoFenceItems.observe(this, Observer {
             recyclerAdapter.submitList(it!!)
-//            val customAdapter = GeoFenceAdapter(context, 0, it!!)
-//            listView.recyclerAdapter = customAdapter
             showList()
         })
     }
 
     private fun initSwipe() {
+        swipeBackgroundColor = ColorDrawable(ResourcesCompat.getColor(resources, R.color.eazyTime_colorDelete, null))
+        deleteIcon = ResourcesCompat.getDrawable(resources, R.drawable.ic_delete, null)!!
+
         val simpleItemTouchCallback = object :
             ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
             override fun onMove(
-                recyclerView: RecyclerView?,
-                viewHolder: RecyclerView.ViewHolder?,
-                target: RecyclerView.ViewHolder?
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
             ): Boolean {
                 return false
             }
 
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val position = viewHolder.adapterPosition
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, position: Int) {
+                recyclerAdapter.removeItem(viewHolder)
+            }
 
+            override fun onChildDraw(
+                c: Canvas,
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                dX: Float,
+                dY: Float,
+                actionState: Int,
+                isCurrentlyActive: Boolean
+            ) {
+                val itemView = viewHolder.itemView
+                with(itemView) {
+                    val iconMargin = (height - deleteIcon.intrinsicHeight) / 2
+                    if (dX > 0) {
+                        swipeBackgroundColor.setBounds(left, top, dX.toInt(), bottom)
+                        deleteIcon.setBounds(
+                            left + iconMargin, top + iconMargin, left + iconMargin + deleteIcon.intrinsicWidth,
+                            bottom - iconMargin
+                        )
+                    } else {
+                        swipeBackgroundColor.setBounds(right + dX.toInt(), top, right, bottom)
+                        deleteIcon.setBounds(
+                            right - iconMargin - deleteIcon.intrinsicWidth, top + iconMargin, right - iconMargin,
+                            bottom - iconMargin
+                        )
+                    }
+
+                    swipeBackgroundColor.draw(c)
+                    c.save()
+
+                    if (dX > 0)
+                        c.clipRect(left, top, dX.toInt(), bottom)
+                    else
+                        c.clipRect(right + dX.toInt(), top, right, bottom)
+                    deleteIcon.draw(c)
+                    c.restore()
+                }
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
             }
 
         }
         val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
         itemTouchHelper.attachToRecyclerView(recyclerView)
     }
-//
-//    private fun onListItemClick(parent: ListView, position: Int, id: Long) {
-//        val item: GeoFence = parent.getItemAtPosition(position) as GeoFence
-//        showGeoFenceDetail(item)
-//    }
 
     private fun showEmptyGeoFenceFragment() {
         activity!!.supportFragmentManager.beginTransaction()
@@ -116,7 +157,6 @@ class GeoFenceFragment : GeoFenceBaseFragment() {
 
     private fun showList() {
         progressBar.visibility = View.GONE
-//        listView.visibility = View.VISIBLE
         recyclerView.visibility = View.VISIBLE
     }
 

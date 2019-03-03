@@ -13,7 +13,7 @@ import com.google.android.gms.location.GeofencingEvent
  */
 class GeoFenceTransitionsIntentService : IntentService("GeoFenceTransitionIntentService") {
 
-    companion object {}
+    companion object;
 
     private var notificationHandler: NotificationHandler = NotificationHandler()
 

@@ -2,8 +2,6 @@ package ch.bfh.mad.eazytime.geofence
 
 import android.content.Context
 import android.os.Build
-import android.support.annotation.LayoutRes
-import android.support.design.widget.Snackbar
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,11 +9,13 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Switch
 import android.widget.TextView
+import androidx.annotation.LayoutRes
 import ch.bfh.mad.R
 import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.data.GeoFenceRepository
 import ch.bfh.mad.eazytime.data.entity.GeoFence
 import ch.bfh.mad.eazytime.di.Injector
+import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
 
@@ -63,7 +63,7 @@ class GeoFenceAdapter (context: Context, @LayoutRes itemLayoutRes: Int, items: L
         view: View
     ) {
         it.active = isChecked
-        this.geoFenceRepository.updateGeoFenceItem(it)
+        this.geoFenceRepository.updateGeoFence(it)
         if (it.active) {
             addGeoFence(it, view)
         } else {

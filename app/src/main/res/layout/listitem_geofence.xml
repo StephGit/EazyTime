@@ -5,12 +5,12 @@
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_marginTop="@dimen/eazyTime_top_margin_list_elements"
               android:layout_marginBottom="@dimen/eazyTime_bottom_margin_list_elements"
-              android:layout_marginLeft="@dimen/eazyTime_left_margin_list_elements"
-              android:layout_marginRight="@dimen/eazyTime_right_margin_list_elements"
+              android:layout_marginStart="@dimen/eazyTime_left_margin_list_elements"
+              android:layout_marginEnd="@dimen/eazyTime_right_margin_list_elements"
               android:padding="@dimen/eazyTime_padding_list_elements"
               android:background="@color/eazyTime_colorBackground">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/geofence_list_item_content"
             android:layout_width="match_parent"
             android:layout_height="@dimen/eazyTime_height_content_list_elements">
@@ -41,5 +41,5 @@
             android:focusable="false"
     />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

@@ -6,7 +6,7 @@ import android.app.PendingIntent
 import android.app.TaskStackBuilder
 import android.content.Context
 import android.os.Build
-import android.support.v4.app.NotificationCompat
+import androidx.core.app.NotificationCompat
 import ch.bfh.mad.BuildConfig
 import ch.bfh.mad.R
 import ch.bfh.mad.eazytime.EazyTimeActivity
