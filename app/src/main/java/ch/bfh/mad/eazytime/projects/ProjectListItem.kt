@@ -7,5 +7,6 @@ data class ProjectListItem(
     val currentTime: Int?,
     val color: String?,
     val default: Boolean?,
+    val onWidget: Boolean?,
     val active: Boolean
 )

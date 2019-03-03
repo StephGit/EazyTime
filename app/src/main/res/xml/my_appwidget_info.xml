@@ -6,6 +6,6 @@
                     android:updatePeriodMillis="50000"
                     android:previewImage="@mipmap/ic_launcher"
                     android:initialLayout="@layout/homescreen_widget"
-                    android:resizeMode="horizontal|vertical"
+                    android:resizeMode="horizontal"
                     android:widgetCategory="home_screen|keyguard"
                     android:initialKeyguardLayout="@layout/homescreen_widget"/>

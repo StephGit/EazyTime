@@ -1,6 +1,8 @@
 package ch.bfh.mad.eazytime.util
 
 import ch.bfh.mad.eazytime.data.dao.ProjectDao
+import ch.bfh.mad.eazytime.data.dao.TimeSlotDao
+import ch.bfh.mad.eazytime.data.dao.WorkDayDao
 import ch.bfh.mad.eazytime.data.entity.TimeSlot
 import ch.bfh.mad.eazytime.data.entity.WorkDay
 import ch.bfh.mad.eazytime.data.repo.TimeSlotRepo
@@ -42,13 +44,15 @@ class TimerService constructor(private val timeSlotRepo: TimeSlotRepo, private v
     }
 
     fun changeAndStartProject(projectId: Long) {
+        val onlyStop = timeSlotDao.getCurrentTimeSlots().any { timeSlot -> timeSlot.projectId == projectId }
         stopCurrentTimeSlots()
-
-        val newTs = TimeSlot()
-        newTs.projectId = projectId
-        newTs.startDate = LocalDateTime()
-        newTs.workDayId = getWorkDayId()
-        insertAll(listOf(newTs))
+        if (!onlyStop) {
+            val newTs = TimeSlot()
+            newTs.projectId = projectId
+            newTs.startDate = LocalDateTime()
+            newTs.workDayId = getWorkDayId()
+            timeSlotDao.insertAll(listOf(newTs))
+        }
     }
 
     fun checkOut() {

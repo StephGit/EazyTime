@@ -17,10 +17,12 @@ import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.data.dao.ProjectDao
 import ch.bfh.mad.eazytime.data.entity.Project
 import ch.bfh.mad.eazytime.di.Injector
+import ch.bfh.mad.eazytime.homeScreenWidget.WidgetProvider
 import ch.bfh.mad.eazytime.projects.ProjectModelFactory
 import ch.bfh.mad.eazytime.util.EazyTimeColorUtil
 import ch.bfh.mad.eazytime.util.ProjectProviderService
 import com.thebluealliance.spectrum.SpectrumDialog
+import java.lang.ref.WeakReference
 import javax.inject.Inject
 import kotlin.random.Random
 
@@ -134,7 +136,9 @@ class AddProjectActivity : AppCompatActivity() {
         tmpProject.onWidget = addProjectViewModel.onWidget.value ?: false
         tmpProject.color = colorUtil.getColorString(addProjectViewModel.colorId.value?:0)
         Log.i(TAG, "project to save: $tmpProject")
-        InsertAsyncTask(saveOrUpdateService).execute(tmpProject)
+        val task = InsertAsyncTask(saveOrUpdateService)
+        task.currentContext = WeakReference(this)
+        task.execute(tmpProject)
         Log.i(TAG, "Save Project started in InsertAsyncTask, close the Activity")
         finish()
     }
@@ -168,11 +172,18 @@ class AddProjectActivity : AppCompatActivity() {
     }
 
     private class InsertAsyncTask internal constructor(private val saveOrUpdateService: ProjectSaveOrUpdateService) : AsyncTask<Project, Void, Void>() {
+        var currentContext: WeakReference<Context>? = null
         override fun doInBackground(vararg params: Project): Void? {
             val project = params[0]
             Log.i(TAG, "InsertAsyncTask")
             saveOrUpdateService.saveOrUpdateProject(project)
             return null
+        }
+
+        override fun onPostExecute(result: Void?) {
+            currentContext?.get()?.let { ctx ->
+                ctx.sendBroadcast(WidgetProvider.getUpdateAppWidgetsIntent(ctx))
+            }
         }
     }
 
