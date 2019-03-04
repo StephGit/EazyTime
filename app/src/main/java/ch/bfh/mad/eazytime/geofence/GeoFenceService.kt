@@ -5,7 +5,9 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.util.Log
 import androidx.core.content.ContextCompat
+import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.data.GeoFenceRepository
 import ch.bfh.mad.eazytime.data.entity.GeoFence
 import ch.bfh.mad.eazytime.geofence.receiver.GeoFenceReceiver
@@ -16,12 +18,25 @@ import com.google.android.gms.location.LocationServices
 import javax.inject.Inject
 
 
-class GeoFenceService @Inject constructor(private val context: Context, private val geoFenceRepository: GeoFenceRepository) {
+class GeoFenceService @Inject constructor(
+    private val context: Context,
+    private val geoFenceRepository: GeoFenceRepository
+) {
 
     private val geofencingClient: GeofencingClient = LocationServices.getGeofencingClient(context)
 
     fun initGeoFences() {
-
+        geoFenceRepository.getActiveGeoFences().forEach {
+            remove(it, success = { Log.d(TAG, "GeoFence " + it.name + " removed successfully") },
+                failure = { err ->
+                    Log.d(TAG, "Removal failed for GeoFence [" + it.name + "], Error: " + err)
+                })
+            add(it,
+                success = { Log.d(TAG, "GeoFence " + it.name + " added successfully") },
+                failure = { err ->
+                    Log.d(TAG, "Adding failed for GeoFence [" + it.name + "], Error: " + err)
+                })
+        }
     }
 
     /**
@@ -52,8 +67,8 @@ class GeoFenceService @Inject constructor(private val context: Context, private 
         failure: (error: String) -> Unit
     ) {
         val gf = buildGeofence(geoFence.gfId!!, geoFence.latitude!!, geoFence.longitude!!, geoFence.radius!!)
-        if (gf != null
-            && ContextCompat.checkSelfPermission(
+        if (gf != null &&
+            ContextCompat.checkSelfPermission(
                 this.context,
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED

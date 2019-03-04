@@ -9,6 +9,9 @@ interface GeoFenceDao {
     @Query("SELECT * FROM geofence LIMIT 1")
     fun getAnyGeoFence(): GeoFence?
 
+    @Query("SELECT * FROM geofence where active LIKE 'true'")
+    fun getActiveGeoFences(): List<GeoFence>
+
     @Query("SELECT * FROM geofence")
     fun getGeoFences(): LiveData<List<GeoFence>>
 
