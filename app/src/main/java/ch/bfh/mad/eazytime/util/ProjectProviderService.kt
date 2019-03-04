@@ -1,7 +1,7 @@
 package ch.bfh.mad.eazytime.util
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MediatorLiveData
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import ch.bfh.mad.eazytime.data.entity.Project
 import ch.bfh.mad.eazytime.data.entity.TimeSlot
 import ch.bfh.mad.eazytime.data.repo.ProjectRepo
@@ -51,7 +51,7 @@ class ProjectProviderService(projectRepo: ProjectRepo, timeSlotRepo: TimeSlotRep
                 mappedTimeSlotSeconds?.plus(currentSeconds)
             }
 
-            ProjectListItem(project.id, project.name, project.shortCode, mappedTimeSlotSeconds?.seconds, project.color, project.isDefault, isActive)
+            ProjectListItem(project.id, project.name, project.shortCode, mappedTimeSlotSeconds?.seconds, project.color, project.isDefault, project.onWidget, isActive)
         }
 
     }

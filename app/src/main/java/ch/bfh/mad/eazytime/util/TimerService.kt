@@ -41,14 +41,20 @@ class TimerService constructor(private val timeSlotRepo: TimeSlotRepo, private v
         insertAll(listOf(ts))
     }
 
-    fun changeAndStartProject(projectId: Long) {
-        stopCurrentTimeSlots()
+    fun changeAndStartProject(projectId: Long) = runBlocking {
+        val onlyStop = async(Dispatchers.IO) {
+            return@async timeSlotRepo.getCurrentTimeSlots().any { timeSlot -> timeSlot.projectId == projectId }
+        }.await()
 
-        val newTs = TimeSlot()
-        newTs.projectId = projectId
-        newTs.startDate = LocalDateTime()
-        newTs.workDayId = getWorkDayId()
-        insertAll(listOf(newTs))
+        stopCurrentTimeSlots()
+        if (!onlyStop) {
+            val newTs = TimeSlot()
+            newTs.projectId = projectId
+            newTs.startDate = LocalDateTime()
+            newTs.workDayId = getWorkDayId()
+
+            timeSlotRepo.insertAll(listOf(newTs))
+        }
     }
 
     fun checkOut() {

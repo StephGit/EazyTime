@@ -1,7 +1,7 @@
 package ch.bfh.mad.eazytime.data.repo
 
-import android.arch.lifecycle.LiveData
-import android.support.annotation.WorkerThread
+import androidx.annotation.WorkerThread
+import androidx.lifecycle.LiveData
 import ch.bfh.mad.eazytime.data.dao.TimeSlotDao
 import ch.bfh.mad.eazytime.data.entity.TimeSlot
 

@@ -1,6 +1,6 @@
 package ch.bfh.mad.eazytime.data.repo
 
-import android.support.annotation.WorkerThread
+import androidx.annotation.WorkerThread
 import ch.bfh.mad.eazytime.data.dao.WorkDayDao
 import ch.bfh.mad.eazytime.data.entity.WorkDay
 import org.joda.time.LocalDate

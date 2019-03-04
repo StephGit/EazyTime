@@ -1,7 +1,7 @@
 package ch.bfh.mad.eazytime.data.dao
 
-import android.arch.lifecycle.LiveData
-import android.arch.persistence.room.*
+import androidx.lifecycle.LiveData
+import androidx.room.*
 import ch.bfh.mad.eazytime.data.entity.Project
 
 @Dao
@@ -35,4 +35,7 @@ interface ProjectDao {
 
     @Query("DELETE FROM project WHERE id == :projectId")
     fun deleteProjectById(projectId: Long)
+
+    @Query("SELECT * FROM project WHERE onWidget = 1")
+    fun geProjectsForWidget(): List<Project>
 }

@@ -1,0 +1,49 @@
+<FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/widget_margin">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:background="@color/eazyTime_colorBackground">
+
+        <Button
+                android:id="@+id/bu_widget_one"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/widget_button_margin"/>
+
+        <Button
+                android:id="@+id/bu_widget_two"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/widget_button_margin"/>
+
+        <Button
+                android:id="@+id/bu_widget_three"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/widget_button_margin"/>
+
+        <Button
+                android:id="@+id/bu_widget_four"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/widget_button_margin"/>
+
+        <Button
+                android:id="@+id/bu_widget_five"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/widget_button_margin"/>
+
+    </LinearLayout>
+</FrameLayout>

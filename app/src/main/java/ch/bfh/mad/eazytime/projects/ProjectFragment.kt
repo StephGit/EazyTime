@@ -1,27 +1,30 @@
 package ch.bfh.mad.eazytime.projects
 
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
+import android.os.AsyncTask
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
-import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import ch.bfh.mad.R
 import ch.bfh.mad.eazytime.EazyTimeNavigator
 import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.data.dao.ProjectDao
 import ch.bfh.mad.eazytime.di.Injector
+import ch.bfh.mad.eazytime.homeScreenWidget.WidgetProvider
 import ch.bfh.mad.eazytime.util.ProjectProviderService
 import ch.bfh.mad.eazytime.util.TimerService
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 
-class ProjectFragment : Fragment() {
+class ProjectFragment : androidx.fragment.app.Fragment() {
 
     @Inject
     lateinit var projectProviderService: ProjectProviderService
@@ -70,7 +73,10 @@ class ProjectFragment : Fragment() {
 
     private fun activateOrChangeProject(projectLostItem: ProjectListItem?) {
         projectLostItem?.id?.let { projectId ->
-            timerService.changeAndStartProject(projectId)
+            val task = ChangeAndStartProjectAsyncTask(timerService)
+            task.currentContext = WeakReference(requireContext())
+            task.execute(projectId)
+
         }
     }
 
@@ -90,4 +96,21 @@ class ProjectFragment : Fragment() {
     private fun openAddNewProjectActivity() {
         navigator.openAddProjectActivity()
     }
+
+    private class ChangeAndStartProjectAsyncTask internal constructor(private val timerService: TimerService) : AsyncTask<Long, Void, Void>() {
+        var currentContext: WeakReference<Context>? = null
+        override fun doInBackground(vararg params: Long?): Void? {
+            params[0]?.let { projectId ->
+                timerService.changeAndStartProject(projectId)
+            }
+            return null
+        }
+
+        override fun onPostExecute(result: Void?) {
+            currentContext?.get()?.let { ctx ->
+                ctx.sendBroadcast(WidgetProvider.getUpdateAppWidgetsIntent(ctx))
+            }
+        }
+    }
+
 }

@@ -22,6 +22,27 @@
             </intent-filter>
         </activity>
         <activity android:name=".eazytime.projects.addProject.AddProjectActivity"/>
+
+        <receiver android:name=".eazytime.homeScreenWidget.WidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data
+                    android:name="android.appwidget.provider"
+                    android:resource="@xml/my_appwidget_info"/>
+        </receiver>
+
+        <receiver
+                android:name=".eazytime.homeScreenWidget.WidgetBroadCastReceiver"
+                android:exported="true">
+            <intent-filter>
+                <action android:name="ET_WIDGET_BUTTON_ONE"/>
+                <action android:name="ET_WIDGET_BUTTON_TWO"/>
+                <action android:name="ET_WIDGET_BUTTON_THREE"/>
+                <action android:name="ET_WIDGET_BUTTON_FOUR"/>
+                <action android:name="ET_WIDGET_BUTTON_FIVE"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

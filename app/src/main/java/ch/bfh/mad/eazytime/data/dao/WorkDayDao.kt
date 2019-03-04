@@ -1,6 +1,6 @@
 package ch.bfh.mad.eazytime.data.dao
 
-import android.arch.persistence.room.*
+import androidx.room.*
 import ch.bfh.mad.eazytime.data.entity.WorkDay
 import org.joda.time.LocalDate
 

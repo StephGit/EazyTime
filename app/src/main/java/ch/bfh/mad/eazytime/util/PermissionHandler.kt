@@ -3,17 +3,16 @@ package ch.bfh.mad.eazytime.util
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
-import android.support.design.widget.Snackbar
-import android.support.v4.app.ActivityCompat
-import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import ch.bfh.mad.R
+import com.google.android.material.snackbar.Snackbar
 
 
 class PermissionHandler {
 
     private var activity: Activity? = null
-    private var fragment: Fragment? = null
+    private var fragment: androidx.fragment.app.Fragment? = null
     private var requiredPermission: String? = null
     private var permissionRequestCode: Int = 300
     var permissionGranted: Boolean = false
@@ -24,7 +23,7 @@ class PermissionHandler {
         this.requiredPermission = requiredPermission
     }
 
-    constructor(fragment: Fragment, requiredPermission: String) {
+    constructor(fragment: androidx.fragment.app.Fragment, requiredPermission: String) {
         this.fragment = fragment
         this.requiredPermission = requiredPermission
     }
@@ -61,7 +60,7 @@ class PermissionHandler {
         ActivityCompat.requestPermissions(activity, arrayOf(requiredPermission), permissionRequestCode)
     }
 
-    private fun requestPermissionsForFragment(fragment: Fragment) {
+    private fun requestPermissionsForFragment(fragment: androidx.fragment.app.Fragment) {
         if (fragment.shouldShowRequestPermissionRationale(requiredPermission!!)) {
             fragment.view?.let {
                 Snackbar.make(

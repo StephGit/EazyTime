@@ -1,17 +1,16 @@
 package ch.bfh.mad.eazytime.geofence
 
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import ch.bfh.mad.R
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class GeoFenceEmptyFragment : GeoFenceBaseFragment() {
 
     companion object {
-        fun newFragment(): Fragment = GeoFenceEmptyFragment()
+        fun newFragment(): androidx.fragment.app.Fragment = GeoFenceEmptyFragment()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

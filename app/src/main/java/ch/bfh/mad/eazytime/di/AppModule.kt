@@ -1,8 +1,8 @@
 package ch.bfh.mad.eazytime.di
 
 import android.app.Application
-import android.arch.persistence.room.Room
 import android.content.Context
+import androidx.room.Room
 import ch.bfh.mad.eazytime.data.AppDatabase
 import ch.bfh.mad.eazytime.data.dao.ProjectDao
 import ch.bfh.mad.eazytime.data.dao.TimeSlotDao
@@ -14,6 +14,7 @@ import ch.bfh.mad.eazytime.projects.addProject.ProjectSaveOrUpdateService
 import ch.bfh.mad.eazytime.util.EazyTimeColorUtil
 import ch.bfh.mad.eazytime.util.ProjectProviderService
 import ch.bfh.mad.eazytime.util.TimerService
+import ch.bfh.mad.eazytime.util.WidgetProviderUtils
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -70,4 +71,7 @@ class AppModule {
     @Singleton
     fun provideWorkdayRepo(workDayDao: WorkDayDao) = WorkDayRepo(workDayDao)
 
+    @Provides
+    @Singleton
+    fun provideWidgetProviderUtils() = WidgetProviderUtils()
 }

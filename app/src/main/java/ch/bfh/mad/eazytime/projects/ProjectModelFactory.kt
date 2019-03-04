@@ -1,11 +1,10 @@
 package ch.bfh.mad.eazytime.projects
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import ch.bfh.mad.eazytime.data.dao.ProjectDao
 import ch.bfh.mad.eazytime.projects.addProject.AddProjectViewModel
 import ch.bfh.mad.eazytime.util.ProjectProviderService
-import java.lang.Exception
 
 class ProjectModelFactory(var projectProviderService: ProjectProviderService, var projectDao: ProjectDao): ViewModelProvider.Factory{
 

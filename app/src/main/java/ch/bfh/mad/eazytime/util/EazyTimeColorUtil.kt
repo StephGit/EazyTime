@@ -2,6 +2,7 @@ package ch.bfh.mad.eazytime.util
 
 import android.content.Context
 import android.util.Log
+import androidx.core.content.ContextCompat
 import ch.bfh.mad.R
 import ch.bfh.mad.eazytime.TAG
 
@@ -46,4 +47,33 @@ class EazyTimeColorUtil constructor(val context: Context) {
         }
         return colorArrayId
     }
+
+
+    fun getColorId(colorString: String): Int {
+        var colorArrayId = R.color.eazyTime_default_colorProject
+        try {
+            when (colorString) {
+                convertIdToString(R.color.eazyTime_colorProject1) -> return R.color.eazyTime_colorProject1
+                convertIdToString(R.color.eazyTime_colorProject2) -> return R.color.eazyTime_colorProject2
+                convertIdToString(R.color.eazyTime_colorProject3) -> return R.color.eazyTime_colorProject3
+                convertIdToString(R.color.eazyTime_colorProject4) -> return R.color.eazyTime_colorProject4
+                convertIdToString(R.color.eazyTime_colorProject5) -> return R.color.eazyTime_colorProject5
+                convertIdToString(R.color.eazyTime_colorProject6) -> return R.color.eazyTime_colorProject6
+                convertIdToString(R.color.eazyTime_colorProject7) -> return R.color.eazyTime_colorProject7
+                convertIdToString(R.color.eazyTime_colorProject8) -> return R.color.eazyTime_colorProject8
+                convertIdToString(R.color.eazyTime_colorProject9) -> return R.color.eazyTime_colorProject9
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "EazyTimeColorUtil.getColorArrayId failed: ${e.message}", e)
+        }
+        return colorArrayId
+    }
+
+    private fun convertIdToString(id: Int): String {
+        val color = ContextCompat.getColor(context, id)
+        val hexcolor = Integer.toHexString(color).substring(2)
+        return "#$hexcolor"
+    }
+
+
 }
