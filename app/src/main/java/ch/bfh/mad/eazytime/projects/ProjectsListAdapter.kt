@@ -34,10 +34,6 @@ class ProjectsListAdapter(context: Context, @LayoutRes itemLayoutRes: Int) :
                 nameTV.setTypeface(null, Typeface.BOLD)
                 timeTV.setTypeface(null, Typeface.BOLD)
                 val newTimer = MyUpdateTimer(view, project.currentTime)
-                timers.forEach {
-                    it.cancel()
-                }
-                timers.clear()
                 timers.add(newTimer)
                 Timer().scheduleAtFixedRate(newTimer, 0 ,1000)
             }
@@ -45,10 +41,15 @@ class ProjectsListAdapter(context: Context, @LayoutRes itemLayoutRes: Int) :
         return view
     }
 
+    fun clearTimers() {
+        timers.forEach {
+            it.cancel()
+        }
+        timers.clear()
+    }
+
     private fun getCurrentTime(project: ProjectListItem): CharSequence? {
-        return if (project.active){
-            "--:--:--"
-        } else if (project.currentTime != null) {
+        return if (project.currentTime != null) {
             EazyTimeDateUtil.fromSecondsToHHmmSS(project.currentTime)
         } else {
             "??"
@@ -63,7 +64,7 @@ class ProjectsListAdapter(context: Context, @LayoutRes itemLayoutRes: Int) :
         }
     }
 
-    class MyUpdateTimer(val view: View, val startTime: Int? = 0):TimerTask(){
+    class MyUpdateTimer(val view: View, startTime: Int? = 0):TimerTask(){
         var counter = 0
 
         init {

@@ -10,4 +10,5 @@ data class Project(@PrimaryKey(autoGenerate = true)
                    var shortCode: String? = null,
                    var color: String? = null,
                    var onWidget: Boolean? = null,
-                   var isDefault: Boolean? = null)
+                   var isDefault: Boolean? = null,
+                   var isDeleted: Boolean = false)

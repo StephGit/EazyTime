@@ -40,7 +40,7 @@ class ProjectProviderService(projectRepo: ProjectRepo, timeSlotRepo: TimeSlotRep
     private fun mergeLiveData(projects: List<Project>?, timeslots: List<TimeSlot>?): List<ProjectListItem>? {
         return projects?.map {project ->
             var isActive = false
-            val mappedTimeSlotSeconds = timeslots
+            var mappedTimeSlotSeconds = timeslots
                 ?.filter { it.projectId == project.id && it.endDate != null }
                 ?.map { Seconds.secondsBetween(it.startDate, it.endDate) }
                 ?.fold(Seconds.seconds(0)) { acc, minutes -> acc.plus(minutes)}
@@ -48,7 +48,7 @@ class ProjectProviderService(projectRepo: ProjectRepo, timeSlotRepo: TimeSlotRep
             timeslots?.filter { it.projectId == project.id && it.endDate == null }?.firstOrNull()?.let {
                 val currentSeconds = Seconds.secondsBetween(it.startDate, LocalDateTime())
                 isActive = true
-                mappedTimeSlotSeconds?.plus(currentSeconds)
+                mappedTimeSlotSeconds = mappedTimeSlotSeconds?.plus(currentSeconds)
             }
 
             ProjectListItem(project.id, project.name, project.shortCode, mappedTimeSlotSeconds?.seconds, project.color, project.isDefault, project.onWidget, isActive)

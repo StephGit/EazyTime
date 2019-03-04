@@ -4,11 +4,10 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ch.bfh.mad.eazytime.TAG
-import ch.bfh.mad.eazytime.data.dao.ProjectDao
 import ch.bfh.mad.eazytime.data.entity.Project
 import ch.bfh.mad.eazytime.util.EazyTimeColorUtil
 
-class AddProjectViewModel(private var projectDao: ProjectDao) :ViewModel() {
+class AddProjectViewModel: ViewModel() {
 
     val projectId = MutableLiveData<Long>()
     var projectName = MutableLiveData<String>()
