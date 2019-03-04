@@ -5,25 +5,17 @@ import ch.bfh.mad.eazytime.data.entity.TimeSlot
 import ch.bfh.mad.eazytime.data.entity.WorkDay
 import ch.bfh.mad.eazytime.data.repo.TimeSlotRepo
 import ch.bfh.mad.eazytime.data.repo.WorkDayRepo
-import kotlinx.coroutines.*
+import kotlinx.coroutines.runBlocking
 import org.joda.time.LocalDate
 import org.joda.time.LocalDateTime
-import kotlin.coroutines.CoroutineContext
 
 class TimerService constructor(private val timeSlotRepo: TimeSlotRepo, private val projectDao: ProjectDao, private val workDayRepo: WorkDayRepo) {
 
-    private var parentJob = Job()
-    // By default all the coroutines launched in this scope should be using the Main dispatcher
-    private val coroutineContext: CoroutineContext
-        get() = parentJob + Dispatchers.Main
-    private val scope = CoroutineScope(coroutineContext)
-
-
-    private fun insertAll(timeSlots: List<TimeSlot>) = scope.launch(Dispatchers.IO) {
+    private fun insertAll(timeSlots: List<TimeSlot>) = runBlocking {
         timeSlotRepo.insertAll(timeSlots)
     }
 
-    private fun update(timeSlot: TimeSlot) = scope.launch(Dispatchers.IO) {
+    private fun update(timeSlot: TimeSlot) = runBlocking {
         timeSlotRepo.update(timeSlot)
     }
 
@@ -42,9 +34,7 @@ class TimerService constructor(private val timeSlotRepo: TimeSlotRepo, private v
     }
 
     fun changeAndStartProject(projectId: Long) = runBlocking {
-        val onlyStop = async(Dispatchers.IO) {
-            return@async timeSlotRepo.getCurrentTimeSlots().any { timeSlot -> timeSlot.projectId == projectId }
-        }.await()
+        val onlyStop = timeSlotRepo.getCurrentTimeSlots().any { timeSlot -> timeSlot.projectId == projectId }
 
         stopCurrentTimeSlots()
         if (!onlyStop) {
@@ -62,9 +52,7 @@ class TimerService constructor(private val timeSlotRepo: TimeSlotRepo, private v
     }
 
     private fun stopCurrentTimeSlots() = runBlocking {
-        val currentTimeSlots = async(Dispatchers.IO) {
-            return@async timeSlotRepo.getCurrentTimeSlots()
-        }.await()
+        val currentTimeSlots =  timeSlotRepo.getCurrentTimeSlots()
         currentTimeSlots.forEach {
             it.endDate = LocalDateTime()
             update(it)
@@ -72,16 +60,12 @@ class TimerService constructor(private val timeSlotRepo: TimeSlotRepo, private v
     }
 
     private fun getWorkDayId(): Long = runBlocking {
-        val curWorkDay = withContext(Dispatchers.IO) {
-            workDayRepo.getWorkDayByDate(LocalDate())
-        }
+        val curWorkDay = workDayRepo.getWorkDayByDate(LocalDate())
 
         return@runBlocking if (curWorkDay == null) {
             val newWorkDay = WorkDay()
             newWorkDay.date = LocalDate()
-            withContext(Dispatchers.IO) {
-                workDayRepo.insert(newWorkDay)
-            }
+            workDayRepo.insert(newWorkDay)
         } else {
             curWorkDay.id
         }

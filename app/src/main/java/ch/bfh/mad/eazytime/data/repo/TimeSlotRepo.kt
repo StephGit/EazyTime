@@ -4,30 +4,31 @@ import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import ch.bfh.mad.eazytime.data.dao.TimeSlotDao
 import ch.bfh.mad.eazytime.data.entity.TimeSlot
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
-@Suppress("RedundantSuspendModifier")
 class TimeSlotRepo(private val timeSlotDao: TimeSlotDao) {
 
     val allTimeSlots: LiveData<List<TimeSlot>> = timeSlotDao.getTimeSlots()
 
     @WorkerThread
-    suspend fun insertAll(timeSlots: List<TimeSlot>) {
+    suspend fun insertAll(timeSlots: List<TimeSlot>) = withContext(Dispatchers.IO) {
         timeSlotDao.insertAll(timeSlots)
     }
 
     @WorkerThread
-    suspend fun update(timeSlot: TimeSlot) {
+    suspend fun update(timeSlot: TimeSlot)= withContext(Dispatchers.IO) {
         timeSlotDao.update(timeSlot)
     }
 
     @WorkerThread
-    suspend fun delete(timeSlot: TimeSlot) {
+    suspend fun delete(timeSlot: TimeSlot) = withContext(Dispatchers.IO) {
         timeSlotDao.delete(timeSlot)
     }
 
     @WorkerThread
-    suspend fun getCurrentTimeSlots(): List<TimeSlot> {
-        return timeSlotDao.getCurrentTimeSlots()
+    suspend fun getCurrentTimeSlots(): List<TimeSlot> = withContext(Dispatchers.IO) {
+        timeSlotDao.getCurrentTimeSlots()
     }
 
 }
