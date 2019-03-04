@@ -33,7 +33,7 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun providesProjectSaveOrUpdateService(projectDao: ProjectDao) = ProjectSaveOrUpdateService(projectDao)
+    fun providesProjectSaveOrUpdateService(projectRepo: ProjectRepo) = ProjectSaveOrUpdateService(projectRepo)
 
     @Provides
     @Singleton
