@@ -22,6 +22,7 @@ import ch.bfh.mad.eazytime.data.entity.GeoFence
 import ch.bfh.mad.eazytime.di.Injector
 import ch.bfh.mad.eazytime.geofence.detail.GeoFenceDetailActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
 // TODO all items delete show EmptyFragment
@@ -63,6 +64,7 @@ class GeoFenceFragment : GeoFenceBaseFragment() {
 
         recyclerView.adapter = recyclerAdapter
         recyclerAdapter.onItemClick = { showGeoFenceDetail(it) }
+        recyclerAdapter.onSwitch = { onSwitch(it) }
 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(GeoFenceViewModel::class.java)
         super.bind(viewModel)
@@ -80,7 +82,7 @@ class GeoFenceFragment : GeoFenceBaseFragment() {
 
     private fun subscribeViewModel(recyclerAdapter: GeoFenceRecyclerAdapter) {
         viewModel.geoFenceItems.observe(this, Observer {
-            recyclerAdapter.submitList(it!!)
+            recyclerAdapter.submitList(it)
             showList()
         })
     }
@@ -100,7 +102,13 @@ class GeoFenceFragment : GeoFenceBaseFragment() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, position: Int) {
-                recyclerAdapter.removeItem(viewHolder)
+                val removedGeoFence = recyclerAdapter.removeItem(viewHolder)
+                viewModel.delete(removedGeoFence)
+                Snackbar.make(viewHolder.itemView, "${removedGeoFence.name} gelöscht.", Snackbar.LENGTH_LONG)
+                    .setAction("Rückgängig") {
+                        recyclerAdapter.insertItem(position)
+                        viewModel.insert(removedGeoFence)
+                    }.show()
             }
 
             override fun onChildDraw(
@@ -141,10 +149,13 @@ class GeoFenceFragment : GeoFenceBaseFragment() {
                 }
                 super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
             }
-
         }
         val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
         itemTouchHelper.attachToRecyclerView(recyclerView)
+    }
+
+    private fun onSwitch(geoFence: GeoFence) {
+        viewModel.update(geoFence)
     }
 
     private fun showEmptyGeoFenceFragment() {
