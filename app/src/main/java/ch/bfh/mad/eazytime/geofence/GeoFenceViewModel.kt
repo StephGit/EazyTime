@@ -6,10 +6,22 @@ import ch.bfh.mad.eazytime.data.GeoFenceRepository
 import ch.bfh.mad.eazytime.data.entity.GeoFence
 import javax.inject.Inject
 
-class GeoFenceViewModel @Inject constructor(geofenceRepository: GeoFenceRepository) : ViewModel() {
+class GeoFenceViewModel @Inject constructor(var geoFenceRepository: GeoFenceRepository) : ViewModel() {
 
-    var hasGeoFenceInDatabase = geofenceRepository.hasGeoFence()
+    var hasGeoFence = geoFenceRepository.hasGeoFence()
 
-    val geoFenceItems: LiveData<List<GeoFence>> = geofenceRepository.geoFences
+    val geoFenceItems: LiveData<List<GeoFence>> = geoFenceRepository.geoFences
+
+    fun insert(geoFence: GeoFence) {
+        geoFenceRepository.insert(geoFence)
+    }
+
+    fun delete(geoFence: GeoFence) {
+        geoFenceRepository.delete(geoFence)
+    }
+
+    fun update(geoFence: GeoFence) {
+        geoFenceRepository.update(geoFence)
+    }
 
 }

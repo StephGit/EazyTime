@@ -5,12 +5,12 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class GeoFence(
-    var name: String,
+    var name: String?,
     var active: Boolean = false,
-    var gfId: String,
-    var radius: Double,
-    var latitude: Double,
-    var longitude: Double,
+    var gfId: String?,
+    var radius: Double?,
+    var latitude: Double?,
+    var longitude: Double?,
     @PrimaryKey(autoGenerate = true)
     val id: Long? = null
 )

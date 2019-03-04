@@ -6,32 +6,30 @@ import ch.bfh.mad.eazytime.data.dao.GeoFenceDao
 import ch.bfh.mad.eazytime.data.entity.GeoFence
 import javax.inject.Inject
 
-class GeoFenceRepository @Inject constructor(geoFenceDao: GeoFenceDao) {
+class GeoFenceRepository @Inject constructor(private var geoFenceDao: GeoFenceDao) {
 
-    var geoFenceDao: GeoFenceDao = geoFenceDao
-    val geoFences: LiveData<List<GeoFence>> = geoFenceDao.getGeoFences()
+    var geoFences: LiveData<List<GeoFence>> = geoFenceDao.getGeoFences()
 
     fun hasGeoFence(): Boolean {
         return GetAsyncTask(geoFenceDao).execute().get()
     }
 
-    fun saveGeoFence(geoFence: GeoFence) {
+    fun insert(geoFence: GeoFence) {
         InsertAsyncTask(geoFenceDao).execute(geoFence)
     }
 
-    fun updateGeoFence(geoFence: GeoFence) {
+    fun update(geoFence: GeoFence) {
         UpdateAsyncTask(geoFenceDao).execute(geoFence)
     }
 
-    fun deleteGeoFence(geoFence: GeoFence) {
+    fun delete(geoFence: GeoFence) {
         DeleteAsyncTask(geoFenceDao).execute(geoFence)
     }
 
     private class InsertAsyncTask internal constructor(private val geoFenceDao: GeoFenceDao) :
         AsyncTask<GeoFence, Void, Void>() {
         override fun doInBackground(vararg params: GeoFence): Void? {
-            val geoFence = params[0]
-            geoFenceDao.insert(geoFence)
+            geoFenceDao.insert(params[0])
             return null
         }
     }
@@ -46,8 +44,7 @@ class GeoFenceRepository @Inject constructor(geoFenceDao: GeoFenceDao) {
     private class UpdateAsyncTask internal constructor(private val geoFenceDao: GeoFenceDao) :
         AsyncTask<GeoFence, Void, Void>() {
         override fun doInBackground(vararg params: GeoFence): Void? {
-            val geoFence = params[0]
-            geoFenceDao.update(geoFence)
+            geoFenceDao.update(params[0])
             return null
         }
     }
@@ -55,8 +52,7 @@ class GeoFenceRepository @Inject constructor(geoFenceDao: GeoFenceDao) {
     private class DeleteAsyncTask internal constructor(private val geoFenceDao: GeoFenceDao) :
         AsyncTask<GeoFence, Void, Void>() {
         override fun doInBackground(vararg params: GeoFence): Void? {
-            val geoFence = params[0]
-            geoFenceDao.delete(geoFence)
+            geoFenceDao.delete(params[0])
             return null
         }
     }

@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.core.content.ContextCompat
+import ch.bfh.mad.eazytime.data.GeoFenceRepository
 import ch.bfh.mad.eazytime.data.entity.GeoFence
 import ch.bfh.mad.eazytime.service.GeoFenceReceiver
 import com.google.android.gms.location.Geofence
@@ -15,9 +16,13 @@ import com.google.android.gms.location.LocationServices
 import javax.inject.Inject
 
 
-class GeoFenceController @Inject constructor(private val context: Context) {
+class GeoFenceService @Inject constructor(private val context: Context, private val geoFenceRepository: GeoFenceRepository) {
 
     private val geofencingClient: GeofencingClient = LocationServices.getGeofencingClient(context)
+
+    fun initGeoFences() {
+
+    }
 
     /**
      * Creates a GoogleGeofence
@@ -46,7 +51,7 @@ class GeoFenceController @Inject constructor(private val context: Context) {
         success: () -> Unit,
         failure: (error: String) -> Unit
     ) {
-        val gf = buildGeofence(geoFence.gfId, geoFence.latitude, geoFence.longitude, geoFence.radius)
+        val gf = buildGeofence(geoFence.gfId!!, geoFence.latitude!!, geoFence.longitude!!, geoFence.radius!!)
         if (gf != null
             && ContextCompat.checkSelfPermission(
                 this.context,

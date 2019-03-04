@@ -6,7 +6,10 @@ import androidx.room.Room
 import ch.bfh.mad.eazytime.data.AppDatabase
 import ch.bfh.mad.eazytime.data.GeoFenceRepository
 import ch.bfh.mad.eazytime.data.dao.GeoFenceDao
-import ch.bfh.mad.eazytime.geofence.GeoFenceController
+import ch.bfh.mad.eazytime.geofence.GeoFenceRecyclerAdapter
+import ch.bfh.mad.eazytime.geofence.GeoFenceService
+import ch.bfh.mad.eazytime.util.NotificationHandler
+import dagger.Component
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -52,8 +55,6 @@ class AppModule {
     fun provideWorkDayDao(database: AppDatabase) = database.workDayDao()
 
     @Provides
-    fun provideGeoFenceViewModel(geoFenceViewModel: GeoFenceViewModel) : GeoFenceViewModel = geoFenceViewModel
-    @Provides
     @Singleton
     fun provideTimerService(timeSlotRepo: TimeSlotRepo, projectDao: ProjectDao, workDayRepo: WorkDayRepo) = TimerService(timeSlotRepo, projectDao, workDayRepo)
 
@@ -79,9 +80,14 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideGeoFenceController(context: Context): GeoFenceController = GeoFenceController(context)
+    fun provideGeoFenceService(context: Context, geoFenceRepository: GeoFenceRepository): GeoFenceService = GeoFenceService(context, geoFenceRepository)
 
     @Provides
     @Singleton
-    fun notificationHandler(): NotificationHandler = NotificationHandler()
+    fun provideNotificationHandler(): NotificationHandler = NotificationHandler()
+
+    @Provides
+    @Singleton
+    fun provideGeoFenceRecyclerAdapter(geoFenceRepository: GeoFenceRepository, geoFenceService: GeoFenceService):
+            GeoFenceRecyclerAdapter = GeoFenceRecyclerAdapter(geoFenceRepository, geoFenceService)
 }

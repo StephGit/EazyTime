@@ -1,7 +1,10 @@
 package ch.bfh.mad.eazytime.di
 
 import android.app.Application
-import ch.bfh.mad.eazytime.geofence.*
+import ch.bfh.mad.eazytime.geofence.GeoFenceEmptyFragment
+import ch.bfh.mad.eazytime.geofence.GeoFenceFragment
+import ch.bfh.mad.eazytime.geofence.GeoFenceRecyclerAdapter
+import ch.bfh.mad.eazytime.geofence.GeoFenceViewModel
 import ch.bfh.mad.eazytime.geofence.detail.GeoFenceDetailActivity
 import ch.bfh.mad.eazytime.homeScreenWidget.WidgetBroadCastReceiver
 import ch.bfh.mad.eazytime.homeScreenWidget.WidgetProvider
@@ -23,18 +26,12 @@ interface AppComponent {
     }
 
     fun inject(projectFragment: ProjectFragment)
-
     fun inject(addProjectActivity: AddProjectActivity)
-
     fun inject(homeScreenWidgetBroadCastReceiver: WidgetBroadCastReceiver)
-
     fun inject(widgetProvider: WidgetProvider)
     fun inject(geoFenceViewModel: GeoFenceViewModel)
     fun inject(geoFenceDetailActivity: GeoFenceDetailActivity)
     fun inject(geoFenceFragment: GeoFenceFragment)
-    fun inject(geoFenceAdapter: GeoFenceAdapter)
+    fun inject(geoFenceEmptyFragment: GeoFenceEmptyFragment)
     fun inject(geoFenceRecyclerAdapter: GeoFenceRecyclerAdapter)
-    fun inject(geoFenceTransitionsIntentService: GeoFenceTransitionsIntentService) {
-
-    }
 }

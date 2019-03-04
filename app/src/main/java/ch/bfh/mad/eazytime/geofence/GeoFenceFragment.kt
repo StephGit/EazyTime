@@ -31,7 +31,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 class GeoFenceFragment : GeoFenceBaseFragment() {
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var recyclerAdapter: GeoFenceRecyclerAdapter
     private lateinit var progressBar: ProgressBar
     private lateinit var viewModel: GeoFenceViewModel
     private lateinit var linearLayoutManager: LinearLayoutManager
@@ -40,6 +39,9 @@ class GeoFenceFragment : GeoFenceBaseFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    @Inject
+    lateinit var recyclerAdapter: GeoFenceRecyclerAdapter
 
     companion object {
         fun newFragment(): androidx.fragment.app.Fragment = GeoFenceFragment()
@@ -61,13 +63,12 @@ class GeoFenceFragment : GeoFenceBaseFragment() {
         recyclerView.layoutManager = linearLayoutManager
         recyclerView.setHasFixedSize(true)
 
-        recyclerAdapter = GeoFenceRecyclerAdapter()
         recyclerView.adapter = recyclerAdapter
         recyclerAdapter.onItemClick = { showGeoFenceDetail(it) }
 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(GeoFenceViewModel::class.java)
-
-        if (viewModel.hasGeoFenceInDatabase) subscribeViewModel(recyclerAdapter) else showEmptyGeoFenceFragment()
+        super.bind(viewModel)
+        if (viewModel.hasGeoFence) subscribeViewModel(recyclerAdapter) else showEmptyGeoFenceFragment()
 
         initSwipe()
 

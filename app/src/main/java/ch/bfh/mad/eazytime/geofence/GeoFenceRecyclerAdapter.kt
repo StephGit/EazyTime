@@ -14,23 +14,14 @@ import ch.bfh.mad.R
 import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.data.GeoFenceRepository
 import ch.bfh.mad.eazytime.data.entity.GeoFence
-import ch.bfh.mad.eazytime.di.Injector
 import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
-class  GeoFenceRecyclerAdapter : ListAdapter<GeoFence, GeoFenceRecyclerAdapter.ViewHolder>(GeoFenceDiffCallback()) {
+class  GeoFenceRecyclerAdapter @Inject constructor(private var geoFenceRepository: GeoFenceRepository, private var geoFenceService: GeoFenceService) :
+    ListAdapter<GeoFence, GeoFenceRecyclerAdapter.ViewHolder>(GeoFenceDiffCallback()) {
+
     var onItemClick: ((GeoFence) -> Unit)? = null
     private lateinit var itemView: View
-
-    @Inject
-    lateinit var geoFenceRepository: GeoFenceRepository
-
-    @Inject
-    lateinit var geoFenceController: GeoFenceController
-
-    init {
-        Injector.appComponent.inject(this)
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         itemView = LayoutInflater.from(parent.context)
@@ -41,7 +32,7 @@ class  GeoFenceRecyclerAdapter : ListAdapter<GeoFence, GeoFenceRecyclerAdapter.V
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentGeoFence = getItem(position)
         holder.apply {
-            bind(createOnClickListener(currentGeoFence), currentGeoFence)
+            bind(currentGeoFence)
             itemText.text = currentGeoFence.name
             switch.isChecked = currentGeoFence.active
 
@@ -59,18 +50,12 @@ class  GeoFenceRecyclerAdapter : ListAdapter<GeoFence, GeoFenceRecyclerAdapter.V
         }
     }
 
-    private fun createOnClickListener(geoFence: GeoFence): View.OnClickListener {
-        return View.OnClickListener {
-            onItemClick?.invoke(geoFence)
-        }
-    }
-
     private fun onCheckChange(
         it: GeoFence,
         isChecked: Boolean
     ) {
         it.active = isChecked
-        this.geoFenceRepository.updateGeoFence(it)
+        this.geoFenceRepository.update(it)
         if (it.active) {
             addGeoFence(it)
         } else {
@@ -79,7 +64,7 @@ class  GeoFenceRecyclerAdapter : ListAdapter<GeoFence, GeoFenceRecyclerAdapter.V
     }
 
     private fun removeGeoFence(it: GeoFence) {
-        geoFenceController.remove(
+        geoFenceService.remove(
             it,
             success = { Log.d(TAG, "GeoFence " + it.name + " removed successfully") },
             failure = { err ->
@@ -88,7 +73,7 @@ class  GeoFenceRecyclerAdapter : ListAdapter<GeoFence, GeoFenceRecyclerAdapter.V
     }
 
     private fun addGeoFence(it: GeoFence) {
-        geoFenceController.add(
+        geoFenceService.add(
             it,
             success = { Log.d(TAG, "GeoFence " + it.name + " added successfully") },
             failure = { err ->
@@ -97,14 +82,16 @@ class  GeoFenceRecyclerAdapter : ListAdapter<GeoFence, GeoFenceRecyclerAdapter.V
     }
 
     fun removeItem(viewHolder: RecyclerView.ViewHolder) {
-        var removedPosition = viewHolder.adapterPosition
-        var removedGeoFence = getItem(removedPosition)
-        this.geoFenceRepository.deleteGeoFence(removedGeoFence)
+        val removedPosition = viewHolder.adapterPosition
+        val removedGeoFence = getItem(removedPosition)
+        removeGeoFence(removedGeoFence)
+        this.geoFenceRepository.delete(removedGeoFence)
         notifyItemRemoved(removedPosition)
         Snackbar.make(viewHolder.itemView, "${removedGeoFence.name} gelöscht.", Snackbar.LENGTH_LONG)
             .setAction("Rückgängig") {
                 notifyItemInserted(removedPosition)
-                this.geoFenceRepository.saveGeoFence(removedGeoFence)
+                addGeoFence(removedGeoFence)
+                this.geoFenceRepository.insert(removedGeoFence)
             }.show()
     }
 
@@ -112,7 +99,7 @@ class  GeoFenceRecyclerAdapter : ListAdapter<GeoFence, GeoFenceRecyclerAdapter.V
         val itemText: TextView = itemView.findViewById(R.id.tv_geoFenceItemText)
         val switch: Switch = itemView.findViewById(R.id.sw_geoFenceActive)
 
-        fun bind(listener: View.OnClickListener, geoFence: GeoFence) {
+        fun bind(geoFence: GeoFence) {
             itemView.setOnClickListener {
                 onItemClick?.invoke(geoFence)
             }

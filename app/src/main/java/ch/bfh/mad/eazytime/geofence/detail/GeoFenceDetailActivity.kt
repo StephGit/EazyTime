@@ -14,10 +14,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import ch.bfh.mad.R
 import ch.bfh.mad.eazytime.TAG
-import ch.bfh.mad.eazytime.data.GeoFenceRepository
 import ch.bfh.mad.eazytime.data.entity.GeoFence
-import ch.bfh.mad.eazytime.di.Injector
-import ch.bfh.mad.eazytime.geofence.GeoFenceController
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -26,10 +23,8 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.gms.tasks.Task
-import com.google.android.material.snackbar.Snackbar
 import com.google.maps.android.SphericalUtil
 import java.util.*
-import javax.inject.Inject
 
 // TODO wrap text on steps
 // TODO Styling position of buttons and title
@@ -41,12 +36,6 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     GoogleMap.OnMyLocationButtonClickListener,
     GoogleMap.OnMapLongClickListener,
     ScaleGestureDetector.OnScaleGestureListener {
-
-    @Inject
-    lateinit var geoFenceRepository: GeoFenceRepository
-
-    @Inject
-    lateinit var geoFenceController: GeoFenceController
 
     private val defaultZoom: Float = 15F
     private var defaultRadius: Double = 0.0
@@ -70,7 +59,6 @@ class GeoFenceDetailActivity : AppCompatActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Injector.appComponent.inject(this)
         setContentView(R.layout.activity_geofence_detail)
 
         val mapFragment: SupportMapFragment =
@@ -86,6 +74,10 @@ class GeoFenceDetailActivity : AppCompatActivity(),
         } else {
             replaceFragment(GeoFenceMarkerFragment.newFragment())
         }
+    }
+
+    private fun initGeoFence() {
+        this.geoFence = GeoFence(null, false, null, null, null, null)
     }
 
     private fun getGeoFenceFromIntent() {
@@ -120,7 +112,7 @@ class GeoFenceDetailActivity : AppCompatActivity(),
             setOnMapLongClickListener(this@GeoFenceDetailActivity)
         }
         if (::geoFence.isInitialized) {
-            showGeoFenceOnMap(LatLng(geoFence.latitude, geoFence.longitude), geoFence.radius)
+            showGeoFenceOnMap(LatLng(geoFence.latitude!!, geoFence.longitude!!), geoFence.radius!!)
         } else {
             showCurrentLocation()
         }
@@ -218,13 +210,13 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     }
 
     private fun moveCamera(latLng: LatLng, zoom: Float) {
-        map.moveCamera(
+        map.animateCamera(
             CameraUpdateFactory.newLatLngZoom(latLng, zoom)
         )
     }
 
     private fun moveCameraToBounds(bounds: LatLngBounds) {
-        map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 12))
+        map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 25))
     }
 
     /**
@@ -281,7 +273,7 @@ class GeoFenceDetailActivity : AppCompatActivity(),
      *  Callback methodes from fragments
      **/
     override fun getFenceName(): String {
-        if (::geoFence.isInitialized) return this.geoFence.name
+        if (::geoFence.isInitialized && this.geoFence.name != null) return this.geoFence.name!!
         return ""
     }
 
@@ -295,6 +287,9 @@ class GeoFenceDetailActivity : AppCompatActivity(),
         if (showingMarker()) {
             moveCamera(this.marker.position, this.map.cameraPosition.zoom)
             setMapInteractive(false)
+            if (!::geoFence.isInitialized) initGeoFence()
+            this.geoFence.latitude = this.marker.position.latitude
+            this.geoFence.longitude = this.marker.position.longitude
             showCircle(this.marker.position, calcRadiusForZoomLevel())
             replaceFragment(GeoFenceRadiusFragment.newFragment())
         } else {
@@ -306,42 +301,24 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     override fun goToEdit() {
         setMapInteractive(false)
         if (showingCircle()) {
+            this.geoFence.radius = this.circle.radius
             replaceFragment(GeoFenceEditFragment.newFragment())
         }
     }
 
-    override fun goToDetail() {
-        setMapInteractive(false)
-        replaceFragment(GeoFenceDetailFragment.newFragment())
-    }
-
-    override fun deleteGeoFence() {
-        // TODO implement delete on list
-        leaveGeoFenceDetail()
-    }
-
     override fun saveGeoFence(geoFenceName: String) {
-        this.geoFence =
-            GeoFence(
-                geoFenceName,
-                false,
-                geoFenceName + UUID.randomUUID(),
-                this.circle.radius,
-                this.marker.position.latitude,
-                this.marker.position.longitude
-            )
-        geoFenceController.add(geoFence,
-            success = {
-                Log.d(TAG, "GeoFence added successfully")
-                geoFence.active = true // TODO success callback to late for saving
-            },
-            failure = { err ->
-                Snackbar.make(window.decorView.rootView, err, Snackbar.LENGTH_LONG).show()
-            })
-        geoFenceRepository.saveGeoFence(this.geoFence)
-        val returnIntent = Intent()
-        returnIntent.putExtra("result", true)
-        setResult(Activity.RESULT_OK, returnIntent)
+        val data = Intent().apply {
+            putExtra("GEOFENCE_NAME", geoFenceName)
+            putExtra("GEOFENCE_ACTIVE", geoFence.active)
+            putExtra("GEOFENCE_GFID", geoFenceName + UUID.randomUUID())
+            putExtra("GEOFENCE_RADIUS", geoFence.radius)
+            putExtra("GEOFENCE_LAT", geoFence.latitude)
+            putExtra("GEOFENCE_LONG", geoFence.longitude)
+            geoFence.id?.let { id ->
+                putExtra("GEOFENCE_ID", id)
+            }
+        }
+        setResult(Activity.RESULT_OK, data)
         leaveGeoFenceDetail()
     }
 
