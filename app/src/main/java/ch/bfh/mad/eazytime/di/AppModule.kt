@@ -11,6 +11,7 @@ import ch.bfh.mad.eazytime.data.repo.ProjectRepo
 import ch.bfh.mad.eazytime.data.repo.TimeSlotRepo
 import ch.bfh.mad.eazytime.data.repo.WorkDayRepo
 import ch.bfh.mad.eazytime.projects.addProject.ProjectSaveOrUpdateService
+import ch.bfh.mad.eazytime.util.CalendarProviderService
 import ch.bfh.mad.eazytime.util.EazyTimeColorUtil
 import ch.bfh.mad.eazytime.util.ProjectProviderService
 import ch.bfh.mad.eazytime.util.TimerService
@@ -69,5 +70,9 @@ class AppModule {
     @Provides
     @Singleton
     fun provideWorkdayRepo(workDayDao: WorkDayDao) = WorkDayRepo(workDayDao)
+
+    @Provides
+    @Singleton
+    fun provideCalendarProviderService(workDayRepo: WorkDayRepo, timeSlotRepo: TimeSlotRepo) = CalendarProviderService(workDayRepo, timeSlotRepo)
 
 }

@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.MenuItem
 import ch.bfh.mad.R
 import ch.bfh.mad.eazytime.calendar.CalendarFragment
+import ch.bfh.mad.eazytime.calendar.detail.CalendarDetailActivity
 import ch.bfh.mad.eazytime.geofence.GeoFenceFragment
 import ch.bfh.mad.eazytime.projects.ProjectFragment
 import ch.bfh.mad.eazytime.projects.addProject.AddProjectActivity
@@ -52,5 +53,9 @@ class EazyTimeActivity : AppCompatActivity(), EazyTimeNavigator {
 
     override fun openUpdateProjectActivity(projectId: Long) {
         startActivity(AddProjectActivity.getUpdateProjectActivityIntent(this, projectId))
+    }
+
+    override fun openCalendarDetailActivity(workDayId: Long) {
+        startActivity(CalendarDetailActivity.getIntent(this, workDayId))
     }
 }

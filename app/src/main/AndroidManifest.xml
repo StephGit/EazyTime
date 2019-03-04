@@ -22,6 +22,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".eazytime.projects.addProject.AddProjectActivity"/>
+        <activity android:name=".eazytime.calendar.detail.CalendarDetailActivity"/>
     </application>
 
 </manifest>
