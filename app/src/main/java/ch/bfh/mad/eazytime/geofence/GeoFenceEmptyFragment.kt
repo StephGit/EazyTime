@@ -26,7 +26,7 @@ class GeoFenceEmptyFragment : GeoFenceBaseFragment() {
         val view = inflater.inflate(R.layout.fragment_geofence_empty, container, false)
         activity!!.title = getString(R.string.geofence_fragment_title)
         Injector.appComponent.inject(this)
-        
+
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(GeoFenceViewModel::class.java)
         super.bind(viewModel)
 

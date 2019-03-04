@@ -8,7 +8,7 @@ import android.content.pm.PackageManager
 import androidx.core.content.ContextCompat
 import ch.bfh.mad.eazytime.data.GeoFenceRepository
 import ch.bfh.mad.eazytime.data.entity.GeoFence
-import ch.bfh.mad.eazytime.service.GeoFenceReceiver
+import ch.bfh.mad.eazytime.geofence.receiver.GeoFenceReceiver
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingClient
 import com.google.android.gms.location.GeofencingRequest

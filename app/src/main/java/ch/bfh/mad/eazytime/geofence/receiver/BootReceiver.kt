@@ -1,4 +1,4 @@
-package ch.bfh.mad.eazytime.service
+package ch.bfh.mad.eazytime.geofence.receiver
 
 import android.content.BroadcastReceiver
 import android.content.Context

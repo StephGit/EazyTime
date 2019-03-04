@@ -55,6 +55,7 @@ class  GeoFenceRecyclerAdapter @Inject constructor(private var geoFenceRepositor
         isChecked: Boolean
     ) {
         it.active = isChecked
+
         this.geoFenceRepository.update(it)
         if (it.active) {
             addGeoFence(it)
