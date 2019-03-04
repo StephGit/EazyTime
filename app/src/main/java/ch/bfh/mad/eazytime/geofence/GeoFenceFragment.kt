@@ -23,8 +23,6 @@ import ch.bfh.mad.eazytime.di.Injector
 import ch.bfh.mad.eazytime.geofence.detail.GeoFenceDetailActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import javax.inject.Inject
-import ch.bfh.mad.eazytime.util.ViewModelFactory
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 // TODO all items delete show EmptyFragment
 
