@@ -74,9 +74,4 @@ class AppModule {
     @Provides
     @Singleton
     fun provideWidgetProviderUtils() = WidgetProviderUtils()
-
-    @Provides
-    @Singleton
-    fun provideWidgetProviderUtils() = WidgetProviderUtils()
-
 }
