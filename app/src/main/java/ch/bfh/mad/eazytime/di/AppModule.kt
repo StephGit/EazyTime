@@ -30,10 +30,6 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideGeoFenceRepository(geoFenceDao: GeoFenceDao): GeoFenceRepository = GeoFenceRepository(geoFenceDao)
-
-    @Provides
-    @Singleton
     fun providesEazyTimeColorUtil(context: Context) =  EazyTimeColorUtil(context)
 
     @Provides
@@ -86,14 +82,19 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideGeoFenceService(context: Context, geoFenceRepository: GeoFenceRepository): GeoFenceService = GeoFenceService(context, geoFenceRepository)
+    fun provideGeoFenceRepository(geoFenceDao: GeoFenceDao): GeoFenceRepository = GeoFenceRepository(geoFenceDao)
 
     @Provides
     @Singleton
-    fun provideNotificationHandler(): NotificationHandler = NotificationHandler()
+    fun provideGeoFenceService(context: Context, geoFenceRepository: GeoFenceRepository): GeoFenceService = GeoFenceService(context, geoFenceRepository)
 
     @Provides
     @Singleton
     fun provideGeoFenceRecyclerAdapter(geoFenceRepository: GeoFenceRepository, geoFenceService: GeoFenceService):
             GeoFenceRecyclerAdapter = GeoFenceRecyclerAdapter(geoFenceRepository, geoFenceService)
+
+    @Provides
+    @Singleton
+    fun provideNotificationHandler(): NotificationHandler = NotificationHandler()
+
 }

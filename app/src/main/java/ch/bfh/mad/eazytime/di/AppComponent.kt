@@ -5,7 +5,7 @@ import ch.bfh.mad.eazytime.geofence.GeoFenceEmptyFragment
 import ch.bfh.mad.eazytime.geofence.GeoFenceFragment
 import ch.bfh.mad.eazytime.geofence.GeoFenceRecyclerAdapter
 import ch.bfh.mad.eazytime.geofence.GeoFenceViewModel
-import ch.bfh.mad.eazytime.geofence.detail.GeoFenceDetailActivity
+import ch.bfh.mad.eazytime.geofence.receiver.GeoFenceReceiver
 import ch.bfh.mad.eazytime.homeScreenWidget.WidgetBroadCastReceiver
 import ch.bfh.mad.eazytime.homeScreenWidget.WidgetProvider
 import ch.bfh.mad.eazytime.projects.ProjectFragment
@@ -30,8 +30,8 @@ interface AppComponent {
     fun inject(homeScreenWidgetBroadCastReceiver: WidgetBroadCastReceiver)
     fun inject(widgetProvider: WidgetProvider)
     fun inject(geoFenceViewModel: GeoFenceViewModel)
-    fun inject(geoFenceDetailActivity: GeoFenceDetailActivity)
     fun inject(geoFenceFragment: GeoFenceFragment)
     fun inject(geoFenceEmptyFragment: GeoFenceEmptyFragment)
     fun inject(geoFenceRecyclerAdapter: GeoFenceRecyclerAdapter)
+    fun inject(geoFenceReceiver: GeoFenceReceiver)
 }

@@ -5,14 +5,22 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import ch.bfh.mad.eazytime.TAG
+import ch.bfh.mad.eazytime.di.Injector
 import ch.bfh.mad.eazytime.geofence.GeofenceErrorMessages
 import ch.bfh.mad.eazytime.util.NotificationHandler
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingEvent
+import javax.inject.Inject
 
 class GeoFenceReceiver : BroadcastReceiver() {
 
-    private var notificationHandler: NotificationHandler = NotificationHandler()
+    @Inject
+    lateinit var notificationHandler: NotificationHandler
+
+    init {
+        Injector.appComponent.inject(this)
+    }
+
 
 //    private val geofenceAction: String = "ch.eazytime.geofence.ACTION_RECEIVE_GEOFENCE"
 
