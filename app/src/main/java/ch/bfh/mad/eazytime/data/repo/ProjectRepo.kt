@@ -20,6 +20,15 @@ class ProjectRepo(private val projectDao: ProjectDao) {
     }
 
     @WorkerThread
+    suspend fun rollbackDeleteProject(id: Long) = withContext(Dispatchers.IO) {
+        val project = getProjectById(id)
+        project?.let {
+            it.isDeleted = false
+            update(it)
+        }
+    }
+
+    @WorkerThread
     suspend fun getProjectById(id: Long): Project? = withContext(Dispatchers.IO){
         projectDao.getProjectById(id)
     }

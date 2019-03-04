@@ -80,5 +80,8 @@
         call.
     </string>
     <string name="title_activity_maps">Map</string>
+    <string name="active_projects_cant_be_deleted">Projekte mit einer aktiven Buchung können nicht gelöscht werden</string>
+    <string name="priject_is_deleted">Projekt wurde gelöscht</string>
+    <string name="rollback">Rückgängig</string>
 
 </resources>
