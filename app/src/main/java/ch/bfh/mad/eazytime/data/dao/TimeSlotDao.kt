@@ -7,7 +7,7 @@ import ch.bfh.mad.eazytime.data.entity.TimeSlot
 @Dao
 interface TimeSlotDao {
     @Query("SELECT * FROM timeslot")
-    fun getTimeSlots(): List<TimeSlot>
+    fun getTimeSlots(): LiveData<List<TimeSlot>>
 
     @Insert
     fun insertAll(timeSlots: List<TimeSlot>)
@@ -20,7 +20,4 @@ interface TimeSlotDao {
 
     @Query("SELECT * FROM timeslot WHERE endDate is NULL")
     fun getCurrentTimeSlots(): List<TimeSlot>
-
-    @Query("SELECT * FROM timeslot")
-    fun getTimeSlotsLiveData(): LiveData<List<TimeSlot>>
 }

@@ -12,6 +12,7 @@
     <color name="eazyTime_colorBackgroundText">#CED4DA</color>
     <color name="eazyTime_colorBackground">#F1F3F5</color>
     <color name="eazyTime_light_gray">#808080</color>
+    <color name="eazyTime_default_colorProject">#ff8787</color>
     <color name="eazyTime_colorProject1">#ff8787</color>
     <color name="eazyTime_colorProject2">#f783ac</color>
     <color name="eazyTime_colorProject3">#9775fa</color>
@@ -33,6 +34,19 @@
         <item name="project_color_8">@color/eazyTime_colorProject8</item>
         <item name="project_color_9">@color/eazyTime_colorProject9</item>
     </array>
+
+    <string-array name="eazyTime_project_colors_as_string">
+        <item>#ff8787</item>
+        <item>#f783ac</item>
+        <item>#9775fa</item>
+        <item>#3bc9db</item>
+        <item>#38d9a9</item>
+        <item>#69db7c</item>
+        <item>#a9e34b</item>
+        <item>#ffd43b</item>
+        <item>#ffa94d</item>
+    </string-array>
+
 </resources>
 
 

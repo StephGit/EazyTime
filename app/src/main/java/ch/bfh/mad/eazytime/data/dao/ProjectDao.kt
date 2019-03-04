@@ -15,12 +15,24 @@ interface ProjectDao {
     @Insert
     fun insertAll(projects: List<Project>)
 
+    @Insert
+    fun insert(project: Project)
+
     @Update
     fun update(project: Project)
+
+    @Update
+    fun updateAll(projects: List<Project>)
 
     @Delete
     fun delete(project: Project)
 
     @Query("SELECT * FROM project WHERE isDefault = 1")
     fun getDefaultProject(): Project
+
+    @Query("SELECT * FROM project WHERE id == :projectId")
+    fun getProjectById(projectId: Long): Project?
+
+    @Query("DELETE FROM project WHERE id == :projectId")
+    fun deleteProjectById(projectId: Long)
 }

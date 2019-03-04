@@ -23,11 +23,16 @@ android {
     dataBinding {
         enabled true
     }
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 dependencies {
     def lifecycleVersion = "1.1.1"
     def daggerVersion = "2.20"
+    def coroutines = '1.1.1'
+
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -41,6 +46,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    testImplementation "com.nhaarman:mockito-kotlin:1.5.0"
     //db
     implementation 'android.arch.persistence.room:runtime:1.1.1'
     annotationProcessor"android.arch.persistence.room:compiler:1.1.1"
@@ -57,5 +63,8 @@ dependencies {
 
     // color picker
     implementation 'com.thebluealliance:spectrum:0.7.1'
+
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines"
 
 }

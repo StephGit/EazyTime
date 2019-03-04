@@ -1,16 +1,11 @@
 package ch.bfh.mad.eazytime.projects
 
-import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.ViewModel
-import android.util.Log
-import ch.bfh.mad.eazytime.TAG
+import ch.bfh.mad.eazytime.util.ProjectProviderService
 
-class ProjectListViewModel(private var fakeProjectProviderService: FakeProjectProviderService): ViewModel(){
+class ProjectListViewModel(projectProviderService: ProjectProviderService): ViewModel(){
 
-    val projects: MutableLiveData<List<ProjectListItem>> = MutableLiveData()
+    val projects: LiveData<List<ProjectListItem>> = projectProviderService.getProjectListitems()
 
-    fun refreshListItems(){
-        Log.i(TAG, "ProjectListViewModel.getProjectListItems")
-        projects.value = fakeProjectProviderService.getFakeProjectList()
-    }
 }

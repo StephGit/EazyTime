@@ -35,5 +35,10 @@
     <string name="error_short_code_length">Maximal 3 Zeichen!</string>
     <string name="color_picker_dialog_title">Wähle die Projektfarbe</string>
     <string name="error_project_name_length">Name darf nicht leer sein</string>
+    <string name="bu_save_project">Speichern</string>
+    <string name="bu_delete_project">Löschen</string>
+    <string name="default_projectName">MyProject</string>
+    <string name="defaul_color_string">#ff8787</string>
+    <string name="is_default_project">Standardprojekt</string>
 
 </resources>
