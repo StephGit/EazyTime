@@ -45,7 +45,7 @@ class GeoFenceReceiver : BroadcastReceiver() {
             triggeringGeofences.forEach {
                 // TODO handle each
                 Log.i(TAG, "FancyFenci")
-                notificationHandler.sendNotification(context, "FancyFenci" + event.geofenceTransition.toString())
+                notificationHandler.sendNotification("FancyFenci" + event.geofenceTransition.toString())
                 // timerService.startDefault/stopDefault
             }
         }

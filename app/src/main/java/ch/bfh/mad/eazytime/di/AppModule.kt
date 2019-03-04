@@ -95,6 +95,6 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideNotificationHandler(): NotificationHandler = NotificationHandler()
+    fun provideNotificationHandler(context: Context): NotificationHandler = NotificationHandler(context)
 
 }
