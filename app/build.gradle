@@ -20,6 +20,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
     dataBinding {
         enabled true
     }
@@ -35,7 +36,7 @@ dependencies {
 
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     //noinspection GradleCompatible
     implementation 'androidx.appcompat:appcompat:1.0.0-beta01'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
@@ -44,9 +45,9 @@ dependencies {
     //testing
     implementation 'androidx.legacy:legacy-support-v4:1.0.0-beta01'
     testImplementation 'junit:junit:4.12'
+    testImplementation "com.nhaarman:mockito-kotlin:1.5.0"
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
-    testImplementation "com.nhaarman:mockito-kotlin:1.5.0"
     //db
     implementation 'androidx.room:room-runtime:2.0.0-beta01'
     annotationProcessor 'androidx.room:room-compiler:2.0.0-beta01'
@@ -57,8 +58,10 @@ dependencies {
     kapt "androidx.lifecycle:lifecycle-compiler:$lifecycleVersion"
     implementation "com.google.dagger:dagger:$daggerVersion"
     kapt "com.google.dagger:dagger-compiler:$daggerVersion"
+    implementation "androidx.recyclerview:recyclerview:1.0.0"
 
-    implementation 'com.google.android.gms:play-services-maps:16.0.0'
+    implementation 'com.google.maps.android:android-maps-utils:0.5'
+    implementation 'com.google.android.gms:play-services-maps:16.1.0'
     implementation 'com.google.android.gms:play-services-location:16.0.0'
 
     // color picker
@@ -67,4 +70,15 @@ dependencies {
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines"
 
+}
+// FIX for ClassNotFoundException:OnUnhandledKeyEventListener
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        def requested = details.requested
+        if (requested.group == "com.android.support") {
+            if (!requested.name.startsWith("multidex")) {
+                details.useVersion "26.+"
+            }
+        }
+    }
 }

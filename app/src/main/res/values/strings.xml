@@ -11,19 +11,38 @@
     <string name="bottom_navigation_calendar">Kalender</string>
     <string name="bottom_navigation_geofence">Geofence</string>
 
-    <string name="geofence_title_detail">Geofence Detail</string>
-    <string name="geofence_item_name">Name</string>
-    <string name="geofence_item_name_desc">Geofence Name</string>
-    <string name="delete">Löschen</string>
-    <string name="save">Speichern</string>
-    <string name="no_geofences">Keine Geofences</string>
-    <string name="no_geofence_added_hint">Hinzugefügte Geofences werden hier angezeigt.</string>
-    <string name="geofence_icon">geofence icon</string>
-    <string name="OK">Ok</string>
     <string name="permission_request_rationale">Um GeoFences einzurichten und zu verwenden, wird die Lokalisierung
         benötigt.
     </string>
+    <string name="OK">OK</string>
 
+    <string name="geofence_detail_fragment_title">Geofence Detail</string>
+    <string name="geofence_detail_fragment_item_name">Name</string>
+    <string name="geofence_detail_fragment_item_name_desc">Geofence Name</string>
+    <string name="geofence_detail_fragment_btn_edit">Ändern</string>
+    <string name="geofence_detail_fragment_btn_back">Zurück</string>
+
+    <string name="geofence_edit_fragment_title">Geofence bearbeiten</string>
+    <string name="geofence_edit_fragment_edittext_hint">Name des GeoFence</string>
+    <string name="geofence_edit_fragment_btn_change">Geofence ändern</string>
+    <string name="geofence_edit_fragment_btn_save">Speichern</string>
+    <string name="geofence_edit_error_no_name">Bitte geben Sie einen Namen ein!</string>
+
+    <string name="geofence_empty_fragment_title">Keine Geofences</string>
+    <string name="geofence_emtpy_fragment_info">Hinzugefügte Geofences werden hier angezeigt.</string>
+    <string name="geofence_emtpy_fragment_icon_text">geofence icon</string>
+
+    <string name="geofence_marker_fragment_title">Marker setzen</string>
+    <string name="geofence_marker_fragment_info">Die gewünschte Position auf der Karte antippen!</string>
+    <string name="geofence_marker_fragment_btn_proceed">Weiter</string>
+
+    <string name="geofence_radius_fragment_title">Radius definieren</string>
+    <string name="geofence_radius_fragment_info">Den gewünschten Radius mit Zweifinger-Pinch erstellen!</string>
+    <string name="geofence_radius_fragment_btn_proceed">Weiter</string>
+    <string name="geofence_radius_fragment_btn_back">Zurück</string>
+    <string name="geofence_listitem_switch_text">Aktiv</string>
+
+    <string name="geofence_detail_activity_toast_marker_error">Bitte einen Marker setzen!</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="add_project_fragment_title">Projekt hinzufügen...</string>
 
@@ -50,5 +69,16 @@
     <string name="ExtraKeyProjectName">KEY_PROJECT_NAME</string>
     <string name="ExtraKeyProjectShortCode">SHORT_CODE</string>
     <string name="no_projects_for_widget">Keine Projekte mit "Soll auf AppWidget erscheinen" gefunden</string>
+
+    <string name="geofence_unknown_error">Unbekannter Fehler: Der Geofence-Service ist zur Zeit nicht erreichbar.
+    </string>
+    <string name="geofence_not_available">Der Geofence-Service ist nicht erreichbar. Wählen Sie in Einstellungen >
+        Standort > Suchmethode \'Hohe Genauigkeit\'.
+    </string>
+    <string name="geofence_too_many_geofences">Die App hat zuviele Geofences registriert.</string>
+    <string name="geofence_too_many_pending_intents">You have provided too many PendingIntents to the addGeofences()
+        call.
+    </string>
+    <string name="title_activity_maps">Map</string>
 
 </resources>
