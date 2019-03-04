@@ -28,7 +28,7 @@ class ProjectsListAdapter(context: Context, @LayoutRes itemLayoutRes: Int) :
             val timeTV = view.findViewById<TextView>(R.id.project_list_item_project_time)
             timeTV.text = getCurrentTime(project)
             timeTV.setTypeface(null, Typeface.NORMAL)
-            view.findViewById<TextView>(R.id.project_list_item_color_tag).text = project.shortCode
+            view.findViewById<TextView>(R.id.project_list_item_color_tag).text = project.shortCode?.toUpperCase()
             view.findViewById<TextView>(R.id.project_list_item_project_isDefault).text = getMarkerForDefaultProject(context, project)
             if (project.active){
                 nameTV.setTypeface(null, Typeface.BOLD)

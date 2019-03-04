@@ -49,5 +49,6 @@
     <string name="ExtraKeyProjectId">KEY_PROJECT_ID</string>
     <string name="ExtraKeyProjectName">KEY_PROJECT_NAME</string>
     <string name="ExtraKeyProjectShortCode">SHORT_CODE</string>
+    <string name="no_projects_for_widget">Keine Projekte mit "Soll auf AppWidget erscheinen" gefunden</string>
 
 </resources>
