@@ -1,8 +1,8 @@
 package ch.bfh.mad.eazytime.data
 
-import android.arch.persistence.room.Database
-import android.arch.persistence.room.RoomDatabase
-import android.arch.persistence.room.TypeConverters
+import androidx.room.Database
+import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import ch.bfh.mad.eazytime.data.dao.GeoFenceDao
 import ch.bfh.mad.eazytime.data.dao.ProjectDao
 import ch.bfh.mad.eazytime.data.dao.TimeSlotDao

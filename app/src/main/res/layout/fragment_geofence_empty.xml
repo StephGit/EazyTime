@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -49,7 +49,7 @@
             app:layout_constraintVertical_bias="@dimen/eazyTime_empty_fragment_vertical_bias"
             android:textColor="@color/eazyTime_colorBackgroundText"/>
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btn_addGeofence"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -59,4 +59,4 @@
             android:src="@drawable/ic_add"
             app:backgroundTint="@color/eazyTime_colorBrand"
     />
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

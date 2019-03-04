@@ -1,6 +1,6 @@
 package ch.bfh.mad.eazytime.data
 
-import android.arch.persistence.room.TypeConverter
+import androidx.room.TypeConverter
 import org.joda.time.LocalDate
 import org.joda.time.LocalDateTime
 

@@ -1,6 +1,6 @@
 package ch.bfh.mad.eazytime.data.repo
 
-import android.arch.lifecycle.LiveData
+import androidx.lifecycle.LiveData
 import ch.bfh.mad.eazytime.data.dao.ProjectDao
 import ch.bfh.mad.eazytime.data.entity.Project
 

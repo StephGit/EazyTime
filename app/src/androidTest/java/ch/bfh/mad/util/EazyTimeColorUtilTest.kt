@@ -1,7 +1,7 @@
 package ch.bfh.mad.util
 
-import android.support.test.InstrumentationRegistry
-import android.support.test.runner.AndroidJUnit4
+import androidx.test.InstrumentationRegistry
+import androidx.test.runner.AndroidJUnit4
 import ch.bfh.mad.R
 import ch.bfh.mad.eazytime.util.EazyTimeColorUtil
 import org.junit.Assert.assertThat

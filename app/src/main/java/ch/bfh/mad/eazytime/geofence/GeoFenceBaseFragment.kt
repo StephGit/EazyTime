@@ -2,10 +2,9 @@ package ch.bfh.mad.eazytime.geofence
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.support.v4.app.Fragment
 import ch.bfh.mad.eazytime.util.PermissionHandler
 
-open class GeoFenceBaseFragment : Fragment() {
+open class GeoFenceBaseFragment : androidx.fragment.app.Fragment() {
 
     private val permissionFineLocation = Manifest.permission.ACCESS_FINE_LOCATION
     private var permissionFineLocationGranted: Boolean = false
@@ -19,7 +18,7 @@ open class GeoFenceBaseFragment : Fragment() {
         }
     }
 
-    protected fun checkPermission(fragment: Fragment) {
+    protected fun checkPermission(fragment: androidx.fragment.app.Fragment) {
         permissionHandler = PermissionHandler(fragment, permissionFineLocation)
         permissionFineLocationGranted = permissionHandler.checkPermission()
     }

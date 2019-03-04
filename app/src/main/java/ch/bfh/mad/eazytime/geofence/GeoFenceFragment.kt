@@ -2,14 +2,13 @@ package ch.bfh.mad.eazytime.geofence
 
 
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
 import android.widget.ProgressBar
 import ch.bfh.mad.R
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class GeoFenceFragment : GeoFenceBaseFragment() {
 
@@ -17,7 +16,7 @@ class GeoFenceFragment : GeoFenceBaseFragment() {
     private lateinit var progressBar: ProgressBar
 
     companion object {
-        fun newFragment(): Fragment = GeoFenceFragment()
+        fun newFragment(): androidx.fragment.app.Fragment = GeoFenceFragment()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

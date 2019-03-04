@@ -1,6 +1,6 @@
 package ch.bfh.mad.eazytime.data.entity
 
-import android.arch.persistence.room.*
+import androidx.room.*
 import org.joda.time.LocalDateTime
 
 @Entity(

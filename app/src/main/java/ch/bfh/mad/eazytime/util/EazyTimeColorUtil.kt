@@ -1,8 +1,8 @@
 package ch.bfh.mad.eazytime.util
 
 import android.content.Context
-import android.support.v4.content.ContextCompat
 import android.util.Log
+import androidx.core.content.ContextCompat
 import ch.bfh.mad.R
 import ch.bfh.mad.eazytime.TAG
 

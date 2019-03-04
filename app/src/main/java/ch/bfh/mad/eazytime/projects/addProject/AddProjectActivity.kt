@@ -1,16 +1,16 @@
 package ch.bfh.mad.eazytime.projects.addProject
 
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
-import android.databinding.DataBindingUtil
 import android.os.AsyncTask
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import ch.bfh.mad.R
 import ch.bfh.mad.databinding.ActivityAddProjectBinding
 import ch.bfh.mad.eazytime.TAG

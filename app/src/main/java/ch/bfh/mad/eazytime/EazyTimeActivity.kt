@@ -1,16 +1,15 @@
 package ch.bfh.mad.eazytime
 
 import android.os.Bundle
-import android.support.design.widget.BottomNavigationView
-import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import ch.bfh.mad.R
 import ch.bfh.mad.eazytime.calendar.CalendarFragment
 import ch.bfh.mad.eazytime.geofence.GeoFenceFragment
 import ch.bfh.mad.eazytime.projects.ProjectFragment
 import ch.bfh.mad.eazytime.projects.addProject.AddProjectActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class EazyTimeActivity : AppCompatActivity(), EazyTimeNavigator {
 
@@ -39,7 +38,7 @@ class EazyTimeActivity : AppCompatActivity(), EazyTimeNavigator {
         return true
     }
 
-    private fun replaceFragment(fragment: Fragment) {
+    private fun replaceFragment(fragment: androidx.fragment.app.Fragment) {
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.frame_content, fragment)
