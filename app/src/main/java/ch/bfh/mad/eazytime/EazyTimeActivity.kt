@@ -1,5 +1,7 @@
 package ch.bfh.mad.eazytime
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -14,6 +16,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 class EazyTimeActivity : AppCompatActivity(), EazyTimeNavigator {
 
     private lateinit var navigation: BottomNavigationView
+
+    companion object {
+        fun newIntent(ctx: Context) = Intent(ctx, EazyTimeActivity::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +38,7 @@ class EazyTimeActivity : AppCompatActivity(), EazyTimeNavigator {
         when (clickedMenuItem.itemId) {
             R.id.bottom_navigation_project -> replaceFragment(ProjectFragment())
             R.id.bottom_navigation_calendar -> replaceFragment(CalendarFragment())
-            R.id.bottom_navigation_geofence -> replaceFragment(GeoFenceFragment())
+            R.id.bottom_navigation_geofence -> replaceFragment(GeoFenceFragment.newFragment())
             else -> throw IllegalArgumentException("Unknown clickedMenuItem.itemId: ${clickedMenuItem.itemId}")
         }
         return true

@@ -4,6 +4,8 @@
           package="ch.bfh.mad">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <application
             android:name=".eazytime.EazyTimeApp"
@@ -15,14 +17,19 @@
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
 
+        <meta-data
+                android:name="com.google.android.geo.API_KEY"
+                android:value="@string/google_maps_key"/>
+
         <activity android:name=".eazytime.EazyTimeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".eazytime.projects.addProject.AddProjectActivity"/>
+        <activity android:name=".eazytime.geofence.detail.GeoFenceDetailActivity"/>
 
+        <activity android:name=".eazytime.projects.addProject.AddProjectActivity"/>
         <receiver android:name=".eazytime.homeScreenWidget.WidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
@@ -43,6 +50,24 @@
                 <action android:name="ET_WIDGET_BUTTON_FIVE"/>
             </intent-filter>
         </receiver>
+        <service android:name=".eazytime.geofence.GeoFenceTransitionsIntentService"/>
+
+        <receiver
+                android:name="ch.bfh.mad.eazytime.geofence.receiver.GeoFenceReceiver"
+                android:enabled="true"
+                android:exported="false">
+            <intent-filter>
+                <action android:name="ch.eazytime.geofence.ACTION_RECEIVE_GEOFENCE"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name="ch.bfh.mad.eazytime.geofence.receiver.BootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+
+        <uses-library android:name="com.google.android.maps"/>
+        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
     </application>
 
 </manifest>

@@ -8,7 +8,6 @@ import androidx.core.content.ContextCompat
 import ch.bfh.mad.R
 import com.google.android.material.snackbar.Snackbar
 
-
 class PermissionHandler {
 
     private var activity: Activity? = null
