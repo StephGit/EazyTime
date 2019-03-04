@@ -1,4 +1,4 @@
-package ch.bfh.mad.eazytime.homeScreenWidget
+package ch.bfh.mad.eazytime.remoteViews.homeScreenWidget
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
@@ -16,6 +16,7 @@ import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.data.dao.ProjectDao
 import ch.bfh.mad.eazytime.di.Injector
 import ch.bfh.mad.eazytime.projects.ProjectListItem
+import ch.bfh.mad.eazytime.remoteViews.RemoteViewBroadCastReceiver
 import ch.bfh.mad.eazytime.util.EazyTimeColorUtil
 import ch.bfh.mad.eazytime.util.ProjectProviderService
 import ch.bfh.mad.eazytime.util.WidgetProviderUtils
@@ -51,7 +52,7 @@ class WidgetProvider : AppWidgetProvider() {
     }
 
     private fun updateButtons(context: Context, remoteViews: RemoteViews, appWidgetManager: AppWidgetManager, appWidgetId: Int, projects: List<ProjectListItem>) {
-        Log.i(TAG, "Projects for Widget: $projects")
+        Log.i(TAG, "Projects for Widget: ${projects[0]}")
         val buttonsToDisplay = widgetProviderUtils.getAmountOfButtonsToDisplay(projects.size, appWidgetManager, appWidgetId)
         Log.i(TAG, "buttonsToDisplay: $buttonsToDisplay")
         when (buttonsToDisplay) {
@@ -63,6 +64,7 @@ class WidgetProvider : AppWidgetProvider() {
             else -> showAllButtons(context, remoteViews, projects)
         }
     }
+
 
     private fun showAllButtons(context: Context, remoteViews: RemoteViews, projects: List<ProjectListItem>) {
         initButton(context, remoteViews, projects[0], R.id.bu_widget_one, context.getString(R.string.action_widget_button_one))
@@ -142,7 +144,7 @@ class WidgetProvider : AppWidgetProvider() {
     }
 
     private fun createBroadcastIntentForProjectWithId(context: Context, project: ProjectListItem, action: String): Intent {
-        return Intent(context, WidgetBroadCastReceiver::class.java).also { intent ->
+        return Intent(context, RemoteViewBroadCastReceiver::class.java).also { intent ->
             intent.action = action
             intent.putExtra(context.getString(R.string.ExtraKeyProjectId), project.id)
             intent.putExtra(context.getString(R.string.ExtraKeyProjectName), project.name)

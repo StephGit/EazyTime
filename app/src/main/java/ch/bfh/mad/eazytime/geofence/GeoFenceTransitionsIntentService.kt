@@ -4,7 +4,7 @@
 //import android.content.Intent
 //import android.util.Log
 //import ch.bfh.mad.eazytime.TAG
-//import ch.bfh.mad.eazytime.util.NotificationHandler
+//import ch.bfh.mad.eazytime.remoteViews.notification.NotificationHandler
 //import com.google.android.gms.location.Geofence
 //import com.google.android.gms.location.GeofencingEvent
 //

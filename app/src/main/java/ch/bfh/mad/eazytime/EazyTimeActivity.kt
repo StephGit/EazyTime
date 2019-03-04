@@ -9,9 +9,11 @@ import androidx.appcompat.app.AppCompatActivity
 import ch.bfh.mad.R
 import ch.bfh.mad.eazytime.calendar.CalendarFragment
 import ch.bfh.mad.eazytime.geofence.GeoFenceFragment
+import ch.bfh.mad.eazytime.remoteViews.notification.ScreenActionService
 import ch.bfh.mad.eazytime.projects.ProjectFragment
 import ch.bfh.mad.eazytime.projects.addProject.AddProjectActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
+
 
 class EazyTimeActivity : AppCompatActivity(), EazyTimeNavigator {
 
@@ -30,6 +32,9 @@ class EazyTimeActivity : AppCompatActivity(), EazyTimeNavigator {
         if (savedInstanceState == null) {
             replaceFragment(ProjectFragment())
         }
+
+        startService(Intent(this, ScreenActionService::class.java))
+
     }
 
     private fun selectMenuItem(clickedMenuItem: MenuItem): Boolean {

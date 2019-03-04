@@ -12,7 +12,7 @@ import ch.bfh.mad.R
 import ch.bfh.mad.eazytime.EazyTimeNavigator
 import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.di.Injector
-import ch.bfh.mad.eazytime.homeScreenWidget.WidgetProvider
+import ch.bfh.mad.eazytime.remoteViews.homeScreenWidget.WidgetProvider
 import ch.bfh.mad.eazytime.util.ProjectProviderService
 import ch.bfh.mad.eazytime.util.TimerService
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -89,5 +89,4 @@ class ProjectFragment : androidx.fragment.app.Fragment() {
     private fun openAddNewProjectActivity() {
         navigator.openAddProjectActivity()
     }
-
 }

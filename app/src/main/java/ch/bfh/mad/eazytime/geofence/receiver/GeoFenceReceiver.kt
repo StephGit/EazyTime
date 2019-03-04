@@ -7,7 +7,7 @@ import android.util.Log
 import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.di.Injector
 import ch.bfh.mad.eazytime.geofence.GeofenceErrorMessages
-import ch.bfh.mad.eazytime.util.NotificationHandler
+import ch.bfh.mad.eazytime.remoteViews.notification.NotificationHandler
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingEvent
 import javax.inject.Inject
@@ -45,7 +45,7 @@ class GeoFenceReceiver : BroadcastReceiver() {
             triggeringGeofences.forEach {
                 // TODO handle each
                 Log.i(TAG, "FancyFenci")
-                notificationHandler.sendNotification(context, "FancyFenci" + event.geofenceTransition.toString())
+                notificationHandler.sendNotification("FancyFenci" + event.geofenceTransition.toString())
                 // timerService.startDefault/stopDefault
             }
         }
