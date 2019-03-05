@@ -37,6 +37,21 @@ class SimpleEntityReadWriteTest : LifecycleOwner {
     }
 
     @Test
+    fun getActiveGeoFence() {
+        assert(db.geoFenceDao().getActiveGeoFences().isEmpty())
+
+        val tmpGeoFence = GeoFence(randomUuid(), true, randomUuid(), randomDouble(), randomDouble(), randomDouble())
+        val tmpGeoFence2 = GeoFence(randomUuid(), false, randomUuid(), randomDouble(), randomDouble(), randomDouble())
+        val entityId = db.geoFenceDao().insert(tmpGeoFence)
+        val entityId2 = db.geoFenceDao().insert(tmpGeoFence2)
+        assert(entityId >= 0)
+        assert(entityId2 >= 0)
+        val geoFences = db.geoFenceDao().getActiveGeoFences()
+        assert(geoFences.isNotEmpty())
+        assert(geoFences[0].active && (geoFences[0].name == tmpGeoFence.name))
+    }
+
+    @Test
     fun getAnyGeoFence() {
         assert(db.geoFenceDao().getAnyGeoFence() == null)
 

@@ -79,5 +79,7 @@
         call.
     </string>
     <string name="title_activity_maps">Map</string>
+    <string name="geofence_detail_activity_toast_saved_geofence">Geofence gespeichert</string>
+    <string name="geofence_fragment_toast_activated_geofence">Geofence aktiviert</string>
 
 </resources>

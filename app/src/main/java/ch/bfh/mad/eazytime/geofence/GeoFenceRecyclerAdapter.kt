@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Switch
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -38,6 +39,8 @@ class GeoFenceRecyclerAdapter @Inject constructor(private var geoFenceService: G
 
             if (switch.isChecked) {
                 addGeoFence(currentGeoFence)
+                Toast.makeText(this.itemText.context, this.itemText.context.getString(R.string.geofence_fragment_toast_activated_geofence), Toast.LENGTH_SHORT)
+                    .show()
             } else removeGeoFence(currentGeoFence)
         }
     }

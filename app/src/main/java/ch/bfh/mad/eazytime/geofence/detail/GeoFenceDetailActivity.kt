@@ -320,6 +320,8 @@ class GeoFenceDetailActivity : AppCompatActivity(),
         }
         setResult(Activity.RESULT_OK, data)
         leaveGeoFenceDetail()
+        Toast.makeText(this, getString(R.string.geofence_detail_activity_toast_saved_geofence), Toast.LENGTH_SHORT)
+            .show()
     }
 
     override fun setStep(step: GeoFenceFlow.Step) {

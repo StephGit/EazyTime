@@ -9,7 +9,7 @@ interface GeoFenceDao {
     @Query("SELECT * FROM geofence LIMIT 1")
     fun getAnyGeoFence(): GeoFence?
 
-    @Query("SELECT * FROM geofence where active LIKE 'true'")
+    @Query("SELECT * FROM geofence where active = 1")
     fun getActiveGeoFences(): List<GeoFence>
 
     @Query("SELECT * FROM geofence")

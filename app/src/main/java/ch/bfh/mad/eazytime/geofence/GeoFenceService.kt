@@ -25,12 +25,18 @@ class GeoFenceService @Inject constructor(
 
     private val geofencingClient: GeofencingClient = LocationServices.getGeofencingClient(context)
 
+    /**
+     * Explicit removal of all active geofences and add them again.
+     */
     fun initGeoFences() {
-        geoFenceRepository.getActiveGeoFences().forEach {
+        geofencingClient
+        val geofences = geoFenceRepository.getActiveGeoFences()
+        geofences.forEach {
             remove(it, success = { Log.d(TAG, "GeoFence " + it.name + " removed successfully") },
                 failure = { err ->
                     Log.d(TAG, "Removal failed for GeoFence [" + it.name + "], Error: " + err)
-                })
+                })}
+        geofences.forEach {
             add(it,
                 success = { Log.d(TAG, "GeoFence " + it.name + " added successfully") },
                 failure = { err ->
@@ -55,6 +61,8 @@ class GeoFenceService @Inject constructor(
             .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
             .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_EXIT)
             .setExpirationDuration(Geofence.NEVER_EXPIRE)
+            // Interval to check for events, default is 0 - battery improvement
+            .setNotificationResponsiveness(60000)
             .build()
     }
 
