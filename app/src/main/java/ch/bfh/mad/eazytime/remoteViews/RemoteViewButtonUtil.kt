@@ -21,7 +21,11 @@ class RemoteViewButtonUtil {
     @Inject
     lateinit var eazyTimeColorUtil: EazyTimeColorUtil
 
-    fun updateButtons(context: Context, remoteViews: RemoteViews, buttonsToDisplay: Int, projects: List<ProjectListItem>) {
+    var addUpdateNotificationExtra: Boolean = false
+
+    fun updateButtons(context: Context, remoteViews: RemoteViews, buttonsToDisplay: Int, projects: List<ProjectListItem>, updateNotification: Boolean) {
+
+        addUpdateNotificationExtra = updateNotification
 
         when (buttonsToDisplay) {
             0 -> showNoProjectInformation(context, remoteViews, projects)
@@ -117,6 +121,7 @@ class RemoteViewButtonUtil {
             intent.putExtra(context.getString(R.string.ExtraKeyProjectId), project.id)
             intent.putExtra(context.getString(R.string.ExtraKeyProjectName), project.name)
             intent.putExtra(context.getString(R.string.ExtraKeyProjectShortCode), project.shortCode)
+            intent.putExtra(context.getString(R.string.ExtraKeyUpdateNotification), addUpdateNotificationExtra)
         }
     }
 }

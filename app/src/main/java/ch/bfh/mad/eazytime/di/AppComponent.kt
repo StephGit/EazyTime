@@ -1,6 +1,7 @@
 package ch.bfh.mad.eazytime.di
 
 import android.app.Application
+import ch.bfh.mad.eazytime.EazyTimeActivity
 import ch.bfh.mad.eazytime.geofence.GeoFenceEmptyFragment
 import ch.bfh.mad.eazytime.geofence.GeoFenceFragment
 import ch.bfh.mad.eazytime.geofence.GeoFenceRecyclerAdapter
@@ -38,4 +39,5 @@ interface AppComponent {
     fun inject(geoFenceReceiver: GeoFenceReceiver)
     fun inject(remoteViewButtonUtil: RemoteViewButtonUtil)
     fun inject(screenActionService: ScreenActionService)
+    fun inject(eazyTimeActivity: EazyTimeActivity)
 }

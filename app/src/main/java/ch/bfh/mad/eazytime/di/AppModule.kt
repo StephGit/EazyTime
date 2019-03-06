@@ -17,6 +17,7 @@ import ch.bfh.mad.eazytime.geofence.GeoFenceService
 import ch.bfh.mad.eazytime.remoteViews.notification.NotificationHandler
 import ch.bfh.mad.eazytime.projects.addProject.ProjectSaveOrUpdateService
 import ch.bfh.mad.eazytime.remoteViews.RemoteViewButtonUtil
+import ch.bfh.mad.eazytime.remoteViews.notification.ScreenActionService
 import ch.bfh.mad.eazytime.util.*
 import dagger.Module
 import dagger.Provides
@@ -104,4 +105,7 @@ class AppModule {
     fun provideNotificationHandler(context: Context, remoteViewButtonUtil: RemoteViewButtonUtil, projectProviderService: ProjectProviderService):
             NotificationHandler = NotificationHandler(context, remoteViewButtonUtil, projectProviderService)
 
+    @Provides
+    @Singleton
+    fun provideScreenActionService(): ScreenActionService = ScreenActionService()
 }

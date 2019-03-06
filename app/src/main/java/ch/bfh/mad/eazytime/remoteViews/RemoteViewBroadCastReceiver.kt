@@ -28,15 +28,18 @@ class RemoteViewBroadCastReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         val projectIdExtraKey = context.getString(R.string.ExtraKeyProjectId)
+        val updateNotificationKey = context.getString(R.string.ExtraKeyUpdateNotification)
         val projectId = intent.getLongExtra(projectIdExtraKey, -1)
+        val updateNotification = intent.getBooleanExtra(updateNotificationKey, false)
         Log.i(TAG, "RemoteViewBroadCastReceiver received: ${intent.action} for projectId: $projectId}")
-        changeAndStartProject(projectId, context)
+        changeAndStartProject(projectId, context, updateNotification)
     }
 
-    private fun changeAndStartProject(projectId: Long, ctx: Context) = runBlocking {
+    private fun changeAndStartProject(projectId: Long, ctx: Context, updateNotification: Boolean) = runBlocking {
         timerService.changeAndStartProject(projectId)
         ctx.sendBroadcast(WidgetProvider.getUpdateAppWidgetsIntent(ctx))
-        notificationHandler.createEazyTimeNotification()
+        if (updateNotification) {
+            notificationHandler.createEazyTimeNotification()
+        }
     }
-
 }

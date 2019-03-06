@@ -57,7 +57,7 @@
             </intent-filter>
         </receiver>
        <receiver
-                android:name="ch.bfh.mad.eazytime.remoteViews.notification.ScreenActionReceiver"
+                android:name="ch.bfh.mad.eazytime.remoteViews.notification.ScreenActionService$ScreenActionReceiver"
                 android:enabled="true"
                 android:exported="true">
             <intent-filter android:priority="90000">

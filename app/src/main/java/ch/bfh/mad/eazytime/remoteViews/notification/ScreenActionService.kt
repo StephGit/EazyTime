@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 class ScreenActionService : Service() {
 
-    private val unlockReceiver: UnlockReceiver = UnlockReceiver()
+    private val unlockReceiver: ScreenActionReceiver = ScreenActionReceiver()
 
     init {
         Injector.appComponent.inject(this)
@@ -37,7 +37,7 @@ class ScreenActionService : Service() {
         unregisterReceiver(unlockReceiver)
     }
 
-    inner class UnlockReceiver : BroadcastReceiver() {
+    inner class ScreenActionReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
 
             val action = intent.action
