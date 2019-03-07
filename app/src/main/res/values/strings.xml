@@ -15,12 +15,8 @@
         benötigt.
     </string>
     <string name="OK">OK</string>
-
-    <string name="geofence_detail_fragment_title">Geofence Detail</string>
-    <string name="geofence_detail_fragment_item_name">Name</string>
-    <string name="geofence_detail_fragment_item_name_desc">Geofence Name</string>
-    <string name="geofence_detail_fragment_btn_edit">Ändern</string>
-    <string name="geofence_detail_fragment_btn_back">Zurück</string>
+    <string name="geofence_geofence_flow_btn_proceed">Weiter</string>
+    <string name="geofence_geofence_flow_btn_back">Zurück</string>
 
     <string name="geofence_edit_fragment_title">Geofence bearbeiten</string>
     <string name="geofence_edit_fragment_edittext_hint">Name des GeoFence</string>
@@ -32,14 +28,12 @@
     <string name="geofence_emtpy_fragment_info">Hinzugefügte Geofences werden hier angezeigt.</string>
     <string name="geofence_emtpy_fragment_icon_text">geofence icon</string>
 
-    <string name="geofence_marker_fragment_title">Marker setzen</string>
-    <string name="geofence_marker_fragment_info">Die gewünschte Position auf der Karte antippen!</string>
-    <string name="geofence_marker_fragment_btn_proceed">Weiter</string>
+    <string name="geofence_marker_fragment_info">Markiere das Zentrum des Geofence indem du die gewünschte Position auf
+        der Karte antippst!
+    </string>
+    <string name="geofence_radius_fragment_info">Definiere den Radius des Geofence mit Hilfe eines Zweifinger-Pinch!
+    </string>
 
-    <string name="geofence_radius_fragment_title">Radius definieren</string>
-    <string name="geofence_radius_fragment_info">Den gewünschten Radius mit Zweifinger-Pinch erstellen!</string>
-    <string name="geofence_radius_fragment_btn_proceed">Weiter</string>
-    <string name="geofence_radius_fragment_btn_back">Zurück</string>
     <string name="geofence_listitem_switch_text">Aktiv</string>
 
     <string name="geofence_detail_activity_toast_marker_error">Bitte einen Marker setzen!</string>
@@ -75,9 +69,9 @@
         Standort > Suchmethode \'Hohe Genauigkeit\'.
     </string>
     <string name="geofence_too_many_geofences">Die App hat zuviele Geofences registriert.</string>
-    <string name="geofence_too_many_pending_intents">You have provided too many PendingIntents to the addGeofences()
-        call.
-    </string>
+    <string name="geofence_too_many_pending_intents">Die App hat zuviele Geofences registriert.</string>
     <string name="title_activity_maps">Map</string>
+    <string name="geofence_detail_activity_toast_saved_geofence">Geofence gespeichert</string>
+    <string name="geofence_fragment_toast_activated_geofence">Geofence aktiviert</string>
 
 </resources>

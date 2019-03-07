@@ -14,6 +14,10 @@ class GeoFenceRepository @Inject constructor(private var geoFenceDao: GeoFenceDa
         return GetAsyncTask(geoFenceDao).execute().get()
     }
 
+    fun getActiveGeoFences(): List<GeoFence> {
+        return GetActiveAsyncTask(geoFenceDao).execute().get()
+    }
+
     fun insert(geoFence: GeoFence) {
         InsertAsyncTask(geoFenceDao).execute(geoFence)
     }
@@ -38,6 +42,13 @@ class GeoFenceRepository @Inject constructor(private var geoFenceDao: GeoFenceDa
         AsyncTask<Void, Void, Boolean>() {
         override fun doInBackground(vararg params: Void): Boolean {
             return (geoFenceDao.getAnyGeoFence() != null)
+        }
+    }
+
+    private class GetActiveAsyncTask internal constructor(private val geoFenceDao: GeoFenceDao) :
+        AsyncTask<Void, Void, List<GeoFence>>() {
+        override fun doInBackground(vararg params: Void):  List<GeoFence> {
+            return (geoFenceDao.getActiveGeoFences())
         }
     }
 

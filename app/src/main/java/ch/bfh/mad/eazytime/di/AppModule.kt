@@ -90,8 +90,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideGeoFenceRecyclerAdapter(geoFenceRepository: GeoFenceRepository, geoFenceService: GeoFenceService):
-            GeoFenceRecyclerAdapter = GeoFenceRecyclerAdapter(geoFenceRepository, geoFenceService)
+    fun provideGeoFenceRecyclerAdapter(geoFenceService: GeoFenceService):
+            GeoFenceRecyclerAdapter = GeoFenceRecyclerAdapter(geoFenceService)
 
     @Provides
     @Singleton
