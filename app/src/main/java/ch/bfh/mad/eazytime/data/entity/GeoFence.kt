@@ -1,13 +1,16 @@
 package ch.bfh.mad.eazytime.data.entity
 
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.PrimaryKey
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 @Entity
-data class GeoFence(@PrimaryKey(autoGenerate = true)
-                    var id: Long = 0,
-                    var name: String? = null,
-                    var longitude: Float? = null,
-                    var latitude: Float? = null,
-                    var radius: Int? = null,
-                    var gfId: Long? = null)
+data class GeoFence(
+    var name: String?,
+    var active: Boolean = false,
+    var gfId: String?,
+    var radius: Double?,
+    var latitude: Double?,
+    var longitude: Double?,
+    @PrimaryKey(autoGenerate = true)
+    val id: Long? = null
+)

@@ -1,7 +1,7 @@
 package ch.bfh.mad.eazytime.util
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MediatorLiveData
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import ch.bfh.mad.eazytime.data.entity.Project
 import ch.bfh.mad.eazytime.data.entity.TimeSlot
 import ch.bfh.mad.eazytime.data.repo.ProjectRepo
@@ -40,7 +40,7 @@ class ProjectProviderService(projectRepo: ProjectRepo, timeSlotRepo: TimeSlotRep
     private fun mergeLiveData(projects: List<Project>?, timeslots: List<TimeSlot>?): List<ProjectListItem>? {
         return projects?.map {project ->
             var isActive = false
-            val mappedTimeSlotSeconds = timeslots
+            var mappedTimeSlotSeconds = timeslots
                 ?.filter { it.projectId == project.id && it.endDate != null }
                 ?.map { Seconds.secondsBetween(it.startDate, it.endDate) }
                 ?.fold(Seconds.seconds(0)) { acc, minutes -> acc.plus(minutes)}
@@ -48,10 +48,10 @@ class ProjectProviderService(projectRepo: ProjectRepo, timeSlotRepo: TimeSlotRep
             timeslots?.filter { it.projectId == project.id && it.endDate == null }?.firstOrNull()?.let {
                 val currentSeconds = Seconds.secondsBetween(it.startDate, LocalDateTime())
                 isActive = true
-                mappedTimeSlotSeconds?.plus(currentSeconds)
+                mappedTimeSlotSeconds = mappedTimeSlotSeconds?.plus(currentSeconds)
             }
 
-            ProjectListItem(project.id, project.name, project.shortCode, mappedTimeSlotSeconds?.seconds, project.color, project.isDefault, isActive)
+            ProjectListItem(project.id, project.name, project.shortCode, mappedTimeSlotSeconds?.seconds, project.color, project.isDefault, project.onWidget, isActive)
         }
 
     }

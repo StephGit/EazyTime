@@ -1,7 +1,7 @@
 package ch.bfh.mad.eazytime.calendar
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
 import ch.bfh.mad.eazytime.data.entity.WorkDay
 import ch.bfh.mad.eazytime.util.CalendarProviderService
 import javax.inject.Inject

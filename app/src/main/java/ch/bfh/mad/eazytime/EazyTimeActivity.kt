@@ -1,21 +1,26 @@
 package ch.bfh.mad.eazytime
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.BottomNavigationView
-import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import ch.bfh.mad.R
 import ch.bfh.mad.eazytime.calendar.CalendarFragment
 import ch.bfh.mad.eazytime.calendar.detail.CalendarDetailActivity
 import ch.bfh.mad.eazytime.geofence.GeoFenceFragment
 import ch.bfh.mad.eazytime.projects.ProjectFragment
 import ch.bfh.mad.eazytime.projects.addProject.AddProjectActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class EazyTimeActivity : AppCompatActivity(), EazyTimeNavigator {
 
     private lateinit var navigation: BottomNavigationView
+
+    companion object {
+        fun newIntent(ctx: Context) = Intent(ctx, EazyTimeActivity::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,13 +39,13 @@ class EazyTimeActivity : AppCompatActivity(), EazyTimeNavigator {
         when (clickedMenuItem.itemId) {
             R.id.bottom_navigation_project -> replaceFragment(ProjectFragment())
             R.id.bottom_navigation_calendar -> replaceFragment(CalendarFragment())
-            R.id.bottom_navigation_geofence -> replaceFragment(GeoFenceFragment())
+            R.id.bottom_navigation_geofence -> replaceFragment(GeoFenceFragment.newFragment())
             else -> throw IllegalArgumentException("Unknown clickedMenuItem.itemId: ${clickedMenuItem.itemId}")
         }
         return true
     }
 
-    private fun replaceFragment(fragment: Fragment) {
+    private fun replaceFragment(fragment: androidx.fragment.app.Fragment) {
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.frame_content, fragment)

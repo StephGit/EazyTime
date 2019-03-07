@@ -1,15 +1,14 @@
 package ch.bfh.mad.eazytime.calendar
 
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 
 import ch.bfh.mad.R
 import ch.bfh.mad.eazytime.EazyTimeNavigator
@@ -17,7 +16,7 @@ import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.data.entity.WorkDay
 import ch.bfh.mad.eazytime.di.Injector
 
-class CalendarFragment : Fragment() {
+class CalendarFragment : androidx.fragment.app.Fragment() {
 
     private lateinit var calendarListView: ListView
     private lateinit var calendarListViewModel: CalendarListViewModel

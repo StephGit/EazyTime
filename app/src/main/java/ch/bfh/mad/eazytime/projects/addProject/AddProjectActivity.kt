@@ -1,26 +1,28 @@
 package ch.bfh.mad.eazytime.projects.addProject
 
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
-import android.databinding.DataBindingUtil
-import android.os.AsyncTask
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import ch.bfh.mad.R
 import ch.bfh.mad.databinding.ActivityAddProjectBinding
 import ch.bfh.mad.eazytime.TAG
-import ch.bfh.mad.eazytime.data.dao.ProjectDao
 import ch.bfh.mad.eazytime.data.entity.Project
+import ch.bfh.mad.eazytime.data.repo.ProjectRepo
 import ch.bfh.mad.eazytime.di.Injector
+import ch.bfh.mad.eazytime.homeScreenWidget.WidgetProvider
 import ch.bfh.mad.eazytime.projects.ProjectModelFactory
 import ch.bfh.mad.eazytime.util.EazyTimeColorUtil
 import ch.bfh.mad.eazytime.util.ProjectProviderService
 import com.thebluealliance.spectrum.SpectrumDialog
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import kotlin.random.Random
 
@@ -31,7 +33,7 @@ class AddProjectActivity : AppCompatActivity() {
     lateinit var projectProviderService: ProjectProviderService
 
     @Inject
-    lateinit var projectDao: ProjectDao
+    lateinit var projectRepo: ProjectRepo
 
     @Inject
     lateinit var colorUtil: EazyTimeColorUtil
@@ -45,7 +47,7 @@ class AddProjectActivity : AppCompatActivity() {
         title = getString(R.string.add_project_fragment_title)
 
         Injector.appComponent.inject(this)
-        val addProjectViewModel = ViewModelProviders.of(this, ProjectModelFactory(projectProviderService, projectDao))
+        val addProjectViewModel = ViewModelProviders.of(this, ProjectModelFactory(projectProviderService))
             .get(AddProjectViewModel::class.java)
 
         val dataBinding = DataBindingUtil.setContentView<ActivityAddProjectBinding>(this, R.layout.activity_add_project)
@@ -108,20 +110,20 @@ class AddProjectActivity : AppCompatActivity() {
 
     }
 
-    private fun initViewModelWithSelectedProjectInformation(addProjectViewModel: AddProjectViewModel, dataBinding: ActivityAddProjectBinding, projectId: Long) {
-        val getProjectAsyncTask = GetProjectAsyncTask(projectDao)
-        getProjectAsyncTask.addProjectViewModel = addProjectViewModel
-        getProjectAsyncTask.colorUtil = colorUtil
-        getProjectAsyncTask.execute(projectId)
-        dataBinding.buAddProjectSave.isEnabled = true
+    private fun initViewModelWithSelectedProjectInformation(addProjectViewModel: AddProjectViewModel, dataBinding: ActivityAddProjectBinding, projectId: Long) = runBlocking {
+        projectRepo.getProjectById(projectId)?.let { project ->
+            addProjectViewModel.initializeWithProjectData(project, colorUtil)
+            dataBinding.buAddProjectSave.isEnabled = true
+        }
     }
 
-    private fun deleteProject(addProjectViewModel: AddProjectViewModel) {
-        Toast.makeText(this, "Delete Cascade?", Toast.LENGTH_SHORT).show()
-        addProjectViewModel.projectId.value.let { id ->
-            DeleteAsyncTask(projectDao).execute(id)
+    private fun deleteProject(addProjectViewModel: AddProjectViewModel) = runBlocking {
+        addProjectViewModel.projectId.value?.let { id ->
             Log.i(TAG, "Delete Project started in InsertAsyncTask, close the Activity")
-            finish()
+            withContext(Dispatchers.IO) {
+                projectRepo.deleteProject(id)
+                finish()
+            }
         }
     }
 
@@ -134,7 +136,8 @@ class AddProjectActivity : AppCompatActivity() {
         tmpProject.onWidget = addProjectViewModel.onWidget.value ?: false
         tmpProject.color = colorUtil.getColorString(addProjectViewModel.colorId.value?:0)
         Log.i(TAG, "project to save: $tmpProject")
-        InsertAsyncTask(saveOrUpdateService).execute(tmpProject)
+        saveOrUpdateService.saveOrUpdateProject(tmpProject)
+        sendBroadcast(WidgetProvider.getUpdateAppWidgetsIntent(this))
         Log.i(TAG, "Save Project started in InsertAsyncTask, close the Activity")
         finish()
     }
@@ -164,39 +167,6 @@ class AddProjectActivity : AppCompatActivity() {
             return Intent(ctx, AddProjectActivity::class.java).also { intent ->
                 intent.putExtra(INTENT_EXTRA_KEY_PROJECT_ID, projectId)
             }
-        }
-    }
-
-    private class InsertAsyncTask internal constructor(private val saveOrUpdateService: ProjectSaveOrUpdateService) : AsyncTask<Project, Void, Void>() {
-        override fun doInBackground(vararg params: Project): Void? {
-            val project = params[0]
-            Log.i(TAG, "InsertAsyncTask")
-            saveOrUpdateService.saveOrUpdateProject(project)
-            return null
-        }
-    }
-
-    private class GetProjectAsyncTask internal constructor(private val projectDao: ProjectDao) : AsyncTask<Long, Void, Void>() {
-        var addProjectViewModel: AddProjectViewModel? = null
-        var colorUtil: EazyTimeColorUtil? = null
-        override fun doInBackground(vararg params: Long?): Void? {
-            params[0]?.let { id ->
-                projectDao.getProjectById(id)?.let { project ->
-                    addProjectViewModel?.initializeWithProjectData(project, colorUtil)
-                } ?: kotlin.run {
-                    Log.e(TAG, "No project found with id: $id")
-                }
-            }
-            return null
-        }
-    }
-
-    private class DeleteAsyncTask internal constructor(private val mAsyncTaskDao: ProjectDao) : AsyncTask<Long, Void, Void>() {
-        override fun doInBackground(vararg params: Long?): Void? {
-            params[0]?.let { id ->
-                mAsyncTaskDao.deleteProjectById(id)
-            }
-            return null
         }
     }
 }
