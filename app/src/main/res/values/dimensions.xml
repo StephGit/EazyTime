@@ -23,7 +23,7 @@
     <dimen name="eazyTime_width_time_list_elements">100dp</dimen>
 
     <dimen name="eazyTime_text_size_project_name_project_list_item">20sp</dimen>
-    <dimen name="eazyTime_text_size_geofence_name_list_item">18sp</dimen>
+    <dimen name="eazyTime_text_size_geofence_name_list_item">20sp</dimen>
     <dimen name="eazyTime_text_size_time_project_list_item">16sp</dimen>
     <dimen name="eazyTime_text_size_project_short_code_project_list_item">20sp</dimen>
 
@@ -43,6 +43,9 @@
     <dimen name="eazyTime_margin_bottom_geofence_flow">8dp</dimen>
     <dimen name="eazyTime_margin_start_geofence_flow">8dp</dimen>
     <dimen name="eazyTime_text_size_title_geofence_flow">16sp</dimen>
-    <dimen name="eazyTime_text_size_textview_geofence_flow">14sp</dimen>
+    <dimen name="eazyTime_text_size_textview_geofence_flow">16sp</dimen>
     <dimen name="eazyTime_margin_end_geofence_flow">8dp</dimen>
+    <dimen name="eazyTime_margin_top_geofence_list_item">8dp</dimen>
+    <dimen name="eazyTime_margin_start_geofence_list_item">8dp</dimen>
+    <dimen name="eazyTime_margin_end_geofence_list_item">8dp</dimen>
 </resources>

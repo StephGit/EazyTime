@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Switch
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -22,8 +21,10 @@ class GeoFenceRecyclerAdapter @Inject constructor(private var geoFenceService: G
     var onItemClick: ((GeoFence) -> Unit)? = null
     var onSwitch: ((GeoFence) -> Unit)? = null
     private lateinit var itemView: View
+    private lateinit var parentView: ViewGroup
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        parentView = parent
         itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.listitem_geofence, parent, false)
         return ViewHolder(itemView)
@@ -36,10 +37,6 @@ class GeoFenceRecyclerAdapter @Inject constructor(private var geoFenceService: G
             bind(currentGeoFence)
             itemText.text = currentGeoFence.name
             switch.isChecked = currentGeoFence.active
-
-            if (switch.isChecked) {
-                addGeoFence(currentGeoFence)
-            } else removeGeoFence(currentGeoFence)
         }
     }
 
@@ -56,7 +53,7 @@ class GeoFenceRecyclerAdapter @Inject constructor(private var geoFenceService: G
             it,
             success = { Log.d(TAG, "GeoFenceRecyclerAdapter " + it.name + " removed from service successfully") },
             failure = { err ->
-                Snackbar.make(itemView, err, Snackbar.LENGTH_LONG).show()
+                Snackbar.make(parentView, err, Snackbar.LENGTH_LONG).show()
             })
     }
 
@@ -65,7 +62,7 @@ class GeoFenceRecyclerAdapter @Inject constructor(private var geoFenceService: G
             it,
             success = { Log.d(TAG, "GeoFenceRecyclerAdapter: " + it.name + " added to service successfully") },
             failure = { err ->
-                Snackbar.make(itemView, err, Snackbar.LENGTH_LONG).show()
+                Snackbar.make(parentView, err, Snackbar.LENGTH_LONG).show()
             })
     }
 
@@ -87,13 +84,6 @@ class GeoFenceRecyclerAdapter @Inject constructor(private var geoFenceService: G
                 geoFence.active = isChecked
                 onSwitchChange(geoFence)
                 onSwitch?.invoke(geoFence)
-                if (isChecked) {
-                    Toast.makeText(
-                        this.itemView.context,
-                        this.itemView.context.getString(R.string.geofence_fragment_toast_activated_geofence),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
             }
         }
     }

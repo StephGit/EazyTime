@@ -183,6 +183,6 @@ class GeoFenceFragment : GeoFenceBaseFragment() {
         intent.putExtra("GEOFENCE_LAT", item.latitude)
         intent.putExtra("GEOFENCE_LONG", item.longitude)
         intent.putExtra("GEOFENCE_ID", item.id)
-        startActivity(intent)
+        startActivityForResult(intent, super.geoFenceUpdateRequest)
     }
 }

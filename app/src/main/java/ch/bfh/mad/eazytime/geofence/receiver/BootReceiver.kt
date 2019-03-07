@@ -25,7 +25,6 @@ class BootReceiver : BroadcastReceiver() {
         if (intent?.action == Intent.ACTION_BOOT_COMPLETED) {
             // geofences are removed on reboot
             geoFenceService.initGeoFences()
-            notificationHandler.sendNotification(context, "Geofences initialized after boot")
         }
     }
 }
