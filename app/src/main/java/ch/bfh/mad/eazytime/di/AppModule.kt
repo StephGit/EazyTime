@@ -15,6 +15,7 @@ import ch.bfh.mad.eazytime.data.repo.WorkDayRepo
 import ch.bfh.mad.eazytime.geofence.GeoFenceRecyclerAdapter
 import ch.bfh.mad.eazytime.geofence.GeoFenceService
 import ch.bfh.mad.eazytime.remoteViews.notification.NotificationHandler
+import ch.bfh.mad.eazytime.projects.ProjectsRecycleListAdapter
 import ch.bfh.mad.eazytime.projects.addProject.ProjectSaveOrUpdateService
 import ch.bfh.mad.eazytime.remoteViews.RemoteViewButtonUtil
 import ch.bfh.mad.eazytime.remoteViews.notification.ScreenActionService
@@ -93,8 +94,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideGeoFenceRecyclerAdapter(geoFenceRepository: GeoFenceRepository, geoFenceService: GeoFenceService):
-            GeoFenceRecyclerAdapter = GeoFenceRecyclerAdapter(geoFenceRepository, geoFenceService)
+    fun provideGeoFenceRecyclerAdapter(geoFenceService: GeoFenceService):
+            GeoFenceRecyclerAdapter = GeoFenceRecyclerAdapter(geoFenceService)
 
     @Provides
     @Singleton
@@ -108,4 +109,9 @@ class AppModule {
     @Provides
     @Singleton
     fun provideScreenActionService(): ScreenActionService = ScreenActionService()
+
+    @Provides
+    @Singleton
+    fun provideProjectsListRecycleAdapter(context: Context, projectRepo: ProjectRepo): ProjectsRecycleListAdapter = ProjectsRecycleListAdapter(context, projectRepo)
+
 }

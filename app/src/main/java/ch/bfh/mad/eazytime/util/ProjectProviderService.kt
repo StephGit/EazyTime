@@ -51,7 +51,7 @@ class ProjectProviderService(projectRepo: ProjectRepo, timeSlotRepo: TimeSlotRep
                 mappedTimeSlotSeconds = mappedTimeSlotSeconds?.plus(currentSeconds)
             }
 
-            ProjectListItem(project.id, project.name, project.shortCode, mappedTimeSlotSeconds?.seconds, project.color, project.isDefault, project.onWidget, isActive)
+            ProjectListItem(project.id, project.name, project.shortCode, mappedTimeSlotSeconds?.seconds, project.color, project.isDefault, project.onWidget, isActive, project.isDeleted)
         }
 
     }

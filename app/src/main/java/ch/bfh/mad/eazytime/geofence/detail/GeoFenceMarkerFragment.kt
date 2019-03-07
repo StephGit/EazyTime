@@ -25,7 +25,9 @@ class GeoFenceMarkerFragment : androidx.fragment.app.Fragment() {
         val view = inflater.inflate(R.layout.fragment_geofence_marker, container, false)
         callback.setStep(GeoFenceFlow.Step.MARKER)
         val proceedButton: Button = view.findViewById(R.id.btn_geoFenceMarkerProceed)
+        val backButton: Button = view.findViewById(R.id.btn_geoFenceMarkerBack)
         proceedButton.setOnClickListener { callback.goToRadius() }
+        backButton.setOnClickListener { callback.goBack() }
 
         return view
     }

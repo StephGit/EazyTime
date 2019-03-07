@@ -22,7 +22,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@id/tv_noGeofence"
             app:layout_constraintVertical_chainStyle="packed"
-            app:layout_constraintVertical_bias="@dimen/eazyTime_empty_fragment_vertical_bias"
+            app:layout_constraintVertical_bias="0.3"
             android:contentDescription="@string/geofence_emtpy_fragment_icon_text"/>
     <TextView
             android:id="@+id/tv_noGeofence"
@@ -35,7 +35,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@id/tv_noGeofenceHint"
-            app:layout_constraintVertical_bias="@dimen/eazyTime_empty_fragment_vertical_bias"
+            app:layout_constraintVertical_bias="0.3"
             android:textColor="@color/eazyTime_colorBackgroundText"/>
     <TextView
             android:id="@+id/tv_noGeofenceHint"
@@ -46,7 +46,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_noGeofence"
-            app:layout_constraintVertical_bias="@dimen/eazyTime_empty_fragment_vertical_bias"
+            app:layout_constraintVertical_bias="0.3"
             android:textColor="@color/eazyTime_colorBackgroundText"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
