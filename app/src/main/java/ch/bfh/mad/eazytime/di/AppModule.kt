@@ -14,6 +14,7 @@ import ch.bfh.mad.eazytime.data.repo.TimeSlotRepo
 import ch.bfh.mad.eazytime.data.repo.WorkDayRepo
 import ch.bfh.mad.eazytime.geofence.GeoFenceRecyclerAdapter
 import ch.bfh.mad.eazytime.geofence.GeoFenceService
+import ch.bfh.mad.eazytime.projects.ProjectsRecycleListAdapter
 import ch.bfh.mad.eazytime.projects.addProject.ProjectSaveOrUpdateService
 import ch.bfh.mad.eazytime.util.*
 import dagger.Module
@@ -96,5 +97,9 @@ class AppModule {
     @Provides
     @Singleton
     fun provideNotificationHandler(): NotificationHandler = NotificationHandler()
+
+    @Provides
+    @Singleton
+    fun provideProjectsListRecycleAdapter(context: Context, projectRepo: ProjectRepo): ProjectsRecycleListAdapter = ProjectsRecycleListAdapter(context, projectRepo)
 
 }

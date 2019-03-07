@@ -11,11 +11,9 @@ import android.util.Log
 import android.view.View
 import android.widget.RemoteViews
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.MutableLiveData
 import ch.bfh.mad.R
 import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.data.dao.ProjectDao
-import ch.bfh.mad.eazytime.data.entity.Project
 import ch.bfh.mad.eazytime.di.Injector
 import ch.bfh.mad.eazytime.projects.ProjectListItem
 import ch.bfh.mad.eazytime.util.EazyTimeColorUtil
@@ -24,9 +22,6 @@ import ch.bfh.mad.eazytime.util.WidgetProviderUtils
 import javax.inject.Inject
 
 class WidgetProvider : AppWidgetProvider() {
-
-    private val widgetProjects: MutableLiveData<List<Project>> = MutableLiveData()
-    private val widgetProjectListItems: MutableLiveData<List<ProjectListItem>> = MutableLiveData()
 
     init {
         Injector.appComponent.inject(this)
@@ -60,7 +55,7 @@ class WidgetProvider : AppWidgetProvider() {
         val buttonsToDisplay = widgetProviderUtils.getAmountOfButtonsToDisplay(projects.size, appWidgetManager, appWidgetId)
         Log.i(TAG, "buttonsToDisplay: $buttonsToDisplay")
         when (buttonsToDisplay) {
-            0 -> Log.e(TAG, "Please setup some Projects")
+            0 -> showNoProjectInformation(context, remoteViews, projects)
             1 -> showButtonOne(context, remoteViews, projects)
             2 -> showButtonOneTwo(context, remoteViews, projects)
             3 -> showButtonOneTwoThree(context, remoteViews, projects)
@@ -75,6 +70,7 @@ class WidgetProvider : AppWidgetProvider() {
         initButton(context, remoteViews, projects[2], R.id.bu_widget_three, context.getString(R.string.action_widget_button_three))
         initButton(context, remoteViews, projects[3], R.id.bu_widget_four, context.getString(R.string.action_widget_button_four))
         initButton(context, remoteViews, projects[4], R.id.bu_widget_five, context.getString(R.string.action_widget_button_five))
+        disableElement(remoteViews, R.id.tv_widget_no_project)
     }
 
     private fun showButtonOneTwoThreeFour(context: Context, remoteViews: RemoteViews, projects: List<ProjectListItem>) {
@@ -82,34 +78,51 @@ class WidgetProvider : AppWidgetProvider() {
         initButton(context, remoteViews, projects[1], R.id.bu_widget_two, context.getString(R.string.action_widget_button_two))
         initButton(context, remoteViews, projects[2], R.id.bu_widget_three, context.getString(R.string.action_widget_button_three))
         initButton(context, remoteViews, projects[3], R.id.bu_widget_four, context.getString(R.string.action_widget_button_four))
-        disableButton(remoteViews, R.id.bu_widget_five)
+        disableElement(remoteViews, R.id.bu_widget_five)
+        disableElement(remoteViews, R.id.tv_widget_no_project)
     }
 
     private fun showButtonOneTwoThree(context: Context, remoteViews: RemoteViews, projects: List<ProjectListItem>) {
         initButton(context, remoteViews, projects[0], R.id.bu_widget_one, context.getString(R.string.action_widget_button_one))
         initButton(context, remoteViews, projects[1], R.id.bu_widget_two, context.getString(R.string.action_widget_button_two))
         initButton(context, remoteViews, projects[2], R.id.bu_widget_three, context.getString(R.string.action_widget_button_three))
-        disableButton(remoteViews, R.id.bu_widget_four)
-        disableButton(remoteViews, R.id.bu_widget_five)
+        disableElement(remoteViews, R.id.bu_widget_four)
+        disableElement(remoteViews, R.id.bu_widget_five)
+        disableElement(remoteViews, R.id.tv_widget_no_project)
     }
 
     private fun showButtonOneTwo(context: Context, remoteViews: RemoteViews, projects: List<ProjectListItem>) {
         initButton(context, remoteViews, projects[0], R.id.bu_widget_one, context.getString(R.string.action_widget_button_one))
         initButton(context, remoteViews, projects[1], R.id.bu_widget_two, context.getString(R.string.action_widget_button_two))
-        disableButton(remoteViews, R.id.bu_widget_three)
-        disableButton(remoteViews, R.id.bu_widget_four)
-        disableButton(remoteViews, R.id.bu_widget_five)
+        disableElement(remoteViews, R.id.bu_widget_three)
+        disableElement(remoteViews, R.id.bu_widget_four)
+        disableElement(remoteViews, R.id.bu_widget_five)
+        disableElement(remoteViews, R.id.tv_widget_no_project)
     }
 
     private fun showButtonOne(context: Context, remoteViews: RemoteViews, projects: List<ProjectListItem>) {
         initButton(context, remoteViews, projects[0], R.id.bu_widget_one, context.getString(R.string.action_widget_button_one))
-        disableButton(remoteViews, R.id.bu_widget_two)
-        disableButton(remoteViews, R.id.bu_widget_three)
-        disableButton(remoteViews, R.id.bu_widget_four)
-        disableButton(remoteViews, R.id.bu_widget_five)
+        disableElement(remoteViews, R.id.bu_widget_two)
+        disableElement(remoteViews, R.id.bu_widget_three)
+        disableElement(remoteViews, R.id.bu_widget_four)
+        disableElement(remoteViews, R.id.bu_widget_five)
+        disableElement(remoteViews, R.id.tv_widget_no_project)
     }
 
-    private fun disableButton(remoteViews: RemoteViews, buttonId: Int) {
+    private fun showNoProjectInformation(context: Context, remoteViews: RemoteViews, projects: List<ProjectListItem>) {
+        disableElement(remoteViews, R.id.bu_widget_one)
+        disableElement(remoteViews, R.id.bu_widget_two)
+        disableElement(remoteViews, R.id.bu_widget_three)
+        disableElement(remoteViews, R.id.bu_widget_four)
+        disableElement(remoteViews, R.id.bu_widget_five)
+        enableInformation(remoteViews, R.id.tv_widget_no_project)
+    }
+
+    private fun enableInformation(remoteViews: RemoteViews, buttonId: Int) {
+        remoteViews.setViewVisibility(buttonId, View.VISIBLE)
+    }
+
+    private fun disableElement(remoteViews: RemoteViews, buttonId: Int) {
         remoteViews.setViewVisibility(buttonId, View.GONE)
     }
 
@@ -144,7 +157,7 @@ class WidgetProvider : AppWidgetProvider() {
 
     private fun updateButtonsOnWidget(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int) {
         projectProviderService.getProjectListitems().observeForever {allProjects ->
-            allProjects?.filter { it.onWidget == true }?.let {projectListItems ->
+            allProjects.filter { project -> project.onWidget == true }.let { projectListItems ->
                 val remoteViews = RemoteViews(context.packageName, R.layout.homescreen_widget)
                 updateButtons(context, remoteViews, appWidgetManager, appWidgetId, projectListItems)
                 appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
