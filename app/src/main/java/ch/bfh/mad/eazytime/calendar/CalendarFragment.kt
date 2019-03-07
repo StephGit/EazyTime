@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 
 import ch.bfh.mad.R
@@ -15,12 +16,16 @@ import ch.bfh.mad.eazytime.EazyTimeNavigator
 import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.data.entity.WorkDay
 import ch.bfh.mad.eazytime.di.Injector
+import javax.inject.Inject
 
 class CalendarFragment : androidx.fragment.app.Fragment() {
 
     private lateinit var calendarListView: ListView
     private lateinit var calendarListViewModel: CalendarListViewModel
     private lateinit var navigator: EazyTimeNavigator
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_calendar, container, false)
@@ -30,7 +35,7 @@ class CalendarFragment : androidx.fragment.app.Fragment() {
         activity!!.title = getString(R.string.calendar_fragment_title)
 
         Injector.appComponent.inject(this)
-        calendarListViewModel = ViewModelProviders.of(this, CalendarModelFactory()).get(CalendarListViewModel::class.java)
+        calendarListViewModel = ViewModelProviders.of(this, viewModelFactory).get(CalendarListViewModel::class.java)
         val calendarListAdapter = CalendarListAdapter(requireContext(), android.R.layout.simple_list_item_1)
         calendarListView.adapter = calendarListAdapter
         calendarListView.setOnItemClickListener { parent, view, position, id ->
