@@ -2,5 +2,6 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle"  >
             <corners android:radius="4dip" />
             <solid android:color="@color/eazyTime_colorBackground" />
+    <padding android:left="4dp" android:right="4dp"/>
     <stroke android:width="1dip" android:color="@color/eazyTime_colorBackgroundText" />
 </shape>

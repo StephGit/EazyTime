@@ -26,18 +26,15 @@ import com.google.android.gms.tasks.Task
 import com.google.maps.android.SphericalUtil
 import java.util.*
 
-// TODO wrap text on steps
-// TODO Styling position of buttons and title
-// TODO add Geofence to entity? as one or properties?
-
 class GeoFenceDetailActivity : AppCompatActivity(),
     GeoFenceFlow,
     OnMapReadyCallback,
     GoogleMap.OnMyLocationButtonClickListener,
+    GoogleMap.OnMapClickListener,
     GoogleMap.OnMapLongClickListener,
     ScaleGestureDetector.OnScaleGestureListener {
 
-    private val defaultZoom: Float = 15F
+    private val defaultZoom: Float = 18F
     private var defaultRadius: Double = 0.0
     private var scaleFactor: Float = 1.0F
     private val minZoom: Float = 0F
@@ -61,8 +58,7 @@ class GeoFenceDetailActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_geofence_detail)
 
-        val mapFragment: SupportMapFragment =
-            supportFragmentManager.findFragmentById(R.id.map_geoFence) as SupportMapFragment
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.map_geoFence) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
         locationProviderClient = LocationServices.getFusedLocationProviderClient(this)
@@ -70,7 +66,7 @@ class GeoFenceDetailActivity : AppCompatActivity(),
 
         if (intent.hasExtra("GEOFENCE_NAME")) {
             getGeoFenceFromIntent()
-            replaceFragment(GeoFenceDetailFragment.newFragment())
+            replaceFragment(GeoFenceEditFragment.newFragment())
         } else {
             replaceFragment(GeoFenceMarkerFragment.newFragment())
         }
@@ -109,6 +105,7 @@ class GeoFenceDetailActivity : AppCompatActivity(),
         enableLocation()
 
         with(map) {
+            setOnMapClickListener(this@GeoFenceDetailActivity)
             setOnMapLongClickListener(this@GeoFenceDetailActivity)
         }
         if (::geoFence.isInitialized) {
@@ -123,12 +120,16 @@ class GeoFenceDetailActivity : AppCompatActivity(),
         return true
     }
 
-    override fun onMapLongClick(p0: LatLng?) {
+    override fun onMapClick(p0: LatLng?) {
         if (step == GeoFenceFlow.Step.MARKER) {
             p0?.let {
                 showMarker(it)
             }
         }
+    }
+
+    override fun onMapLongClick(p0: LatLng?) {
+        onMapClick(p0)
     }
 
     /**
@@ -163,9 +164,11 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     }
 
     private fun setMapInteractive(state: Boolean) {
-        map.uiSettings.isMyLocationButtonEnabled = state
-        map.uiSettings.isMapToolbarEnabled = state
-        map.uiSettings.setAllGesturesEnabled(state)
+        with(map.uiSettings) {
+            isMyLocationButtonEnabled = state
+            isMapToolbarEnabled = state
+            setAllGesturesEnabled(state)
+        }
     }
 
     private fun showMarker(position: LatLng) {
@@ -175,10 +178,7 @@ class GeoFenceDetailActivity : AppCompatActivity(),
             this.marker = map.addMarker(
                 MarkerOptions()
                     .position(LatLng(position.latitude, position.longitude))
-                    .icon(
-                        BitmapDescriptorFactory
-                            .defaultMarker(205F)
-                    )
+                    .icon(BitmapDescriptorFactory.defaultMarker(205F))
             )
         }
     }
@@ -215,8 +215,15 @@ class GeoFenceDetailActivity : AppCompatActivity(),
         )
     }
 
+    /**
+     * Moves camera to specified bounds.
+     * Width and Height are calculated based on displayMetrics to avoid map with 0 size - error.
+     */
     private fun moveCameraToBounds(bounds: LatLngBounds) {
-        map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 25))
+        val mapHeight =
+            resources.displayMetrics.heightPixels / 100 * resources.getInteger(R.integer.eazyTime_layout_weight_geofence_map_fragment)
+        val mapWidth = resources.displayMetrics.widthPixels
+        map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, mapWidth, mapHeight, 25))
     }
 
     /**
@@ -299,7 +306,7 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     }
 
     override fun goToEdit() {
-        setMapInteractive(false)
+        setMapInteractive(true)
         if (showingCircle()) {
             this.geoFence.radius = this.circle.radius
             replaceFragment(GeoFenceEditFragment.newFragment())
@@ -320,6 +327,8 @@ class GeoFenceDetailActivity : AppCompatActivity(),
         }
         setResult(Activity.RESULT_OK, data)
         leaveGeoFenceDetail()
+        Toast.makeText(this, getString(R.string.geofence_detail_activity_toast_saved_geofence), Toast.LENGTH_SHORT)
+            .show()
     }
 
     override fun setStep(step: GeoFenceFlow.Step) {
@@ -328,5 +337,9 @@ class GeoFenceDetailActivity : AppCompatActivity(),
 
     override fun leaveGeoFenceDetail() {
         finish()
+    }
+
+    override fun goBack() {
+        if (::geoFence.isInitialized) replaceFragment(GeoFenceEditFragment.newFragment()) else finish()
     }
 }
