@@ -39,8 +39,6 @@ class GeoFenceRecyclerAdapter @Inject constructor(private var geoFenceService: G
 
             if (switch.isChecked) {
                 addGeoFence(currentGeoFence)
-                Toast.makeText(this.itemText.context, this.itemText.context.getString(R.string.geofence_fragment_toast_activated_geofence), Toast.LENGTH_SHORT)
-                    .show()
             } else removeGeoFence(currentGeoFence)
         }
     }
@@ -56,7 +54,7 @@ class GeoFenceRecyclerAdapter @Inject constructor(private var geoFenceService: G
     private fun removeGeoFence(it: GeoFence) {
         geoFenceService.remove(
             it,
-            success = { Log.d(TAG, "GeoFence " + it.name + " removed successfully") },
+            success = { Log.d(TAG, "GeoFenceRecyclerAdapter " + it.name + " removed from service successfully") },
             failure = { err ->
                 Snackbar.make(itemView, err, Snackbar.LENGTH_LONG).show()
             })
@@ -65,22 +63,16 @@ class GeoFenceRecyclerAdapter @Inject constructor(private var geoFenceService: G
     private fun addGeoFence(it: GeoFence) {
         geoFenceService.add(
             it,
-            success = { Log.d(TAG, "GeoFence " + it.name + " added successfully") },
+            success = { Log.d(TAG, "GeoFenceRecyclerAdapter: " + it.name + " added to service successfully") },
             failure = { err ->
                 Snackbar.make(itemView, err, Snackbar.LENGTH_LONG).show()
             })
     }
 
     fun removeItem(viewHolder: RecyclerView.ViewHolder): GeoFence {
-        val removedPosition = viewHolder.adapterPosition
-        val removedGeoFence = getItem(removedPosition)
+        val removedGeoFence = getItem(viewHolder.adapterPosition)
         removeGeoFence(removedGeoFence)
-        notifyItemRemoved(removedPosition)
         return removedGeoFence
-    }
-
-    fun insertItem(position: Int) {
-        notifyItemInserted(position)
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -95,6 +87,13 @@ class GeoFenceRecyclerAdapter @Inject constructor(private var geoFenceService: G
                 geoFence.active = isChecked
                 onSwitchChange(geoFence)
                 onSwitch?.invoke(geoFence)
+                if (isChecked) {
+                    Toast.makeText(
+                        this.itemView.context,
+                        this.itemView.context.getString(R.string.geofence_fragment_toast_activated_geofence),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
     }

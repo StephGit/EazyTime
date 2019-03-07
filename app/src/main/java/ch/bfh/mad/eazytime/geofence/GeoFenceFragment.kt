@@ -10,7 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -60,12 +59,16 @@ class GeoFenceFragment : GeoFenceBaseFragment() {
         }
 
         linearLayoutManager = LinearLayoutManager(context)
-        recyclerView.layoutManager = linearLayoutManager
-        recyclerView.setHasFixedSize(true)
+        recyclerView.apply {
+            setHasFixedSize(true)
+            layoutManager = linearLayoutManager
+            adapter = recyclerAdapter
+        }
 
-        recyclerView.adapter = recyclerAdapter
-        recyclerAdapter.onItemClick = { showGeoFenceDetail(it) }
-        recyclerAdapter.onSwitch = { onSwitch(it) }
+        recyclerAdapter.apply {
+            onItemClick = { showGeoFenceDetail(it) }
+            onSwitch = { onSwitch(it) }
+        }
 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(GeoFenceViewModel::class.java)
         super.bind(viewModel)
@@ -74,6 +77,7 @@ class GeoFenceFragment : GeoFenceBaseFragment() {
         initSwipe()
 
         return view
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -107,7 +111,6 @@ class GeoFenceFragment : GeoFenceBaseFragment() {
                 viewModel.delete(removedGeoFence)
                 Snackbar.make(viewHolder.itemView, "${removedGeoFence.name} gelöscht.", Snackbar.LENGTH_LONG)
                     .setAction("Rückgängig") {
-                        recyclerAdapter.insertItem(position)
                         viewModel.insert(removedGeoFence)
                     }.show()
             }
