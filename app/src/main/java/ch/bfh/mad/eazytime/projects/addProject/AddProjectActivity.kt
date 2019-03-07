@@ -15,7 +15,7 @@ import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.data.entity.Project
 import ch.bfh.mad.eazytime.data.repo.ProjectRepo
 import ch.bfh.mad.eazytime.di.Injector
-import ch.bfh.mad.eazytime.homeScreenWidget.WidgetProvider
+import ch.bfh.mad.eazytime.remoteViews.homeScreenWidget.WidgetProvider
 import ch.bfh.mad.eazytime.projects.ProjectModelFactory
 import ch.bfh.mad.eazytime.util.EazyTimeColorUtil
 import ch.bfh.mad.eazytime.util.ProjectProviderService

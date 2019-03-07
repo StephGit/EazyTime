@@ -8,5 +8,6 @@ data class ProjectListItem(
     val color: String?,
     val default: Boolean?,
     val onWidget: Boolean?,
-    val active: Boolean
+    val active: Boolean,
+    val isDeleted: Boolean
 )

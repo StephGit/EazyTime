@@ -22,18 +22,22 @@
 
     <EditText
             android:id="@+id/tv_geoFenceEditName"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:inputType="text"
             android:textSize="@dimen/eazyTime_text_size_textview_geofence_flow"
             android:layout_marginTop="@dimen/eazyTime_margin_top_geofence_flow"
             android:layout_marginBottom="@dimen/eazyTime_margin_bottom_geofence_flow"
             android:layout_marginStart="@dimen/eazyTime_margin_start_geofence_flow"
+            android:layout_marginEnd="@dimen/eazyTime_margin_end_geofence_flow"
+            android:maxLength="25"
             android:hint="@string/geofence_edit_fragment_edittext_hint"
             app:layout_constraintVertical_chainStyle="packed"
             app:layout_constraintTop_toBottomOf="@+id/tv_geoFenceEditTitle"
             app:layout_constraintBottom_toTopOf="@+id/btn_geoFenceSave"
-            app:layout_constraintStart_toStartOf="parent" tools:ignore="Autofill"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:ignore="Autofill"/>
 
 
     <Button
@@ -72,6 +76,6 @@
             app:layout_constraintStart_toEndOf="@id/btn_geoFenceSave"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintVertical_bias="0.0"
-    />
+            android:textAlignment="center"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -28,8 +28,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
+            android:background="@color/eazyTime_colorBrand"
             app:itemBackground="@color/eazyTime_colorBrand"
             app:itemIconTint="@color/eazy_time_bottom_navigation"
             app:itemTextColor="@color/eazy_time_bottom_navigation"
-            />
+    />
 </androidx.constraintlayout.widget.ConstraintLayout>
