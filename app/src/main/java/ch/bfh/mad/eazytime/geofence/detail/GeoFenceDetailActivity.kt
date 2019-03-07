@@ -37,7 +37,7 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     GoogleMap.OnMapLongClickListener,
     ScaleGestureDetector.OnScaleGestureListener {
 
-    private val defaultZoom: Float = 15F
+    private val defaultZoom: Float = 18F
     private var defaultRadius: Double = 0.0
     private var scaleFactor: Float = 1.0F
     private val minZoom: Float = 0F
@@ -61,8 +61,7 @@ class GeoFenceDetailActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_geofence_detail)
 
-        val mapFragment: SupportMapFragment =
-            supportFragmentManager.findFragmentById(R.id.map_geoFence) as SupportMapFragment
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.map_geoFence) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
         locationProviderClient = LocationServices.getFusedLocationProviderClient(this)
@@ -215,8 +214,15 @@ class GeoFenceDetailActivity : AppCompatActivity(),
         )
     }
 
+    /**
+     * Moves camera to specified bounds.
+     * Width and Height are calculated based on displayMetrics to avoid map with 0 size - error.
+     */
     private fun moveCameraToBounds(bounds: LatLngBounds) {
-        map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 25))
+        val mapHeight =
+            resources.displayMetrics.heightPixels / 100 * resources.getInteger(R.integer.eazyTime_layout_weight_geofence_map_fragment)
+        val mapWidth = resources.displayMetrics.widthPixels
+        map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, mapWidth, mapHeight, 25))
     }
 
     /**

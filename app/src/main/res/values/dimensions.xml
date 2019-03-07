@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="eazyTime_empty_fragment_vertical_bias">0.3</dimen>
     <dimen name="eazyTime_empty_fragment_icon_width">48dp</dimen>
     <dimen name="eazyTime_empty_fragment_icon_height">48dp</dimen>
     <dimen name="eazyTime_empty_fragment_icon_marginTop">80dp</dimen>
@@ -40,15 +39,10 @@
     <dimen name="widget_min_max_height">40dp</dimen>
     <dimen name="widget_min_width">40dp</dimen>
 
-    <dimen name="eazyTime_layout_weight_geofence_map_fragment">0.7</dimen>
     <dimen name="eazyTime_margin_top_geofence_flow">8dp</dimen>
     <dimen name="eazyTime_margin_bottom_geofence_flow">8dp</dimen>
     <dimen name="eazyTime_margin_start_geofence_flow">8dp</dimen>
     <dimen name="eazyTime_text_size_title_geofence_flow">16sp</dimen>
     <dimen name="eazyTime_text_size_textview_geofence_flow">14sp</dimen>
     <dimen name="eazyTime_margin_end_geofence_flow">8dp</dimen>
-
-    <item name="eazyTime_layout_weight_geofence_flow_container" type="dimen" format="float">0.3</item>
-
-
 </resources>

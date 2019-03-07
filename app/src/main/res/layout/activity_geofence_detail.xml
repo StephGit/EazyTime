@@ -13,12 +13,12 @@
             android:id="@+id/map_geoFence"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="@dimen/eazyTime_layout_weight_geofence_map_fragment"
+            android:layout_weight="@integer/eazyTime_layout_weight_geofence_map_fragment"
     />
 
     <FrameLayout
             android:id="@+id/geofenceFlowContainer"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="@dimen/eazyTime_layout_weight_geofence_flow_container"/>
+            android:layout_weight="@integer/eazyTime_layout_weight_geofence_flow_container"/>
 </LinearLayout>
