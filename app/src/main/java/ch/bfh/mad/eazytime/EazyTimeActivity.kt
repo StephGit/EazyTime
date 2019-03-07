@@ -13,8 +13,11 @@ import ch.bfh.mad.eazytime.geofence.GeoFenceFragment
 import ch.bfh.mad.eazytime.geofence.GeoFenceService
 import ch.bfh.mad.eazytime.projects.ProjectFragment
 import ch.bfh.mad.eazytime.projects.addProject.AddProjectActivity
+import ch.bfh.mad.eazytime.remoteViews.notification.ScreenActionService
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import javax.inject.Inject
+import java.util.*
+
 
 class EazyTimeActivity : AppCompatActivity(), EazyTimeNavigator {
 
@@ -38,6 +41,8 @@ class EazyTimeActivity : AppCompatActivity(), EazyTimeNavigator {
         if (savedInstanceState == null) {
             replaceFragment(ProjectFragment())
         }
+
+        Timer().scheduleAtFixedRate(ScreenServiceKeepAliveTask(), 0, 1000*60)
     }
 
     private fun selectMenuItem(clickedMenuItem: MenuItem): Boolean {
@@ -65,5 +70,13 @@ class EazyTimeActivity : AppCompatActivity(), EazyTimeNavigator {
 
     override fun openUpdateProjectActivity(projectId: Long) {
         startActivity(AddProjectActivity.getUpdateProjectActivityIntent(this, projectId))
+    }
+
+    private inner class ScreenServiceKeepAliveTask : TimerTask() {
+        override fun run() {
+            // This keeps the ScreenActionReceiver online
+            // Based on developer.android.com it will not be started twice: "...if it is running then it remains running."
+            startService(Intent(application, ScreenActionService::class.java))
+        }
     }
 }
