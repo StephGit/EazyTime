@@ -5,7 +5,9 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.util.Log
 import androidx.core.content.ContextCompat
+import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.data.GeoFenceRepository
 import ch.bfh.mad.eazytime.data.entity.GeoFence
 import ch.bfh.mad.eazytime.geofence.receiver.GeoFenceReceiver
@@ -16,12 +18,29 @@ import com.google.android.gms.location.LocationServices
 import javax.inject.Inject
 
 
-class GeoFenceService @Inject constructor(private val context: Context, private val geoFenceRepository: GeoFenceRepository) {
+class GeoFenceService @Inject constructor(
+    private val context: Context,
+    private val geoFenceRepository: GeoFenceRepository
+) {
 
+    private val geoFences: MutableList<GeoFence> = ArrayList()
     private val geofencingClient: GeofencingClient = LocationServices.getGeofencingClient(context)
 
+    /**
+     * Explicit removal of all active geofences and add them again.
+     */
     fun initGeoFences() {
-
+        this.geoFences.addAll(geoFenceRepository.getActiveGeoFences())
+        geoFences.forEach {
+            remove(it,
+                success = { Log.d(TAG, "GeoFence " + it.name + " removed successfully") },
+                failure = { err -> Log.d(TAG, "Removal failed for GeoFence [" + it.name + "], Error: " + err) })
+        }
+        geoFences.forEach {
+            add(it,
+                success = { Log.d(TAG, "GeoFence " + it.name + " added successfully") },
+                failure = { err -> Log.d(TAG, "Adding failed for GeoFence [" + it.name + "], Error: " + err) })
+        }
     }
 
     /**
@@ -31,15 +50,13 @@ class GeoFenceService @Inject constructor(private val context: Context, private 
         return Geofence.Builder()
             // string id to identify
             .setRequestId(id)
-            .setCircularRegion(
-                latitude,
-                longitude,
-                radius.toFloat()
-            )
+            .setCircularRegion(latitude, longitude, radius.toFloat())
             // Alerts are generated for these transistions
             .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
             .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_EXIT)
             .setExpirationDuration(Geofence.NEVER_EXPIRE)
+            // Interval to check for events, default is 0 - battery improvement
+            .setNotificationResponsiveness(30000)
             .build()
     }
 
@@ -51,9 +68,12 @@ class GeoFenceService @Inject constructor(private val context: Context, private 
         success: () -> Unit,
         failure: (error: String) -> Unit
     ) {
+        if (isInList(geoFence)) {
+            return
+        }
         val gf = buildGeofence(geoFence.gfId!!, geoFence.latitude!!, geoFence.longitude!!, geoFence.radius!!)
-        if (gf != null
-            && ContextCompat.checkSelfPermission(
+        if (gf != null &&
+            ContextCompat.checkSelfPermission(
                 this.context,
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
@@ -61,6 +81,7 @@ class GeoFenceService @Inject constructor(private val context: Context, private 
             geofencingClient
                 .addGeofences(buildGeofencingRequest(gf), geofencePendingIntent)
                 .addOnSuccessListener {
+                    this.geoFences.add(geoFence)
                     success()
                 }
                 .addOnFailureListener {
@@ -69,14 +90,22 @@ class GeoFenceService @Inject constructor(private val context: Context, private 
         }
     }
 
+    private fun isInList(geoFence: GeoFence): Boolean {
+        return (this.geoFences.find { it == geoFence } != null)
+    }
+
     fun remove(
         geoFence: GeoFence,
         success: () -> Unit,
         failure: (error: String) -> Unit
     ) {
+        if (!isInList(geoFence)) {
+            return
+        }
         geofencingClient
             .removeGeofences(listOf(geoFence.gfId))
             .addOnSuccessListener {
+                this.geoFences.remove(geoFence)
                 success()
             }
             .addOnFailureListener {

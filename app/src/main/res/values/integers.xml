@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="eazyTime_layout_weight_geofence_map_fragment">70</integer>
+    <integer name="eazyTime_layout_weight_geofence_flow_container">30</integer>
+</resources>

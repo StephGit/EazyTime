@@ -8,14 +8,20 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import ch.bfh.mad.R
 import ch.bfh.mad.eazytime.calendar.CalendarFragment
+import ch.bfh.mad.eazytime.di.Injector
 import ch.bfh.mad.eazytime.geofence.GeoFenceFragment
+import ch.bfh.mad.eazytime.geofence.GeoFenceService
 import ch.bfh.mad.eazytime.projects.ProjectFragment
 import ch.bfh.mad.eazytime.projects.addProject.AddProjectActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import javax.inject.Inject
 
 class EazyTimeActivity : AppCompatActivity(), EazyTimeNavigator {
 
     private lateinit var navigation: BottomNavigationView
+
+    @Inject
+    lateinit var geoFenceService: GeoFenceService
 
     companion object {
         fun newIntent(ctx: Context) = Intent(ctx, EazyTimeActivity::class.java)
@@ -26,6 +32,8 @@ class EazyTimeActivity : AppCompatActivity(), EazyTimeNavigator {
         setContentView(R.layout.activity_eazy_time)
         navigation = findViewById(R.id.eazy_time_navigation)
         navigation.setOnNavigationItemSelectedListener { clickedMenuItem -> selectMenuItem(clickedMenuItem) }
+        Injector.appComponent.inject(this)
+        geoFenceService.initGeoFences()
 
         if (savedInstanceState == null) {
             replaceFragment(ProjectFragment())
