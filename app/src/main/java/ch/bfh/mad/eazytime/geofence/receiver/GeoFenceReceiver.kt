@@ -7,7 +7,7 @@ import android.util.Log
 import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.di.Injector
 import ch.bfh.mad.eazytime.geofence.GeofenceErrorMessages
-import ch.bfh.mad.eazytime.util.NotificationHandler
+import ch.bfh.mad.eazytime.remoteViews.notification.NotificationHandler
 import ch.bfh.mad.eazytime.util.TimerService
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingEvent
@@ -47,12 +47,12 @@ class GeoFenceReceiver : BroadcastReceiver() {
             timerService.checkInDefaultProject()
             triggeringGeofences.first().toString()
             Log.d(TAG, "GeoFenceReceiver: checked in default project, Geofence " + triggeringGeofences.first().toString())
-            notificationHandler.sendNotification(context, "GeoFenceReceiver: checked in default project, Geofence " + triggeringGeofences.first().toString())
+            notificationHandler.sendNotification("GeoFenceReceiver: checked in default project, Geofence " + triggeringGeofences.first().toString())
         } else if  (event.geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT) {
             timerService.checkOut()
             triggeringGeofences.first().toString()
             Log.d(TAG, "GeoFenceReceiver: checked out, Geofence " + triggeringGeofences.first().toString())
-            notificationHandler.sendNotification(context, "GeoFenceReceiver: checked out, Geofence " + triggeringGeofences.first().toString())
+            notificationHandler.sendNotification("GeoFenceReceiver: checked out, Geofence " + triggeringGeofences.first().toString())
         }
     }
 }

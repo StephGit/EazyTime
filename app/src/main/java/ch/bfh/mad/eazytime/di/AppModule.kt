@@ -14,8 +14,11 @@ import ch.bfh.mad.eazytime.data.repo.TimeSlotRepo
 import ch.bfh.mad.eazytime.data.repo.WorkDayRepo
 import ch.bfh.mad.eazytime.geofence.GeoFenceRecyclerAdapter
 import ch.bfh.mad.eazytime.geofence.GeoFenceService
+import ch.bfh.mad.eazytime.remoteViews.notification.NotificationHandler
 import ch.bfh.mad.eazytime.projects.ProjectsRecycleListAdapter
 import ch.bfh.mad.eazytime.projects.addProject.ProjectSaveOrUpdateService
+import ch.bfh.mad.eazytime.remoteViews.RemoteViewButtonUtil
+import ch.bfh.mad.eazytime.remoteViews.notification.ScreenActionService
 import ch.bfh.mad.eazytime.util.*
 import dagger.Module
 import dagger.Provides
@@ -96,7 +99,16 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideNotificationHandler(): NotificationHandler = NotificationHandler()
+    fun provideRemoteViewButtonUtil(): RemoteViewButtonUtil = RemoteViewButtonUtil()
+
+    @Provides
+    @Singleton
+    fun provideNotificationHandler(context: Context, remoteViewButtonUtil: RemoteViewButtonUtil, projectProviderService: ProjectProviderService):
+            NotificationHandler = NotificationHandler(context, remoteViewButtonUtil, projectProviderService)
+
+    @Provides
+    @Singleton
+    fun provideScreenActionService(): ScreenActionService = ScreenActionService()
 
     @Provides
     @Singleton

@@ -62,6 +62,7 @@
     <string name="ExtraKeyProjectId">KEY_PROJECT_ID</string>
     <string name="ExtraKeyProjectName">KEY_PROJECT_NAME</string>
     <string name="ExtraKeyProjectShortCode">SHORT_CODE</string>
+    <string name="ExtraKeyUpdateNotification">UPDTAE_NOTFICATION</string>
     <string name="no_projects_for_widget">Keine Projekte mit "Soll auf AppWidget erscheinen" gefunden</string>
 
     <string name="geofence_unknown_error">Unbekannter Fehler: Der Geofence-Service ist zur Zeit nicht erreichbar.

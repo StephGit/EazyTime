@@ -19,7 +19,7 @@ import ch.bfh.mad.R
 import ch.bfh.mad.eazytime.EazyTimeNavigator
 import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.di.Injector
-import ch.bfh.mad.eazytime.homeScreenWidget.WidgetProvider
+import ch.bfh.mad.eazytime.remoteViews.homeScreenWidget.WidgetProvider
 import ch.bfh.mad.eazytime.util.ProjectProviderService
 import ch.bfh.mad.eazytime.util.TimerService
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -59,10 +59,12 @@ class ProjectFragment : androidx.fragment.app.Fragment() {
         projectListViewModel = ViewModelProviders.of(this, ProjectModelFactory(projectProviderService)).get(ProjectListViewModel::class.java)
 
         linearLayoutManager = LinearLayoutManager(context)
-        projectListView.layoutManager = linearLayoutManager
-        projectListView.setHasFixedSize(true)
+        projectListView.apply {
+            layoutManager = linearLayoutManager
+            setHasFixedSize(true)
+            adapter = projectsRecycleListAdapter
+        }
 
-        projectListView.adapter = projectsRecycleListAdapter
         projectsRecycleListAdapter.onItemClick = { activateOrChangeProject(it) }
         projectsRecycleListAdapter.onItemLongClick = { openUpdateNewProjectActivity(it) }
 
