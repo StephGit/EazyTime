@@ -45,7 +45,7 @@ class NotificationHandler(val context: Context, private val remoteViewButtonUtil
     fun createEazyTimeNotification() {
         createNotificationChannel(notificationChannelId)
 
-        val notificationLayout = RemoteViews(context.packageName, R.layout.notification)
+        val notificationLayout = RemoteViews(context.packageName, R.layout.remote_view_layout)
         projectProviderService.getProjectListitems().observeForever { projectListItems ->
             remoteViewButtonUtil.updateButtons(context, notificationLayout, projectListItems.size, projectListItems, true)
             val builder = NotificationCompat.Builder(context, notificationChannelId)
@@ -59,7 +59,7 @@ class NotificationHandler(val context: Context, private val remoteViewButtonUtil
                 .setAutoCancel(true)
 
             with(NotificationManagerCompat.from(context)) {
-                // reuse same notificationId because we only want to update a existing notification
+                // reuse same notificationId because we only want to update an existing notification
                 notify(notificationId, builder.build())
             }
 

@@ -19,10 +19,6 @@ import java.util.*
 
 class EazyTimeActivity : AppCompatActivity(), EazyTimeNavigator {
 
-    init {
-        Injector.appComponent.inject(this)
-    }
-
     private lateinit var navigation: BottomNavigationView
 
     companion object {
@@ -71,11 +67,9 @@ class EazyTimeActivity : AppCompatActivity(), EazyTimeNavigator {
 
     private inner class ScreenServiceKeepAliveTask : TimerTask() {
         override fun run() {
-            if (startService(Intent(application, ScreenActionService::class.java)) != null) {
-                Log.i(TAG, "ScreenActionService started via Intent")
-            } else {
-                Log.i(TAG, "ScreenActionService already running")
-            }
+            // This keeps the ScreenActionReceiver online
+            // Based on developer.android.com it will not be started twice: "...if it is running then it remains running."
+            startService(Intent(application, ScreenActionService::class.java))
         }
     }
 }

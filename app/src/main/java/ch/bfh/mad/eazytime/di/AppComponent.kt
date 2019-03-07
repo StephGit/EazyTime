@@ -39,5 +39,4 @@ interface AppComponent {
     fun inject(geoFenceReceiver: GeoFenceReceiver)
     fun inject(remoteViewButtonUtil: RemoteViewButtonUtil)
     fun inject(screenActionService: ScreenActionService)
-    fun inject(eazyTimeActivity: EazyTimeActivity)
 }

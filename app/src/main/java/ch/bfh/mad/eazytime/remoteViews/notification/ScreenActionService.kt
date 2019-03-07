@@ -33,7 +33,7 @@ class ScreenActionService : Service() {
     }
 
     override fun onDestroy() {
-        Log.i(TAG, "Destroy ScreenActionService")
+        Log.i(TAG, "Destroy ScreenActionService and unregister ScreenActionReceiver")
         unregisterReceiver(unlockReceiver)
     }
 

@@ -1,6 +1,5 @@
 package ch.bfh.mad.eazytime.remoteViews.homeScreenWidget
 
-import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
@@ -8,17 +7,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.RemoteViews
-import androidx.core.content.ContextCompat
 import ch.bfh.mad.R
 import ch.bfh.mad.eazytime.TAG
-import ch.bfh.mad.eazytime.data.dao.ProjectDao
 import ch.bfh.mad.eazytime.di.Injector
-import ch.bfh.mad.eazytime.projects.ProjectListItem
-import ch.bfh.mad.eazytime.remoteViews.RemoteViewBroadCastReceiver
 import ch.bfh.mad.eazytime.remoteViews.RemoteViewButtonUtil
-import ch.bfh.mad.eazytime.util.EazyTimeColorUtil
 import ch.bfh.mad.eazytime.util.ProjectProviderService
 import ch.bfh.mad.eazytime.util.WidgetProviderUtils
 import javax.inject.Inject
@@ -58,11 +51,10 @@ class WidgetProvider : AppWidgetProvider() {
             allProjects.filter { project -> project.onWidget == true }.let { projectListItems ->
                 val buttonsToDisplay = widgetProviderUtils.getAmountOfButtonsToDisplay(projectListItems.size, appWidgetManager, appWidgetId)
                 Log.i(TAG, "buttonsToDisplay in HomeScreenWidget: $buttonsToDisplay")
-                val remoteViews = RemoteViews(context.packageName, R.layout.homescreen_widget)
+                val remoteViews = RemoteViews(context.packageName, R.layout.remote_view_layout)
                 remoteViewButtonUtil.updateButtons(context, remoteViews, buttonsToDisplay, projectListItems, false)
                 appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
             }
-
         }
     }
 

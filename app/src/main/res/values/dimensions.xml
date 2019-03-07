@@ -38,7 +38,8 @@
     <dimen name="widget_margin">10dp</dimen>
     <dimen name="widget_button_margin">5dp</dimen>
     <dimen name="widget_min_max_height">40dp</dimen>
-    <dimen name="widget_min_width">40dp</dimen>
+    <dimen name="widget_min_width">80dp</dimen>
+    <dimen name="remoteViewHeight">80dp</dimen>
 
     <dimen name="eazyTime_layout_weight_geofence_map_fragment">0.7</dimen>
     <dimen name="eazyTime_margin_top_geofence_flow">8dp</dimen>
