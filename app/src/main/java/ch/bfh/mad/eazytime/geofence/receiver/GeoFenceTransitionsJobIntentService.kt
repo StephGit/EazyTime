@@ -52,14 +52,14 @@ class GeoFenceTransitionsJobIntentService : JobIntentService() {
             triggeringGeofences.first().toString()
             Log.d(
                 TAG,
-                "GeoFenceReceiver: checked in default project, Geofence " + triggeringGeofences.first().toString()
+                "GeoFenceBroadcastReceiver: checked in default project, Geofence " + triggeringGeofences.first().toString()
             )
-            notificationHandler.sendNotification("GeoFenceReceiver: checked in default project, Geofence " + triggeringGeofences.first().toString())
+            notificationHandler.sendNotification("GeoFenceBroadcastReceiver: checked in default project, Geofence " + triggeringGeofences.first().toString())
         } else if (event.geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT) {
             timerService.checkOut()
             triggeringGeofences.first().toString()
-            Log.d(TAG, "GeoFenceReceiver: checked out, Geofence " + triggeringGeofences.first().toString())
-            notificationHandler.sendNotification("GeoFenceReceiver: checked out, Geofence " + triggeringGeofences.first().toString())
+            Log.d(TAG, "GeoFenceBroadcastReceiver: checked out, Geofence " + triggeringGeofences.first().toString())
+            notificationHandler.sendNotification("GeoFenceBroadcastReceiver: checked out, Geofence " + triggeringGeofences.first().toString())
         }
     }
 

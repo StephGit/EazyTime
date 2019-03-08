@@ -1,5 +1,6 @@
 package ch.bfh.mad.eazytime.remoteViews.notification
 
+import android.annotation.SuppressLint
 import android.app.Service
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -11,6 +12,7 @@ import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.di.Injector
 import javax.inject.Inject
 
+@SuppressLint
 class ScreenActionService : Service() {
 
     private val unlockReceiver: ScreenActionReceiver = ScreenActionReceiver()

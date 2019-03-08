@@ -9,7 +9,7 @@ import ch.bfh.mad.eazytime.di.Injector
 import ch.bfh.mad.eazytime.geofence.GeoFenceService
 import javax.inject.Inject
 
-class BootReceiver : BroadcastReceiver() {
+class BootBroadcastReceiver : BroadcastReceiver() {
 
     /**
      * Unsafe action-filtering happens in async-task
