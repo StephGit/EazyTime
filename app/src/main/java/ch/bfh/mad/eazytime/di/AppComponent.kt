@@ -5,7 +5,7 @@ import ch.bfh.mad.eazytime.EazyTimeActivity
 import ch.bfh.mad.eazytime.geofence.GeoFenceEmptyFragment
 import ch.bfh.mad.eazytime.geofence.GeoFenceFragment
 import ch.bfh.mad.eazytime.geofence.receiver.BootReceiver
-import ch.bfh.mad.eazytime.geofence.receiver.GeoFenceReceiver
+import ch.bfh.mad.eazytime.geofence.receiver.GeoFenceTransitionsJobIntentService
 import ch.bfh.mad.eazytime.projects.ProjectFragment
 import ch.bfh.mad.eazytime.projects.addProject.AddProjectActivity
 import ch.bfh.mad.eazytime.remoteViews.RemoteViewBroadCastReceiver
@@ -34,9 +34,8 @@ interface AppComponent {
     fun inject(widgetProvider: WidgetProvider)
     fun inject(geoFenceFragment: GeoFenceFragment)
     fun inject(geoFenceEmptyFragment: GeoFenceEmptyFragment)
-
     fun inject(remoteViewButtonUtil: RemoteViewButtonUtil)
     fun inject(screenActionService: ScreenActionService)
-    fun inject(geoFenceReceiverTask: GeoFenceReceiver.GeoFenceReceiverTask)
+    fun inject(geoFenceTransitionsJobIntentService: GeoFenceTransitionsJobIntentService)
     fun inject(bootReceiverTask: BootReceiver.BootReceiverTask)
 }
