@@ -1,5 +1,6 @@
 package ch.bfh.mad
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
@@ -14,6 +15,7 @@ import ch.bfh.mad.eazytime.data.entity.TimeSlot
 import org.joda.time.LocalDateTime
 import org.junit.After
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.util.concurrent.ThreadLocalRandom
@@ -21,6 +23,9 @@ import java.util.concurrent.ThreadLocalRandom
 
 @RunWith(AndroidJUnit4::class)
 class SimpleEntityReadWriteTest : LifecycleOwner {
+    @get:Rule
+    var instantTaskExecutorRule = InstantTaskExecutorRule()
+
     // mock lifecycle
     override fun getLifecycle(): Lifecycle = LifecycleRegistry(this)
 
@@ -91,23 +96,23 @@ class SimpleEntityReadWriteTest : LifecycleOwner {
         val tmpTimeSlot = TimeSlot(randomLong(), LocalDateTime.now().minusHours(2), LocalDateTime.now())
         db.timeSlotDao().insertAll(mutableListOf(tmpTimeSlot))
 
-        val timeslots = db.timeSlotDao().getTimeSlots()
-        assert(timeslots.isNotEmpty())
+        val timeSlots = db.timeSlotDao().getTimeSlots()
+        assert(timeSlots.value?.isNotEmpty() == true)
     }
 
-    fun randomInt(): Int {
+    private fun randomInt(): Int {
         return ThreadLocalRandom.current().nextInt(0, 1000 + 1)
     }
 
-    fun randomLong(): Long {
+    private fun randomLong(): Long {
         return randomInt().toLong()
     }
 
-    fun randomUuid(): String {
+    private fun randomUuid(): String {
         return java.util.UUID.randomUUID().toString()
     }
 
-    fun randomDouble(): Double {
+    private fun randomDouble(): Double {
         return randomInt().toDouble()
     }
 }
