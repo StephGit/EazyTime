@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -38,6 +39,9 @@ class ProjectFragment : androidx.fragment.app.Fragment() {
     @Inject
     lateinit var projectsRecycleListAdapter: ProjectsRecycleListAdapter
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
     private lateinit var projectListViewModel: ProjectListViewModel
     private lateinit var projectListView: RecyclerView
     private lateinit var createNewProjectButton: FloatingActionButton
@@ -56,7 +60,7 @@ class ProjectFragment : androidx.fragment.app.Fragment() {
         createNewProjectButton.setOnClickListener{ openAddNewProjectActivity() }
 
         Injector.appComponent.inject(this)
-        projectListViewModel = ViewModelProviders.of(this, ProjectModelFactory(projectProviderService)).get(ProjectListViewModel::class.java)
+        projectListViewModel = ViewModelProviders.of(this, viewModelFactory).get(ProjectListViewModel::class.java)
 
         linearLayoutManager = LinearLayoutManager(context)
         projectListView.apply {

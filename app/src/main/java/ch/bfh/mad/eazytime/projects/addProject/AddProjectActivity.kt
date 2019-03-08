@@ -8,6 +8,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import ch.bfh.mad.R
 import ch.bfh.mad.databinding.ActivityAddProjectBinding
@@ -16,7 +17,6 @@ import ch.bfh.mad.eazytime.data.entity.Project
 import ch.bfh.mad.eazytime.data.repo.ProjectRepo
 import ch.bfh.mad.eazytime.di.Injector
 import ch.bfh.mad.eazytime.remoteViews.homeScreenWidget.WidgetProvider
-import ch.bfh.mad.eazytime.projects.ProjectModelFactory
 import ch.bfh.mad.eazytime.util.EazyTimeColorUtil
 import ch.bfh.mad.eazytime.util.ProjectProviderService
 import com.thebluealliance.spectrum.SpectrumDialog
@@ -41,13 +41,16 @@ class AddProjectActivity : AppCompatActivity() {
     @Inject
     lateinit var saveOrUpdateService: ProjectSaveOrUpdateService
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_project)
         title = getString(R.string.add_project_fragment_title)
 
         Injector.appComponent.inject(this)
-        val addProjectViewModel = ViewModelProviders.of(this, ProjectModelFactory(projectProviderService))
+        val addProjectViewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(AddProjectViewModel::class.java)
 
         val dataBinding = DataBindingUtil.setContentView<ActivityAddProjectBinding>(this, R.layout.activity_add_project)

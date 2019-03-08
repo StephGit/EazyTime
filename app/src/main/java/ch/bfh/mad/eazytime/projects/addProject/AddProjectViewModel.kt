@@ -6,8 +6,9 @@ import androidx.lifecycle.ViewModel
 import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.data.entity.Project
 import ch.bfh.mad.eazytime.util.EazyTimeColorUtil
+import javax.inject.Inject
 
-class AddProjectViewModel: ViewModel() {
+class AddProjectViewModel @Inject constructor(): ViewModel() {
 
     val projectId = MutableLiveData<Long>()
     var projectName = MutableLiveData<String>()
