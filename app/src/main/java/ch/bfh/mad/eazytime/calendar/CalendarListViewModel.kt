@@ -6,10 +6,7 @@ import ch.bfh.mad.eazytime.data.entity.WorkDay
 import ch.bfh.mad.eazytime.util.CalendarProviderService
 import javax.inject.Inject
 
-class CalendarListViewModel: ViewModel() {
-
-    @Inject
-    lateinit var calendarProviderService: CalendarProviderService
+class CalendarListViewModel @Inject constructor(val calendarProviderService: CalendarProviderService): ViewModel() {
 
     fun getCalendarItems(): LiveData<List<WorkDay>> {
         return calendarProviderService.getCalendarListitems()
