@@ -5,6 +5,8 @@ import androidx.test.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4
 import ch.bfh.mad.eazytime.data.AppDatabase
 import ch.bfh.mad.eazytime.data.entity.Project
+import ch.bfh.mad.eazytime.data.repo.TimeSlotRepo
+import ch.bfh.mad.eazytime.data.repo.WorkDayRepo
 import ch.bfh.mad.eazytime.util.TimerService
 import org.junit.After
 import org.junit.Before
@@ -13,6 +15,7 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class TimerServiceTest {
+
     private lateinit var db: AppDatabase
     private lateinit var ts: TimerService
 
@@ -20,7 +23,7 @@ class TimerServiceTest {
     @Before
     fun createDb() {
         db = Room.inMemoryDatabaseBuilder(InstrumentationRegistry.getContext(), AppDatabase::class.java).build()
-        ts = TimerService(db.timeSlotDao(), db.projectDao(), db.workDayDao())
+        ts = TimerService(TimeSlotRepo(db.timeSlotDao()), db.projectDao(), WorkDayRepo( db.workDayDao()))
 
         val p1 = Project()
         p1.isDefault = true
@@ -43,14 +46,14 @@ class TimerServiceTest {
     }
 
     @Test
-    fun checkinDefaultProject() {
+    fun checkInDefaultProject() {
         val emptyTs = db.timeSlotDao().getCurrentTimeSlots()
         assert(emptyTs.isEmpty())
         val defaultProject = db.projectDao().getDefaultProject()
         ts.checkInDefaultProject()
 
         val newTs = db.timeSlotDao().getCurrentTimeSlots().first()
-        assert(defaultProject.id == newTs?.projectId)
+        assert(defaultProject.id == newTs.projectId)
     }
 
     @Test
@@ -58,7 +61,7 @@ class TimerServiceTest {
         ts.checkInDefaultProject()
         val oldTs = db.timeSlotDao().getCurrentTimeSlots().first()
         val otherProject = db.projectDao().getProjects().find { p -> p.shortCode == "moo" }
-        ts.changeAndStartProject(otherProject!!)
+        ts.changeAndStartProject(otherProject!!.id)
         val newTs = db.timeSlotDao().getCurrentTimeSlots().first()
         assert(oldTs != newTs)
     }
@@ -68,8 +71,8 @@ class TimerServiceTest {
         ts.checkInDefaultProject()
         Thread.sleep(500)
         ts.checkOut()
-        val slot = db.timeSlotDao().getTimeSlots().first()
-        assert(slot.startDate!!.isBefore(slot.endDate))
+        val slot = db.timeSlotDao().getTimeSlots().value?.first()
+        assert(slot?.startDate?.isBefore(slot.endDate) == true)
     }
 
 }

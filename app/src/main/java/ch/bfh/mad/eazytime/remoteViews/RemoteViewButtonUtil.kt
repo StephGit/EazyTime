@@ -21,7 +21,7 @@ class RemoteViewButtonUtil {
     @Inject
     lateinit var eazyTimeColorUtil: EazyTimeColorUtil
 
-    var addUpdateNotificationExtra: Boolean = false
+    private var addUpdateNotificationExtra: Boolean = false
 
     fun updateButtons(context: Context, remoteViews: RemoteViews, buttonsToDisplay: Int, projects: List<ProjectListItem>, updateNotification: Boolean) {
 
