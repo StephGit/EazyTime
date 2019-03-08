@@ -10,6 +10,7 @@
     <color name="eazyTime_colorBrand">#4DABF7</color>
     <color name="eazyTime_colorSelected">#311B92</color>
     <color name="eazyTime_colorBackgroundText">#CED4DA</color>
+    <color name="eazyTime_colorBackgroundLight">#F9F9F9</color>
     <color name="eazyTime_colorBackground">#F1F3F5</color>
     <color name="eazyTime_light_gray">#808080</color>
     <color name="eazyTime_default_colorProject">#ff8787</color>

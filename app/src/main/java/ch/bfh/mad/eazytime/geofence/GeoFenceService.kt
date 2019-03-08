@@ -10,7 +10,7 @@ import androidx.core.content.ContextCompat
 import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.data.entity.GeoFence
 import ch.bfh.mad.eazytime.data.repo.GeoFenceRepo
-import ch.bfh.mad.eazytime.geofence.receiver.GeoFenceReceiver
+import ch.bfh.mad.eazytime.geofence.receiver.GeoFenceBroadcastReceiver
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingClient
 import com.google.android.gms.location.GeofencingRequest
@@ -127,7 +127,7 @@ class GeoFenceService @Inject constructor(
      * PendingIntent to trigger TransitionsIntentService
      */
     private val geofencePendingIntent: PendingIntent by lazy {
-        val intent = Intent(context, GeoFenceReceiver::class.java)
+        val intent = Intent(context, GeoFenceBroadcastReceiver::class.java)
         PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
     }
 }

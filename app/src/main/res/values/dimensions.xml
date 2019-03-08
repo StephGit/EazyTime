@@ -8,10 +8,10 @@
     <dimen name="eazyTime_empty_fragment_title_marginBottom">30dp</dimen>
     <dimen name="eazyTime_empty_fragment_title_textSize">18sp</dimen>
 
-    <dimen name="eazyTime_top_margin_list_elements">3dp</dimen>
-    <dimen name="eazyTime_bottom_margin_list_elements">3dp</dimen>
-    <dimen name="eazyTime_left_margin_list_elements">6dp</dimen>
-    <dimen name="eazyTime_right_margin_list_elements">6dp</dimen>
+    <dimen name="eazyTime_top_margin_list_elements">1dp</dimen>
+    <dimen name="eazyTime_bottom_margin_list_elements">1dp</dimen>
+    <dimen name="eazyTime_left_margin_list_elements">0dp</dimen>
+    <dimen name="eazyTime_right_margin_list_elements">0dp</dimen>
     <dimen name="eazyTime_margin_save_delete_buttons">8dp</dimen>
     <dimen name="eazyTime_padding_list_elements">6dp</dimen>
     <dimen name="eazyTime_padding_half_list_elements">3dp</dimen>
@@ -49,4 +49,8 @@
     <dimen name="eazyTime_margin_top_geofence_list_item">8dp</dimen>
     <dimen name="eazyTime_margin_start_geofence_list_item">8dp</dimen>
     <dimen name="eazyTime_margin_end_geofence_list_item">8dp</dimen>
+    <dimen name="eazyTime_padding_geofence_flow_text">8dp</dimen>
+    <dimen name="eazyTime_margin_geofence_flow_text">8dp</dimen>
+    <dimen name="eazyTime_padding_end_geofence_flow_text">8dp</dimen>
+    <dimen name="eazyTime_padding_start_geofence_flow_text">8dp</dimen>
 </resources>
