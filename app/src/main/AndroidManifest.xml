@@ -5,6 +5,7 @@
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <application
             android:name=".eazytime.EazyTimeApp"
@@ -65,10 +66,11 @@
                 android:name=".eazytime.geofence.receiver.GeoFenceReceiver"
                 android:enabled="true"
                 android:exported="true">
-            <intent-filter>
-                <action android:name=".eazytime.geofence.ACTION_RECEIVE_GEOFENCE"/>
-            </intent-filter>
         </receiver>
+        <service
+                android:name="ch.bfh.mad.eazytime.geofence.receiver.GeoFenceTransitionsJobIntentService"
+                android:exported="true"
+                android:permission="android.permission.BIND_JOB_SERVICE"/>
         <receiver android:name=".eazytime.geofence.receiver.BootReceiver"
                   android:permission="android.permission.RECEIVE_BOOT_COMPLETED"
                   android:enabled="true"
