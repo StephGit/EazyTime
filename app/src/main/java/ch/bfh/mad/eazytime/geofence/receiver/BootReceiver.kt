@@ -5,17 +5,12 @@ import android.content.Context
 import android.content.Intent
 import ch.bfh.mad.eazytime.di.Injector
 import ch.bfh.mad.eazytime.geofence.GeoFenceService
-import ch.bfh.mad.eazytime.util.NotificationHandler
 import javax.inject.Inject
 
 class BootReceiver : BroadcastReceiver() {
 
     @Inject
     lateinit var geoFenceService: GeoFenceService
-
-    @Inject
-    lateinit var notificationHandler: NotificationHandler
-
 
     init {
         Injector.appComponent.inject(this)
