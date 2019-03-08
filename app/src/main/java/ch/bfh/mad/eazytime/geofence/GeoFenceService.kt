@@ -8,8 +8,8 @@ import android.content.pm.PackageManager
 import android.util.Log
 import androidx.core.content.ContextCompat
 import ch.bfh.mad.eazytime.TAG
-import ch.bfh.mad.eazytime.data.GeoFenceRepository
 import ch.bfh.mad.eazytime.data.entity.GeoFence
+import ch.bfh.mad.eazytime.data.repo.GeoFenceRepo
 import ch.bfh.mad.eazytime.geofence.receiver.GeoFenceReceiver
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingClient
@@ -20,7 +20,8 @@ import javax.inject.Inject
 
 class GeoFenceService @Inject constructor(
     private val context: Context,
-    private val geoFenceRepository: GeoFenceRepository
+    private val geoFenceRepo: GeoFenceRepo,
+    private val geofenceErrorMessages: GeofenceErrorMessages
 ) {
 
     private val geoFences: MutableList<GeoFence> = ArrayList()
@@ -30,7 +31,7 @@ class GeoFenceService @Inject constructor(
      * Explicit removal of all active geofences and add them again.
      */
     fun initGeoFences() {
-        this.geoFences.addAll(geoFenceRepository.getActiveGeoFences())
+        this.geoFences.addAll(geoFenceRepo.getActiveGeoFences())
         geoFences.forEach {
             remove(it,
                 success = { Log.d(TAG, "GeoFence " + it.name + " removed successfully") },
@@ -52,11 +53,10 @@ class GeoFenceService @Inject constructor(
             .setRequestId(id)
             .setCircularRegion(latitude, longitude, radius.toFloat())
             // Alerts are generated for these transistions
-            .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
-            .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_EXIT)
+            .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER or Geofence.GEOFENCE_TRANSITION_EXIT)
             .setExpirationDuration(Geofence.NEVER_EXPIRE)
             // Interval to check for events, default is 0 - battery improvement
-            .setNotificationResponsiveness(30000)
+            .setNotificationResponsiveness(0)
             .build()
     }
 
@@ -85,7 +85,7 @@ class GeoFenceService @Inject constructor(
                     success()
                 }
                 .addOnFailureListener {
-                    failure(GeofenceErrorMessages.getErrorString(context, it))
+                    failure(geofenceErrorMessages.getErrorString(it))
                 }
         }
     }
@@ -109,7 +109,7 @@ class GeoFenceService @Inject constructor(
                 success()
             }
             .addOnFailureListener {
-                failure(GeofenceErrorMessages.getErrorString(context, it))
+                failure(geofenceErrorMessages.getErrorString(it))
             }
     }
 
