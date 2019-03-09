@@ -28,6 +28,10 @@
     <string name="geofence_emtpy_fragment_info">Hinzugefügte Geofences werden hier angezeigt.</string>
     <string name="geofence_emtpy_fragment_icon_text">geofence icon</string>
 
+    <string name="project_emtpy_fragment_icon_text">Projekt icon</string>
+    <string name="project_empty_fragment_title">Keine Projekte</string>
+    <string name="projects_emtpy_fragment_info">Hinzugefügte Projekte werden hier angezeigt.</string>
+
     <string name="geofence_marker_fragment_info">Markiere das Zentrum des Geofence indem du die gewünschte Position auf
         der Karte antippst!
     </string>

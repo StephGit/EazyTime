@@ -17,14 +17,20 @@
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name=".eazytime.EazyTimeActivity">
+        <activity android:name=".eazytime.EazyTimeActivity"
+                  android:configChanges="orientation"
+                  android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".eazytime.geofence.detail.GeoFenceDetailActivity"/>
-        <activity android:name=".eazytime.projects.addProject.AddProjectActivity"/>
+        <activity android:name=".eazytime.geofence.detail.GeoFenceDetailActivity"
+                  android:configChanges="orientation"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".eazytime.projects.addProject.AddProjectActivity"
+                  android:configChanges="orientation"
+                  android:screenOrientation="portrait"/>
 
         <meta-data
                 android:name="com.google.android.geo.API_KEY"
