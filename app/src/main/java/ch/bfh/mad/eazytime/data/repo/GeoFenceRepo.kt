@@ -1,4 +1,4 @@
-package ch.bfh.mad.eazytime.data
+package ch.bfh.mad.eazytime.data.repo
 
 import android.os.AsyncTask
 import androidx.lifecycle.LiveData
@@ -6,7 +6,7 @@ import ch.bfh.mad.eazytime.data.dao.GeoFenceDao
 import ch.bfh.mad.eazytime.data.entity.GeoFence
 import javax.inject.Inject
 
-class GeoFenceRepository @Inject constructor(private var geoFenceDao: GeoFenceDao) {
+class GeoFenceRepo @Inject constructor(private var geoFenceDao: GeoFenceDao) {
 
     var geoFences: LiveData<List<GeoFence>> = geoFenceDao.getGeoFences()
 

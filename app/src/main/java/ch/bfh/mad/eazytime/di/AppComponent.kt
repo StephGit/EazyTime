@@ -4,14 +4,14 @@ import android.app.Application
 import ch.bfh.mad.eazytime.EazyTimeActivity
 import ch.bfh.mad.eazytime.geofence.GeoFenceEmptyFragment
 import ch.bfh.mad.eazytime.geofence.GeoFenceFragment
-import ch.bfh.mad.eazytime.geofence.receiver.BootReceiver
-import ch.bfh.mad.eazytime.geofence.receiver.GeoFenceReceiver
-import ch.bfh.mad.eazytime.remoteViews.RemoteViewBroadCastReceiver
-import ch.bfh.mad.eazytime.remoteViews.homeScreenWidget.WidgetProvider
-import ch.bfh.mad.eazytime.remoteViews.notification.ScreenActionService
+import ch.bfh.mad.eazytime.geofence.receiver.BootBroadcastReceiver
+import ch.bfh.mad.eazytime.geofence.receiver.GeoFenceTransitionsJobIntentService
 import ch.bfh.mad.eazytime.projects.ProjectFragment
 import ch.bfh.mad.eazytime.projects.addProject.AddProjectActivity
+import ch.bfh.mad.eazytime.remoteViews.RemoteViewBroadCastReceiver
 import ch.bfh.mad.eazytime.remoteViews.RemoteViewButtonUtil
+import ch.bfh.mad.eazytime.remoteViews.homeScreenWidget.WidgetProvider
+import ch.bfh.mad.eazytime.remoteViews.notification.ScreenActionService
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -34,8 +34,8 @@ interface AppComponent {
     fun inject(widgetProvider: WidgetProvider)
     fun inject(geoFenceFragment: GeoFenceFragment)
     fun inject(geoFenceEmptyFragment: GeoFenceEmptyFragment)
-    fun inject(geoFenceReceiver: GeoFenceReceiver)
     fun inject(remoteViewButtonUtil: RemoteViewButtonUtil)
     fun inject(screenActionService: ScreenActionService)
-    fun inject(bootReceiver: BootReceiver)
+    fun inject(geoFenceTransitionsJobIntentService: GeoFenceTransitionsJobIntentService)
+    fun inject(bootBroadcastReceiverTask: BootBroadcastReceiver.BootReceiverTask)
 }
