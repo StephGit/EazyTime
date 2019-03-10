@@ -33,6 +33,17 @@
                 app:layout_constraintRight_toRightOf="@id/calendar_detail_list_item_content"
                 app:layout_constraintTop_toTopOf="@id/calendar_detail_list_item_content"
                 app:layout_constraintLeft_toRightOf="@id/calendar_detail_list_item_color_tag"
+                app:layout_constraintBottom_toTopOf="@id/calendar_detail_list_item_timeslot"
+                android:layout_marginStart="@dimen/eazyTime_left_margin_list_elements"
+                android:padding="@dimen/eazyTime_padding_text_views_list_elements"
+                android:textSize="@dimen/eazyTime_text_size_project_name_project_list_item"/>
+        <TextView
+                android:id="@+id/calendar_detail_list_item_duration"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/eazyTime_height_half_content_list_elements"
+                app:layout_constraintRight_toRightOf="@id/calendar_detail_list_item_content"
+                app:layout_constraintTop_toBottomOf="@id/calendar_detail_list_item_timeslot"
+                app:layout_constraintLeft_toRightOf="@id/calendar_detail_list_item_color_tag"
                 app:layout_constraintBottom_toBottomOf="@id/calendar_detail_list_item_content"
                 android:layout_marginStart="@dimen/eazyTime_left_margin_list_elements"
                 android:padding="@dimen/eazyTime_padding_text_views_list_elements"

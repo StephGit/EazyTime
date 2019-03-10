@@ -19,24 +19,15 @@
             app:layout_constraintLeft_toLeftOf="parent">
         <TextView
                 android:id="@+id/calendar_detail_total_hours_label"
-                android:layout_width="@dimen/eazyTime_label_width_calendar_detail"
-                android:layout_height="0dp"
-                app:layout_constraintRight_toLeftOf="@id/calendar_detail_total_hours_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                android:padding="@dimen/eazyTime_padding_text_views_list_elements"
-                android:textSize="@dimen/eazyTime_text_size_time_project_list_item"/>
-        <TextView
-                android:id="@+id/calendar_detail_total_hours_content"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/calendar_detail_total_hours_label"
+                app:layout_constraintLeft_toLeftOf="parent"
                 android:padding="@dimen/eazyTime_padding_text_views_list_elements"
-                android:textSize="@dimen/eazyTime_text_size_time_project_list_item"/>
+                android:textSize="@dimen/eazyTime_text_size_project_name_project_list_item"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
     <ListView
             android:id="@+id/lv_calendar_detail"

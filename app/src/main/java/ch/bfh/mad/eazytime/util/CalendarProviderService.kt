@@ -14,6 +14,6 @@ class CalendarProviderService(val workDayRepo: WorkDayRepo, val timeSlotRepo: Ti
     }
 
     fun getCalendarDetail(id: Long): List<WorkDayDao.WorkDayTimeSlotProject> = runBlocking {
-        return@runBlocking workDayRepo.getWorkDayAndTimeSlotsById(id)
+        return@runBlocking workDayRepo.getWorkDayTimeSlotProject(id)
     }
 }

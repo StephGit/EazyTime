@@ -19,7 +19,8 @@ class CalendarListAdapter(context: Context, @LayoutRes itemLayoutRes: Int) :
         val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.item_calendar, parent, false)
         getItem(position)?.let { calendarListItem ->
             val nameTV = view.findViewById<TextView>(R.id.calendar_list_item_date_name)
-            val pattern = DateTimeFormat.forPattern("EEEE, dd. MM. yyyy").withLocale(Locale.GERMAN)
+            val locale = Locale(context.getString(R.string.language))
+            val pattern = DateTimeFormat.forPattern(context.getString(R.string.date_pattern)).withLocale(locale)
             nameTV.text = pattern.print(calendarListItem.date)
         }
         return view
