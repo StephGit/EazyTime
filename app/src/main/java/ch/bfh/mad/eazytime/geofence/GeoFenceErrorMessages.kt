@@ -4,17 +4,19 @@ import android.content.Context
 import ch.bfh.mad.R
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.location.GeofenceStatusCodes
+import javax.inject.Inject
 
-object GeofenceErrorMessages {
-    fun getErrorString(context: Context, e: Exception): String {
+class GeofenceErrorMessages @Inject constructor(private var context: Context) {
+
+    fun getErrorString(e: Exception): String {
         return if (e is ApiException) {
-            getErrorString(context, e.statusCode)
+            getErrorString(e.statusCode)
         } else {
             context.resources.getString(R.string.geofence_unknown_error)
         }
     }
 
-    fun getErrorString(context: Context, errorCode: Int): String {
+    fun getErrorString(errorCode: Int): String {
         val resources = context.resources
         return when (errorCode) {
             GeofenceStatusCodes.GEOFENCE_NOT_AVAILABLE ->

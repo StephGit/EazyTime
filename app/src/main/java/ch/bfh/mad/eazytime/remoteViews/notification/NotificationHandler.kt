@@ -15,7 +15,7 @@ import java.util.*
 
 class NotificationHandler(val context: Context, private val remoteViewButtonUtil: RemoteViewButtonUtil, val projectProviderService: ProjectProviderService) {
 
-    private val notificationChannelId = BuildConfig.APPLICATION_ID + ".channelsss"
+    private val notificationChannelId = BuildConfig.APPLICATION_ID + ".channels"
     private val notificationId = 789556
 
     fun sendNotification(message: String) {

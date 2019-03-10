@@ -51,6 +51,7 @@ dependencies {
     testImplementation "com.nhaarman:mockito-kotlin:1.5.0"
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
+    androidTestImplementation "androidx.arch.core:core-testing:2.0.0"
     //db
     implementation 'androidx.room:room-runtime:2.0.0-beta01'
     annotationProcessor 'androidx.room:room-compiler:2.0.0-beta01'
@@ -72,16 +73,4 @@ dependencies {
 
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines"
-
-}
-// FIX for ClassNotFoundException:OnUnhandledKeyEventListener
-configurations.all {
-    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-        def requested = details.requested
-        if (requested.group == "com.android.support") {
-            if (!requested.name.startsWith("multidex")) {
-                details.useVersion "26.+"
-            }
-        }
-    }
 }

@@ -7,6 +7,7 @@ import ch.bfh.mad.eazytime.data.entity.TimeSlot
 import ch.bfh.mad.eazytime.data.repo.ProjectRepo
 import ch.bfh.mad.eazytime.data.repo.TimeSlotRepo
 import ch.bfh.mad.eazytime.projects.ProjectListItem
+import org.joda.time.LocalDate
 import org.joda.time.LocalDateTime
 import org.joda.time.Seconds
 
@@ -38,14 +39,17 @@ class ProjectProviderService(projectRepo: ProjectRepo, timeSlotRepo: TimeSlotRep
     }
 
     private fun mergeLiveData(projects: List<Project>?, timeslots: List<TimeSlot>?): List<ProjectListItem>? {
+        // need to be filtered  here because LiveData-Queries with parameter are not allowed
+        val filteredTimeSlots = timeslots?.filter { timeSlot -> isFromToday(timeSlot) }
+
         return projects?.map {project ->
             var isActive = false
-            var mappedTimeSlotSeconds = timeslots
+            var mappedTimeSlotSeconds = filteredTimeSlots
                 ?.filter { it.projectId == project.id && it.endDate != null }
                 ?.map { Seconds.secondsBetween(it.startDate, it.endDate) }
                 ?.fold(Seconds.seconds(0)) { acc, minutes -> acc.plus(minutes)}
 
-            timeslots?.filter { it.projectId == project.id && it.endDate == null }?.firstOrNull()?.let {
+            filteredTimeSlots?.filter { it.projectId == project.id && it.endDate == null }?.firstOrNull()?.let {
                 val currentSeconds = Seconds.secondsBetween(it.startDate, LocalDateTime())
                 isActive = true
                 mappedTimeSlotSeconds = mappedTimeSlotSeconds?.plus(currentSeconds)
@@ -55,5 +59,7 @@ class ProjectProviderService(projectRepo: ProjectRepo, timeSlotRepo: TimeSlotRep
         }
 
     }
+
+    private fun isFromToday(ts: TimeSlot) = ts.startDate?.toDate()?.time ?: 0 >= LocalDate().toDate().time
 
 }

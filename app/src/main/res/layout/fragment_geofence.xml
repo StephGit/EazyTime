@@ -6,7 +6,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".eazytime.geofence.GeoFenceFragment"
-        android:id="@+id/geoFenceFragment">
+        android:id="@+id/geoFenceFragment"
+        android:background="@color/eazyTime_colorBackground">
 
     <ProgressBar
             android:id="@+id/progressBar"
