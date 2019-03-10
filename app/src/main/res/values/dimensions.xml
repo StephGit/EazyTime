@@ -53,4 +53,5 @@
     <dimen name="eazyTime_margin_geofence_flow_text">8dp</dimen>
     <dimen name="eazyTime_padding_end_geofence_flow_text">8dp</dimen>
     <dimen name="eazyTime_padding_start_geofence_flow_text">8dp</dimen>
+    <dimen name="eazyTime_label_width_calendar_detail">150dp</dimen>
 </resources>

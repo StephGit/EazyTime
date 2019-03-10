@@ -15,10 +15,7 @@ import ch.bfh.mad.eazytime.projects.addProject.ProjectSaveOrUpdateService
 import ch.bfh.mad.eazytime.remoteViews.RemoteViewButtonUtil
 import ch.bfh.mad.eazytime.remoteViews.notification.NotificationHandler
 import ch.bfh.mad.eazytime.remoteViews.notification.ScreenActionService
-import ch.bfh.mad.eazytime.util.EazyTimeColorUtil
-import ch.bfh.mad.eazytime.util.ProjectProviderService
-import ch.bfh.mad.eazytime.util.TimerService
-import ch.bfh.mad.eazytime.util.WidgetProviderUtils
+import ch.bfh.mad.eazytime.util.*
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

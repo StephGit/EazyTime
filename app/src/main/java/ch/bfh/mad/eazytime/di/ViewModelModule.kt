@@ -3,6 +3,7 @@ package ch.bfh.mad.eazytime.di
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import ch.bfh.mad.eazytime.calendar.CalendarListViewModel
+import ch.bfh.mad.eazytime.calendar.detail.CalendarDetailViewModel
 import ch.bfh.mad.eazytime.geofence.GeoFenceViewModel
 import ch.bfh.mad.eazytime.projects.ProjectListViewModel
 import ch.bfh.mad.eazytime.projects.addProject.AddProjectViewModel
@@ -23,6 +24,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(CalendarListViewModel::class)
     internal abstract fun bindCalendarListViewModel(calendarListViewModel: CalendarListViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CalendarDetailViewModel::class)
+    internal abstract fun bindCalendarDetailViewModel(calendarDetailViewModel: CalendarDetailViewModel): ViewModel
 
     @Binds
     @IntoMap

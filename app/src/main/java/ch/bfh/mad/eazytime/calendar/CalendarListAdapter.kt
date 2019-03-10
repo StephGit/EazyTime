@@ -9,6 +9,8 @@ import android.widget.TextView
 import androidx.annotation.LayoutRes
 import ch.bfh.mad.R
 import ch.bfh.mad.eazytime.data.entity.WorkDay
+import org.joda.time.format.DateTimeFormat
+import java.util.*
 
 class CalendarListAdapter(context: Context, @LayoutRes itemLayoutRes: Int) :
     ArrayAdapter<WorkDay>(context, itemLayoutRes) {
@@ -17,8 +19,8 @@ class CalendarListAdapter(context: Context, @LayoutRes itemLayoutRes: Int) :
         val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.item_calendar, parent, false)
         getItem(position)?.let { calendarListItem ->
             val nameTV = view.findViewById<TextView>(R.id.calendar_list_item_date_name)
-            nameTV.text = calendarListItem.id.toString()
-            //todo
+            val pattern = DateTimeFormat.forPattern("EEEE, dd. MM. yyyy").withLocale(Locale.GERMAN)
+            nameTV.text = pattern.print(calendarListItem.date)
         }
         return view
     }
