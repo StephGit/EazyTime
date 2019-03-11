@@ -82,4 +82,9 @@
     <string name="active_projects_cant_be_deleted">Projekte mit einer aktiven Buchung können nicht gelöscht werden</string>
     <string name="priject_is_deleted">Projekt wurde gelöscht</string>
     <string name="rollback">Rückgängig</string>
+    <string name="geofence_powersafe_dialog_title">Arbeitsort und Energie sparen</string>
+    <string name="geofence_powersafe_dialog_message">Die einwandfreie Funktion von Arbeitsorterkennung ist im Energie-Spar-Modus
+        nicht gewährleistet.
+    </string>
+    <string name="geofence_powersafe_dialog_checkbox_hint">Hinweis künftig nicht mehr anzeigen</string>
 </resources>

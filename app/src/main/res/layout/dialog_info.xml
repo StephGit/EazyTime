@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+            android:background="@color/eazyTime_colorBrand">
+
+    <TextView android:id="@+id/tv_info_dialog_title"
+              android:layout_marginTop="@dimen/eazyTime_margin_top_geofence_dialog"
+              android:layout_marginStart="@dimen/eazyTime_margin_start_geofence_dialog"
+              android:layout_marginEnd="@dimen/eazyTime_margin_end_geofence_dialog"
+              android:layout_marginBottom="@dimen/eazyTime_margin_bottom_geofence_dialog"
+              android:textColor="@color/eazyTime_colorWhite"
+              android:textSize="@dimen/eazyTime_text_size_geofence_dialog_title"
+              android:text="@string/geofence_powersafe_dialog_title"
+            android:layout_width="match_parent" android:layout_height="wrap_content"/>
+
+    <TextView android:id="@+id/tv_info_dialog_message"
+              android:layout_marginTop="@dimen/eazyTime_margin_top_geofence_dialog"
+              android:layout_marginStart="@dimen/eazyTime_margin_start_geofence_dialog"
+              android:layout_marginEnd="@dimen/eazyTime_margin_end_geofence_dialog"
+              android:layout_marginBottom="@dimen/eazyTime_margin_bottom_geofence_dialog"
+              android:text="@string/geofence_powersafe_dialog_message"
+              android:textColor="@color/eazyTime_colorWhite"
+              android:textSize="@dimen/eazyTime_text_size_geofence_dialog_title"
+              android:layout_width="match_parent" android:layout_height="wrap_content"/>
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/cb_info_dialog"
+            android:text="@string/geofence_powersafe_dialog_checkbox_hint"
+            android:textColor="@color/eazyTime_colorWhite"
+            android:layout_marginTop="@dimen/eazyTime_margin_top_geofence_dialog_cb"
+            android:layout_marginStart="@dimen/eazyTime_margin_start_geofence_dialog"
+            android:layout_marginEnd="@dimen/eazyTime_margin_end_geofence_dialog"
+            android:layout_marginBottom="@dimen/eazyTime_margin_bottom_geofence_dialog"
+            android:buttonTint="@color/eazyTime_colorWhite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    <Button android:id="@+id/btn_info_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/eazyTime_colorWhite"
+            android:background="@color/eazyTime_colorBrand"
+            android:layout_gravity="end"
+            style="?android:attr/borderlessButtonStyle"
+            android:textSize="@dimen/eazyTime_text_size_geofence_dialog_title"
+            android:text="@string/OK"/>
+</LinearLayout>
