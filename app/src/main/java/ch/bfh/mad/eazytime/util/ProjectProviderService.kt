@@ -54,6 +54,4 @@ class ProjectProviderService(projectRepo: ProjectRepo, timeSlotRepo: TimeSlotRep
 
     }
 
-    private fun isFromToday(ts: TimeSlot) = ts.startDate?.toDate()?.time ?: 0 >= LocalDate().toDate().time
-
 }
