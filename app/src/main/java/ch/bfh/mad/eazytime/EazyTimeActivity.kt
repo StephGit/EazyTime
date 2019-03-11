@@ -3,6 +3,7 @@ package ch.bfh.mad.eazytime
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -18,6 +19,7 @@ import ch.bfh.mad.eazytime.projects.addProject.AddProjectActivity
 import ch.bfh.mad.eazytime.remoteViews.notification.ScreenActionService
 import ch.bfh.mad.eazytime.util.CheckPowerSafeUtil
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import java.lang.IllegalStateException
 import javax.inject.Inject
 import java.util.*
 
@@ -96,17 +98,15 @@ class EazyTimeActivity : AppCompatActivity(), EazyTimeNavigator {
         override fun run() {
             // This keeps the ScreenActionReceiver online
             // Based on developer.android.com it will not be started twice: "...if it is running then it remains running."
-            startService(Intent(application, ScreenActionService::class.java))
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(Intent(application, ScreenActionService::class.java))
+            } else {
+                try {
+                    startService(Intent(application, ScreenActionService::class.java))
+                } catch (error: IllegalStateException) {
+                    Log.d(TAG, error.toString())
+                }
+            }
         }
     }
 }
-// TODO fix error
-//E/AndroidRuntime: FATAL EXCEPTION: Timer-0
-//Process: ch.bfh.mad, PID: 10555
-//java.lang.IllegalStateException: Not allowed to start service Intent { cmp=ch.bfh.mad/.eazytime.remoteViews.notification.ScreenActionService }: app is in background uid UidRecord{7f8d4a7 u0a213 CAC  bg:+1m52s736ms idle procs:1 seq(0,0,0)}
-//at android.app.ContextImpl.startServiceCommon(ContextImpl.java:1538)
-//at android.app.ContextImpl.startService(ContextImpl.java:1484)
-//at android.content.ContextWrapper.startService(ContextWrapper.java:663)
-//at ch.bfh.mad.eazytime.EazyTimeActivity$ScreenServiceKeepAliveTask.run(EazyTimeActivity.kt:94)
-//at java.util.TimerThread.mainLoop(Timer.java:555)
-//at java.util.TimerThread.run(Timer.java:505)
