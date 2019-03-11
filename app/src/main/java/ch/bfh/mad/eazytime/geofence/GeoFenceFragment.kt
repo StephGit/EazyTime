@@ -1,7 +1,9 @@
 package ch.bfh.mad.eazytime.geofence
 
 
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Canvas
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
@@ -21,6 +23,7 @@ import ch.bfh.mad.R
 import ch.bfh.mad.eazytime.data.entity.GeoFence
 import ch.bfh.mad.eazytime.di.Injector
 import ch.bfh.mad.eazytime.geofence.detail.GeoFenceDetailActivity
+import ch.bfh.mad.eazytime.util.CheckPowerSafeUtil
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
@@ -35,12 +38,16 @@ class GeoFenceFragment : GeoFenceBaseFragment() {
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var swipeBackgroundColor: ColorDrawable
     private lateinit var deleteIcon: Drawable
+    private lateinit var prefs: SharedPreferences
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     @Inject
     lateinit var recyclerAdapter: GeoFenceRecyclerAdapter
+
+    @Inject
+    lateinit var checkPowerSafeUtil: CheckPowerSafeUtil
 
     companion object {
         fun newFragment(): androidx.fragment.app.Fragment = GeoFenceFragment()
@@ -50,6 +57,7 @@ class GeoFenceFragment : GeoFenceBaseFragment() {
         val view = inflater.inflate(R.layout.fragment_geofence, container, false)
         Injector.appComponent.inject(this)
         activity!!.title = getString(R.string.geofence_fragment_title)
+        prefs = requireActivity().getSharedPreferences("ch.bfh.mad.eazytime", MODE_PRIVATE)
 
         recyclerView = view.findViewById(R.id.lv_geofences)
         progressBar = view.findViewById(R.id.progressBar)
@@ -83,6 +91,13 @@ class GeoFenceFragment : GeoFenceBaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         super.checkPermission(this)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (!prefs.getBoolean("ignorePowerSafe", false)) {
+            checkPowerSafeUtil.checkPowerSaveMode(requireFragmentManager())
+        }
     }
 
     private fun subscribeViewModel(recyclerAdapter: GeoFenceRecyclerAdapter) {
