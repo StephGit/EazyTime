@@ -80,3 +80,13 @@ class EazyTimeActivity : AppCompatActivity(), EazyTimeNavigator {
         }
     }
 }
+// TODO fix error
+//E/AndroidRuntime: FATAL EXCEPTION: Timer-0
+//Process: ch.bfh.mad, PID: 10555
+//java.lang.IllegalStateException: Not allowed to start service Intent { cmp=ch.bfh.mad/.eazytime.remoteViews.notification.ScreenActionService }: app is in background uid UidRecord{7f8d4a7 u0a213 CAC  bg:+1m52s736ms idle procs:1 seq(0,0,0)}
+//at android.app.ContextImpl.startServiceCommon(ContextImpl.java:1538)
+//at android.app.ContextImpl.startService(ContextImpl.java:1484)
+//at android.content.ContextWrapper.startService(ContextWrapper.java:663)
+//at ch.bfh.mad.eazytime.EazyTimeActivity$ScreenServiceKeepAliveTask.run(EazyTimeActivity.kt:94)
+//at java.util.TimerThread.mainLoop(Timer.java:555)
+//at java.util.TimerThread.run(Timer.java:505)
