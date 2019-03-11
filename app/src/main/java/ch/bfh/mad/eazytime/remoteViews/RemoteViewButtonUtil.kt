@@ -125,4 +125,8 @@ class RemoteViewButtonUtil {
             intent.putExtra(context.getString(R.string.ExtraKeyUpdateNotification), addUpdateNotificationExtra)
         }
     }
+
+    companion object {
+        const val MAX_AMOUNT_OF_BUTTONS_ON_WIDGET = 5
+    }
 }

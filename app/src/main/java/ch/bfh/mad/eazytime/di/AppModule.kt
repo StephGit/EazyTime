@@ -11,6 +11,7 @@ import ch.bfh.mad.eazytime.data.repo.ProjectRepo
 import ch.bfh.mad.eazytime.data.repo.TimeSlotRepo
 import ch.bfh.mad.eazytime.data.repo.WorkDayRepo
 import ch.bfh.mad.eazytime.projects.ProjectsRecycleListAdapter
+import ch.bfh.mad.eazytime.projects.addProject.OnWidgetDisplayAmountUtil
 import ch.bfh.mad.eazytime.projects.addProject.ProjectSaveOrUpdateService
 import ch.bfh.mad.eazytime.remoteViews.RemoteViewButtonUtil
 import ch.bfh.mad.eazytime.remoteViews.notification.NotificationHandler
@@ -100,5 +101,9 @@ class AppModule {
     @Provides
     @Singleton
     fun provideCheckPowerSafeUtil(context: Context): CheckPowerSafeUtil = CheckPowerSafeUtil(context)
+
+    @Provides
+    @Singleton
+    fun provideOnWidgetDisplayAmountUtil(): OnWidgetDisplayAmountUtil = OnWidgetDisplayAmountUtil()
 
 }

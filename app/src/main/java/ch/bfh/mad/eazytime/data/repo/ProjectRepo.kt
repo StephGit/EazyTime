@@ -52,4 +52,9 @@ class ProjectRepo(private val projectDao: ProjectDao) {
     suspend fun insert(project: Project) = withContext(Dispatchers.IO) {
         projectDao.insert(project)
     }
+
+    @WorkerThread
+    suspend fun getAmountOfProjectsOnWidget(): Int = withContext(Dispatchers.IO) {
+        projectDao.getAmountOfProjectsOnWidget()
+    }
 }

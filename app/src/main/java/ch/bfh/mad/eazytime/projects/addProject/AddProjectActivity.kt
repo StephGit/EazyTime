@@ -17,6 +17,7 @@ import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.data.entity.Project
 import ch.bfh.mad.eazytime.data.repo.ProjectRepo
 import ch.bfh.mad.eazytime.di.Injector
+import ch.bfh.mad.eazytime.remoteViews.RemoteViewButtonUtil
 import ch.bfh.mad.eazytime.remoteViews.homeScreenWidget.WidgetProvider
 import ch.bfh.mad.eazytime.util.EazyTimeColorUtil
 import ch.bfh.mad.eazytime.util.ProjectProviderService
@@ -44,6 +45,9 @@ class AddProjectActivity : AppCompatActivity() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    @Inject
+    lateinit var onWidgetDisplayAmountUtil: OnWidgetDisplayAmountUtil
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,20 +109,45 @@ class AddProjectActivity : AppCompatActivity() {
         dataBinding.buAddProjectSave.setOnClickListener { createOrUpdateProject(addProjectViewModel) }
 
         dataBinding.buAddProjectDelete.setOnClickListener { deleteProject(addProjectViewModel) }
+
+        addProjectViewModel.onWidget.observe(this, Observer {
+            val labelText = getString(R.string.tv_label_add_project_on_widget)
+            val amountOnWidgetProjects = addProjectViewModel.amountOnWidgetProjects.value ?: 0
+            val checked = dataBinding.swAddProjectOnWidget.isChecked
+            val initialOnWidget = addProjectViewModel.initialOnWidget.value ?: false
+            val displayableOnWidgetCount = onWidgetDisplayAmountUtil.calculateDisplayableOnWidgetCount(amountOnWidgetProjects, checked, initialOnWidget)
+            dataBinding.tvLabelAddProjectOnWidget.text = String.format(labelText, displayableOnWidgetCount)
+        })
     }
 
-    private fun initViewModelWithDefaultValues(addProjectViewModel: AddProjectViewModel, dataBinding: ActivityAddProjectBinding) {
+    private fun initViewModelWithDefaultValues(addProjectViewModel: AddProjectViewModel, dataBinding: ActivityAddProjectBinding) = runBlocking {
         val colors = resources.getIntArray(R.array.eazyTime_project_colors)
+        val amountOfProjectsOnWidget = projectRepo.getAmountOfProjectsOnWidget()
+        val labelText = getString(R.string.tv_label_add_project_on_widget)
         addProjectViewModel.selectProjectColor(colors[Random.nextInt(colors.size)])
+        addProjectViewModel.amountOnWidgetProjects.value = amountOfProjectsOnWidget
+        addProjectViewModel.initialOnWidget.value = false
         dataBinding.buAddProjectSave.isEnabled = false
         dataBinding.buAddProjectDelete.visibility = View.GONE
-
+        dataBinding.tvLabelAddProjectOnWidget.text = String.format(labelText, amountOfProjectsOnWidget)
+        if (amountOfProjectsOnWidget >= RemoteViewButtonUtil.MAX_AMOUNT_OF_BUTTONS_ON_WIDGET) {
+            dataBinding.swAddProjectOnWidget.isEnabled = false
+        }
     }
 
     private fun initViewModelWithSelectedProjectInformation(addProjectViewModel: AddProjectViewModel, dataBinding: ActivityAddProjectBinding, projectId: Long) = runBlocking {
         projectRepo.getProjectById(projectId)?.let { project ->
+            val labelText = getString(R.string.tv_label_add_project_on_widget)
+            val amountOfProjectsOnWidget = projectRepo.getAmountOfProjectsOnWidget()
+            val projectIsOnWidget = project.onWidget ?: false
             addProjectViewModel.initializeWithProjectData(project, colorUtil)
+            addProjectViewModel.initialOnWidget.value = projectIsOnWidget
+            addProjectViewModel.amountOnWidgetProjects.value = amountOfProjectsOnWidget
             dataBinding.buAddProjectSave.isEnabled = true
+            dataBinding.tvLabelAddProjectOnWidget.text = String.format(labelText, amountOfProjectsOnWidget)
+            if (!projectIsOnWidget && amountOfProjectsOnWidget >= RemoteViewButtonUtil.MAX_AMOUNT_OF_BUTTONS_ON_WIDGET) {
+                dataBinding.swAddProjectOnWidget.isEnabled = false
+            }
         }
     }
 

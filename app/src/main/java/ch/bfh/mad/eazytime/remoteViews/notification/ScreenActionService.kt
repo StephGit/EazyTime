@@ -1,7 +1,6 @@
 package ch.bfh.mad.eazytime.remoteViews.notification
 
 import android.annotation.SuppressLint
-import android.app.Notification
 import android.app.Service
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -25,11 +24,6 @@ class ScreenActionService : Service() {
     @Inject
     lateinit var notificationHandler: NotificationHandler
 
-    override fun onCreate() {
-        super.onCreate()
-        startForeground(1212, Notification())
-    }
-
     override fun onBind(intent: Intent): IBinder {
         throw UnsupportedOperationException("Not yet implemented")
     }
@@ -52,13 +46,13 @@ class ScreenActionService : Service() {
             val action = intent.action
 
             when (action) {
-                Intent.ACTION_SCREEN_ON -> screenOnEvent()
-                Intent.ACTION_SCREEN_OFF -> Log.d(TAG, "screen is off...")
+                Intent.ACTION_SCREEN_ON -> Log.d(TAG, "screen is on...")
+                Intent.ACTION_SCREEN_OFF -> showEazyTimeNotification()
                 Intent.ACTION_USER_PRESENT -> Log.d(TAG, "screen is unlock...")
             }
         }
 
-        private fun screenOnEvent() {
+        private fun showEazyTimeNotification() {
             Log.d(TAG, "screen is on...")
             notificationHandler.createEazyTimeNotification()
         }
