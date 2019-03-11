@@ -101,8 +101,9 @@ class RemoteViewButtonUtil {
     }
 
     private fun initButton(context: Context, remoteViews: RemoteViews, project: ProjectListItem, buttonId: Int, action: String) {
+        val requestCode = project.id?.toInt() ?: 0
         val intent = createBroadcastIntentForProjectWithId(context, project, action)
-        val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0)
+        val pendingIntent = PendingIntent.getBroadcast(context, requestCode, intent, 0)
         remoteViews.setOnClickPendingIntent(buttonId, pendingIntent)
         remoteViews.setViewVisibility(buttonId, View.VISIBLE)
         remoteViews.setTextViewText(buttonId, project.shortCode)
