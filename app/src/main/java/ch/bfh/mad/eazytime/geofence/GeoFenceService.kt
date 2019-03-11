@@ -33,12 +33,6 @@ class GeoFenceService @Inject constructor(
     fun initGeoFences() : Boolean {
         val tmpGeoFences: MutableList<GeoFence> = ArrayList()
         tmpGeoFences.addAll(geoFenceRepo.getActiveGeoFences())
-        geoFences.addAll(tmpGeoFences)
-        tmpGeoFences.forEach {
-            remove(it,
-                success = { Log.d(TAG, "GeoFence " + it.name + " removed successfully") },
-                failure = { err -> Log.d(TAG, "Removal failed for GeoFence [" + it.name + "], Error: " + err) })
-        }
         tmpGeoFences.forEach {
             add(it,
                 success = { Log.d(TAG, "GeoFence " + it.name + " added successfully") },
