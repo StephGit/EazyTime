@@ -9,16 +9,6 @@
         android:id="@+id/geoFenceFragment"
         android:background="@color/eazyTime_colorBackground">
 
-    <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="visible"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="@+id/btn_addGeofence"/>
-
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/lv_geofences"
             android:layout_width="0dp"
@@ -27,8 +17,60 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:visibility="gone"
     />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible"
+            android:id="@+id/geofences_no_geofences_exists"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintVertical_bias="0.3">
+    <ImageView
+                android:id="@+id/iv_noGeofence"
+                android:src="@drawable/ic_geofence"
+                android:layout_width="@dimen/eazyTime_empty_fragment_icon_width"
+                android:layout_height="@dimen/eazyTime_empty_fragment_icon_height"
+                android:layout_marginTop="@dimen/eazyTime_empty_fragment_icon_marginTop"
+                android:layout_marginBottom="@dimen/eazyTime_empty_fragment_icon_marginBottom"
+                app:backgroundTint="@color/eazyTime_colorBackgroundText"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/tv_noGeofence"
+                app:layout_constraintVertical_chainStyle="packed"
+                app:layout_constraintVertical_bias="0.3"
+                android:contentDescription="@string/geofence_emtpy_fragment_icon_text"/>
+        <TextView
+                android:id="@+id/tv_noGeofence"
+                android:text="@string/geofence_empty_fragment_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/eazyTime_empty_fragment_title_textSize"
+                android:layout_marginBottom="@dimen/eazyTime_empty_fragment_title_marginBottom"
+                app:layout_constraintTop_toBottomOf="@+id/iv_noGeofence"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/tv_noGeofenceHint"
+                app:layout_constraintVertical_bias="0.3"
+                android:textColor="@color/eazyTime_colorBackgroundText"/>
+        <TextView
+                android:id="@+id/tv_noGeofenceHint"
+                android:text="@string/geofence_emtpy_fragment_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_noGeofence"
+                app:layout_constraintVertical_bias="0.3"
+                android:textColor="@color/eazyTime_colorBackgroundText"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btn_addGeofence"
