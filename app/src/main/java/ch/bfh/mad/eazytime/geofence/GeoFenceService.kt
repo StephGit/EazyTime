@@ -31,20 +31,20 @@ class GeoFenceService @Inject constructor(
      * Explicit removal of all active geofences and add them again.
      */
     fun initGeoFences() : Boolean {
-        var hasGeoFences = false
-        this.geoFences.addAll(geoFenceRepo.getActiveGeoFences())
-        geoFences.forEach {
+        val tmpGeoFences: MutableList<GeoFence> = ArrayList()
+        tmpGeoFences.addAll(geoFenceRepo.getActiveGeoFences())
+        geoFences.addAll(tmpGeoFences)
+        tmpGeoFences.forEach {
             remove(it,
                 success = { Log.d(TAG, "GeoFence " + it.name + " removed successfully") },
                 failure = { err -> Log.d(TAG, "Removal failed for GeoFence [" + it.name + "], Error: " + err) })
         }
-        geoFences.forEach {
+        tmpGeoFences.forEach {
             add(it,
                 success = { Log.d(TAG, "GeoFence " + it.name + " added successfully") },
                 failure = { err -> Log.d(TAG, "Adding failed for GeoFence [" + it.name + "], Error: " + err) })
-            hasGeoFences = true
         }
-        return hasGeoFences
+        return (geoFences.size > 0)
     }
 
     /**
@@ -73,6 +73,8 @@ class GeoFenceService @Inject constructor(
     ) {
         if (isInList(geoFence)) {
             return
+        } else {
+            this.geoFences.add(geoFence)
         }
         val gf = buildGeofence(geoFence.gfId!!, geoFence.latitude!!, geoFence.longitude!!, geoFence.radius!!)
         if (gf != null &&
@@ -84,7 +86,6 @@ class GeoFenceService @Inject constructor(
             geofencingClient
                 .addGeofences(buildGeofencingRequest(gf), geofencePendingIntent)
                 .addOnSuccessListener {
-                    this.geoFences.add(geoFence)
                     success()
                 }
                 .addOnFailureListener {
@@ -104,11 +105,12 @@ class GeoFenceService @Inject constructor(
     ) {
         if (!isInList(geoFence)) {
             return
+        } else {
+            this.geoFences.remove(geoFence)
         }
         geofencingClient
             .removeGeofences(listOf(geoFence.gfId))
             .addOnSuccessListener {
-                this.geoFences.remove(geoFence)
                 success()
             }
             .addOnFailureListener {

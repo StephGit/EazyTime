@@ -67,7 +67,7 @@
                 <action android:name="android.intent.action.USER_PRESENT"/>
             </intent-filter>
        </receiver>
-        <receiver android:name=".eazytime.geofence.receiver.BootBroadcastReceiver"
+        <receiver android:name="ch.bfh.mad.eazytime.geofence.receiver.BootBroadcastReceiver"
                   android:permission="android.permission.RECEIVE_BOOT_COMPLETED"
                   android:enabled="true"
                   android:exported="true">
@@ -76,17 +76,18 @@
             </intent-filter>
         </receiver>
         <receiver
-                android:name=".eazytime.geofence.receiver.GeoFenceBroadcastReceiver"
+                android:name="ch.bfh.mad.eazytime.geofence.receiver.GeoFenceBroadcastReceiver"
                 android:enabled="true"
                 android:exported="true">
         </receiver>
         <service
                 android:name="ch.bfh.mad.eazytime.geofence.receiver.GeoFenceTransitionsJobIntentService"
-                android:permission="android.permission.FOREGROUND_SERVICE"
+                android:permission="android.permission.BIND_JOB_SERVICE"
                 android:exported="true"
                 />
         <service
                 android:name="ch.bfh.mad.eazytime.remoteViews.notification.ScreenActionService"
+                android:permission="android.permission.FOREGROUND_SERVICE"
                 android:enabled="true"
                 android:exported="true">
         </service>
