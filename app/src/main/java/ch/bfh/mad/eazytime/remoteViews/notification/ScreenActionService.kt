@@ -1,6 +1,5 @@
 package ch.bfh.mad.eazytime.remoteViews.notification
 
-import android.app.Notification
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
@@ -19,11 +18,6 @@ class ScreenActionService : Service() {
 
     init {
         Injector.appComponent.inject(this)
-    }
-
-    override fun onCreate() {
-        super.onCreate()
-        startForeground(1212, Notification())
     }
 
     override fun onBind(intent: Intent): IBinder {

@@ -49,7 +49,7 @@
     <string name="et_hint_add_project_name">Projektname</string>
     <string name="et_hint_add_project_short_code">Kürzel (maximal 3 Zeichen)</string>
     <string name="tv_label_add_project_color_picker">Projektfarbe:</string>
-    <string name="tv_label_add_project_on_widget">Soll auf AppWidget erscheinen</string>
+    <string name="tv_label_add_project_on_widget">Auf Widget anzeigen %1$s/5</string>
     <string name="tv_label_add_project_default">Als Standasrdprojekt festlegen</string>
     <string name="error_short_code_length">Maximal 3 Zeichen!</string>
     <string name="color_picker_dialog_title">Wähle die Projektfarbe</string>

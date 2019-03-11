@@ -3,7 +3,6 @@ package ch.bfh.mad.eazytime
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -19,9 +18,7 @@ import ch.bfh.mad.eazytime.projects.addProject.AddProjectActivity
 import ch.bfh.mad.eazytime.remoteViews.notification.ScreenActionService
 import ch.bfh.mad.eazytime.util.CheckPowerSafeUtil
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import java.lang.IllegalStateException
 import javax.inject.Inject
-import java.util.*
 
 
 class EazyTimeActivity : AppCompatActivity(), EazyTimeNavigator {
@@ -51,7 +48,6 @@ class EazyTimeActivity : AppCompatActivity(), EazyTimeNavigator {
             replaceFragment(ProjectFragment())
         }
 
-        Timer().scheduleAtFixedRate(ScreenServiceKeepAliveTask(), 0, 1000*60)
     }
 
     override fun onResume() {
@@ -61,6 +57,11 @@ class EazyTimeActivity : AppCompatActivity(), EazyTimeNavigator {
                 checkPowerSaveUtil.checkPowerSaveMode(supportFragmentManager)
             }
         }
+    }
+
+    override fun onStop() {
+        startService(Intent(application, ScreenActionService::class.java))
+        super.onStop()
     }
 
     private fun selectMenuItem(clickedMenuItem: MenuItem): Boolean {
@@ -92,21 +93,5 @@ class EazyTimeActivity : AppCompatActivity(), EazyTimeNavigator {
 
     override fun openCalendarDetailActivity(workDayId: Long) {
         startActivity(CalendarDetailActivity.getIntent(this, workDayId))
-    }
-
-    private inner class ScreenServiceKeepAliveTask : TimerTask() {
-        override fun run() {
-            // This keeps the ScreenActionReceiver online
-            // Based on developer.android.com it will not be started twice: "...if it is running then it remains running."
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                startForegroundService(Intent(application, ScreenActionService::class.java))
-            } else {
-                try {
-                    startService(Intent(application, ScreenActionService::class.java))
-                } catch (error: IllegalStateException) {
-                    Log.d(TAG, error.toString())
-                }
-            }
-        }
     }
 }
