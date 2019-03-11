@@ -15,9 +15,10 @@ import java.util.*
 
 class NotificationHandler(val context: Context, private val remoteViewButtonUtil: RemoteViewButtonUtil, val projectProviderService: ProjectProviderService) {
 
-    private val notificationChannelId = BuildConfig.APPLICATION_ID + ".channelsss"
+    private val notificationChannelId = BuildConfig.APPLICATION_ID + ".channel"
     private val notificationId = 789556
 
+    // TODO remove for release
     fun sendNotification(message: String) {
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
@@ -42,6 +43,22 @@ class NotificationHandler(val context: Context, private val remoteViewButtonUtil
         notificationManager.notify(id, notification)
     }
 
+    fun getNotification(): Notification {
+        val id = Random().nextInt()
+        val intent = EazyTimeActivity.newIntent(context.applicationContext)
+        val stackBuilder = TaskStackBuilder.create(context)
+            .addParentStack(EazyTimeActivity::class.java)
+            .addNextIntent(intent)
+        val notificationPendingIntent = stackBuilder
+            .getPendingIntent(id, PendingIntent.FLAG_UPDATE_CURRENT)
+        return  NotificationCompat.Builder(context, notificationChannelId)
+            .setSmallIcon(R.mipmap.ic_launcher)
+            .setContentTitle("EazyTime")
+            .setContentIntent(notificationPendingIntent)
+            .setAutoCancel(true)
+            .build()
+    }
+
     fun createEazyTimeNotification() {
         createNotificationChannel(notificationChannelId)
 
@@ -62,7 +79,6 @@ class NotificationHandler(val context: Context, private val remoteViewButtonUtil
                 // reuse same notificationId because we only want to update a existing notification
                 notify(notificationId, builder.build())
             }
-
         }
     }
 
