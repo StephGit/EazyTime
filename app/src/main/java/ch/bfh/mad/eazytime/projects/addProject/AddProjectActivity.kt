@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -107,6 +108,7 @@ class AddProjectActivity : AppCompatActivity() {
         val colors = resources.getIntArray(R.array.eazyTime_project_colors)
         addProjectViewModel.selectProjectColor(colors[Random.nextInt(colors.size)])
         dataBinding.buAddProjectSave.isEnabled = false
+        dataBinding.buAddProjectDelete.visibility = View.GONE
 
     }
 

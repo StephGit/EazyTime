@@ -18,6 +18,58 @@
             android:layout_height="0dp">
     </androidx.recyclerview.widget.RecyclerView>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:visibility="visible"
+            android:id="@+id/projects_no_projects_exists"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintVertical_bias="0.3">
+        <ImageView
+                android:id="@+id/iv_noProjects"
+                android:src="@drawable/ic_projects"
+                android:layout_width="@dimen/eazyTime_empty_fragment_icon_width"
+                android:layout_height="@dimen/eazyTime_empty_fragment_icon_height"
+                android:layout_marginTop="@dimen/eazyTime_empty_fragment_icon_marginTop"
+                android:layout_marginBottom="@dimen/eazyTime_empty_fragment_icon_marginBottom"
+                app:backgroundTint="@color/eazyTime_colorBackgroundText"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/tv_noProjects"
+                app:layout_constraintVertical_chainStyle="packed"
+                app:layout_constraintVertical_bias="0.3"
+                android:contentDescription="@string/project_emtpy_fragment_icon_text"/>
+        <TextView
+                android:id="@+id/tv_noProjects"
+                android:text="@string/project_empty_fragment_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/eazyTime_empty_fragment_title_textSize"
+                android:layout_marginBottom="@dimen/eazyTime_empty_fragment_title_marginBottom"
+                app:layout_constraintTop_toBottomOf="@+id/iv_noProjects"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/tv_noProjectsHint"
+                app:layout_constraintVertical_bias="0.3"
+                android:textColor="@color/eazyTime_colorBackgroundText"/>
+        <TextView
+                android:id="@+id/tv_noProjectsHint"
+                android:text="@string/projects_emtpy_fragment_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_noProjects"
+                app:layout_constraintVertical_bias="0.3"
+                android:textColor="@color/eazyTime_colorBackgroundText"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_projects"
             android:layout_width="wrap_content"
