@@ -57,7 +57,7 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_geofence_detail)
-
+        title = getString(R.string.geofence_edit_fragment_title)
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map_geoFence) as SupportMapFragment
         mapFragment.getMapAsync(this)
 

@@ -53,4 +53,10 @@
     <dimen name="eazyTime_margin_geofence_flow_text">8dp</dimen>
     <dimen name="eazyTime_padding_end_geofence_flow_text">8dp</dimen>
     <dimen name="eazyTime_padding_start_geofence_flow_text">8dp</dimen>
+    <dimen name="eazyTime_margin_top_geofence_dialog">16dp</dimen>
+    <dimen name="eazyTime_margin_start_geofence_dialog">4dp</dimen>
+    <dimen name="eazyTime_margin_end_geofence_dialog">4dp</dimen>
+    <dimen name="eazyTime_margin_bottom_geofence_dialog">4dp</dimen>
+    <dimen name="eazyTime_margin_top_geofence_dialog_cb">4dp</dimen>
+    <dimen name="eazyTime_text_size_geofence_dialog_title">16sp</dimen>
 </resources>

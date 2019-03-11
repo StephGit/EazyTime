@@ -5,37 +5,39 @@
 
     <string name="project_fragment_title">Projekte</string>
     <string name="calendar_fragment_title">Kalender</string>
-    <string name="geofence_fragment_title">GeoFence</string>
+    <string name="geofence_fragment_title">Arbeitsort</string>
 
     <string name="bottom_navigation_project">Projekte</string>
     <string name="bottom_navigation_calendar">Kalender</string>
-    <string name="bottom_navigation_geofence">Geofence</string>
+    <string name="bottom_navigation_geofence">Arbeitsort</string>
 
-    <string name="permission_request_rationale">Um GeoFences einzurichten und zu verwenden, wird die Lokalisierung
+    <string name="permission_request_rationale">Um einen Arbeitsort einzurichten und zu verwenden, wird die
+        Lokalisierung
         benötigt.
     </string>
     <string name="OK">OK</string>
     <string name="geofence_geofence_flow_btn_proceed">Weiter</string>
     <string name="geofence_geofence_flow_btn_back">Zurück</string>
 
-    <string name="geofence_edit_fragment_title">Geofence bearbeiten</string>
-    <string name="geofence_edit_fragment_edittext_hint">Name des GeoFence</string>
-    <string name="geofence_edit_fragment_btn_change">Geofence ändern</string>
+    <string name="geofence_edit_fragment_title">Arbeitsort bearbeiten</string>
+    <string name="geofence_edit_fragment_edittext_hint">Name des Arbeitsorts</string>
+    <string name="geofence_edit_fragment_btn_change">Arbeitsort ändern</string>
     <string name="geofence_edit_fragment_btn_save">Speichern</string>
     <string name="geofence_edit_error_no_name">Bitte geben Sie einen Namen ein!</string>
 
-    <string name="geofence_empty_fragment_title">Keine Geofences</string>
-    <string name="geofence_emtpy_fragment_info">Hinzugefügte Geofences werden hier angezeigt.</string>
-    <string name="geofence_emtpy_fragment_icon_text">geofence icon</string>
+    <string name="geofence_empty_fragment_title">Keine Arbeitsorte</string>
+    <string name="geofence_emtpy_fragment_info">Hinzugefügte Arbeitsorte werden hier angezeigt.</string>
+    <string name="geofence_emtpy_fragment_icon_text">Arbeitsort Bild</string>
 
     <string name="project_emtpy_fragment_icon_text">Projekt icon</string>
     <string name="project_empty_fragment_title">Keine Projekte</string>
     <string name="projects_emtpy_fragment_info">Hinzugefügte Projekte werden hier angezeigt.</string>
 
-    <string name="geofence_marker_fragment_info">Markiere das Zentrum des Geofence indem du die gewünschte Position auf
+    <string name="geofence_marker_fragment_info">Markiere das Zentrum des Arbeitsorts indem du die gewünschte Position
+        auf
         der Karte antippst!
     </string>
-    <string name="geofence_radius_fragment_info">Definiere den Radius des Geofence mit Hilfe eines Zweifinger-Pinch!
+    <string name="geofence_radius_fragment_info">Definiere den Radius des Arbeitsorts mit Hilfe eines Zweifinger-Pinch!
     </string>
 
     <string name="geofence_listitem_switch_text">Aktiv</string>
@@ -69,19 +71,24 @@
     <string name="ExtraKeyUpdateNotification">UPDTAE_NOTFICATION</string>
     <string name="no_projects_for_widget">Keine Projekte mit "Soll auf AppWidget erscheinen" gefunden</string>
 
-    <string name="geofence_unknown_error">Unbekannter Fehler: Der Geofence-Service ist zur Zeit nicht erreichbar.
+    <string name="geofence_unknown_error">Unbekannter Fehler: Der Arbeitsort-Service ist zur Zeit nicht erreichbar.
     </string>
-    <string name="geofence_not_available">Der Geofence-Service ist nicht erreichbar. Wählen Sie in Einstellungen >
+    <string name="geofence_not_available">Der Arbeitsort-Service ist nicht erreichbar. Wählen Sie in Einstellungen >
         Standort > Suchmethode \'Hohe Genauigkeit\'.
     </string>
-    <string name="geofence_too_many_geofences">Die App hat zuviele Geofences registriert.</string>
-    <string name="geofence_too_many_pending_intents">Die App hat zuviele Geofences registriert.</string>
-    <string name="geofence_detail_activity_toast_saved_geofence">Geofence gespeichert</string>
-    <string name="geofence_fragment_toast_activated_geofence">Geofence aktiviert</string>
+    <string name="geofence_too_many_geofences">Die App hat zuviele Arbeitsorte registriert.</string>
+    <string name="geofence_too_many_pending_intents">Die App hat zuviele Arbeitsorte registriert.</string>
+    <string name="geofence_detail_activity_toast_saved_geofence">Arbeitsort gespeichert</string>
+    <string name="geofence_fragment_toast_activated_geofence">Arbeitsort aktiviert</string>
   
     <string name="title_activity_maps">Map</string>
 
     <string name="active_projects_cant_be_deleted">Projekte mit einer aktiven Buchung können nicht gelöscht werden</string>
     <string name="priject_is_deleted">Projekt wurde gelöscht</string>
     <string name="rollback">Rückgängig</string>
+    <string name="geofence_powersafe_dialog_title">Arbeitsort und Energie sparen</string>
+    <string name="geofence_powersafe_dialog_message">Die einwandfreie Funktion von Arbeitsorterkennung ist im Energie-Spar-Modus
+        nicht gewährleistet.
+    </string>
+    <string name="geofence_powersafe_dialog_checkbox_hint">Hinweis künftig nicht mehr anzeigen</string>
 </resources>
