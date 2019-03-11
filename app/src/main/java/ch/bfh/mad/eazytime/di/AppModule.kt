@@ -95,6 +95,10 @@ class AppModule {
 
     @Provides
     @Singleton
+    fun provideCalendarProviderService(workDayRepo: WorkDayRepo, timeSlotRepo: TimeSlotRepo) = CalendarProviderService(workDayRepo, timeSlotRepo)
+
+    @Provides
+    @Singleton
     fun provideCheckPowerSafeUtil(context: Context): CheckPowerSafeUtil = CheckPowerSafeUtil(context)
 
 }

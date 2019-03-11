@@ -9,6 +9,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import ch.bfh.mad.R
 import ch.bfh.mad.eazytime.calendar.CalendarFragment
+import ch.bfh.mad.eazytime.calendar.detail.CalendarDetailActivity
 import ch.bfh.mad.eazytime.di.Injector
 import ch.bfh.mad.eazytime.geofence.GeoFenceFragment
 import ch.bfh.mad.eazytime.geofence.GeoFenceService
@@ -85,6 +86,10 @@ class EazyTimeActivity : AppCompatActivity(), EazyTimeNavigator {
 
     override fun openUpdateProjectActivity(projectId: Long) {
         startActivity(AddProjectActivity.getUpdateProjectActivityIntent(this, projectId))
+    }
+
+    override fun openCalendarDetailActivity(workDayId: Long) {
+        startActivity(CalendarDetailActivity.getIntent(this, workDayId))
     }
 
     private inner class ScreenServiceKeepAliveTask : TimerTask() {

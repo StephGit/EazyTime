@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_marginTop="@dimen/eazyTime_top_margin_list_elements"
+              android:layout_marginBottom="@dimen/eazyTime_bottom_margin_list_elements"
+              android:layout_marginStart="@dimen/eazyTime_left_margin_list_elements"
+              android:layout_marginEnd="@dimen/eazyTime_right_margin_list_elements"
+              android:padding="@dimen/eazyTime_padding_list_elements"
+              android:background="@color/eazyTime_colorBackgroundLight">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/calendar_detail_list_item_content"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/eazyTime_height_content_list_elements">
+
+        <TextView
+                android:id="@+id/calendar_detail_list_item_color_tag"
+                android:layout_width="@dimen/eazyTime_width_color_tag_list_elements"
+                android:layout_height="0dp"
+                android:textColor="@color/eazyTime_colorWhite"
+                android:textSize="@dimen/eazyTime_text_size_project_short_code_project_list_item"
+                android:gravity="center"
+                app:layout_constraintLeft_toLeftOf="@id/calendar_detail_list_item_content"
+                app:layout_constraintBottom_toBottomOf="@id/calendar_detail_list_item_content"
+                app:layout_constraintTop_toTopOf="@id/calendar_detail_list_item_content"
+                app:layout_constraintRight_toLeftOf="@id/calendar_detail_list_item_timeslot"/>
+        <TextView
+                android:id="@+id/calendar_detail_list_item_timeslot"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/eazyTime_height_half_content_list_elements"
+                app:layout_constraintRight_toRightOf="@id/calendar_detail_list_item_content"
+                app:layout_constraintTop_toTopOf="@id/calendar_detail_list_item_content"
+                app:layout_constraintLeft_toRightOf="@id/calendar_detail_list_item_color_tag"
+                app:layout_constraintBottom_toTopOf="@id/calendar_detail_list_item_timeslot"
+                android:layout_marginStart="@dimen/eazyTime_left_margin_list_elements"
+                android:padding="@dimen/eazyTime_padding_text_views_list_elements"
+                android:textSize="@dimen/eazyTime_text_size_project_name_project_list_item"/>
+        <TextView
+                android:id="@+id/calendar_detail_list_item_duration"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/eazyTime_height_half_content_list_elements"
+                app:layout_constraintRight_toRightOf="@id/calendar_detail_list_item_content"
+                app:layout_constraintTop_toBottomOf="@id/calendar_detail_list_item_timeslot"
+                app:layout_constraintLeft_toRightOf="@id/calendar_detail_list_item_color_tag"
+                app:layout_constraintBottom_toBottomOf="@id/calendar_detail_list_item_content"
+                android:layout_marginStart="@dimen/eazyTime_left_margin_list_elements"
+                android:padding="@dimen/eazyTime_padding_text_views_list_elements"
+                android:textSize="@dimen/eazyTime_text_size_project_name_project_list_item"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

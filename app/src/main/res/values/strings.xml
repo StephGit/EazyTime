@@ -91,4 +91,11 @@
         nicht gewährleistet.
     </string>
     <string name="geofence_powersafe_dialog_checkbox_hint">Hinweis künftig nicht mehr anzeigen</string>
+
+    <string name="language">de</string>
+    <string name="now">jetzt</string>
+    <string name="ongoing">aktiv</string>
+    <string name="date_pattern">EEEE, dd. MM. yyyy</string>
+    <string name="time_range_pattern">%1$s - %2$s</string>
+    <string name="total_workhours_pattern">Gesamt: %1$s</string>
 </resources>

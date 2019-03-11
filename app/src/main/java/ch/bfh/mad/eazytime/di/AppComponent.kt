@@ -2,6 +2,8 @@ package ch.bfh.mad.eazytime.di
 
 import android.app.Application
 import ch.bfh.mad.eazytime.EazyTimeActivity
+import ch.bfh.mad.eazytime.calendar.CalendarFragment
+import ch.bfh.mad.eazytime.calendar.detail.CalendarDetailActivity
 import ch.bfh.mad.eazytime.geofence.GeoFenceEmptyFragment
 import ch.bfh.mad.eazytime.geofence.GeoFenceFragment
 import ch.bfh.mad.eazytime.geofence.receiver.BootBroadcastReceiver
@@ -30,6 +32,8 @@ interface AppComponent {
     fun inject(eazyTimeActivity: EazyTimeActivity)
     fun inject(projectFragment: ProjectFragment)
     fun inject(addProjectActivity: AddProjectActivity)
+    fun inject(calendarFragment: CalendarFragment)
+    fun inject(calendarDetailActivity: CalendarDetailActivity)
     fun inject(remoteViewBroadCastReceiver: RemoteViewBroadCastReceiver)
     fun inject(widgetProvider: WidgetProvider)
     fun inject(geoFenceFragment: GeoFenceFragment)

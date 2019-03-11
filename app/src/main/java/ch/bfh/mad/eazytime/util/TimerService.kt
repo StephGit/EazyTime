@@ -8,6 +8,7 @@ import ch.bfh.mad.eazytime.data.repo.WorkDayRepo
 import kotlinx.coroutines.runBlocking
 import org.joda.time.LocalDate
 import org.joda.time.LocalDateTime
+import org.joda.time.Period
 
 class TimerService constructor(private val timeSlotRepo: TimeSlotRepo, private val projectDao: ProjectDao, private val workDayRepo: WorkDayRepo) {
 
@@ -56,6 +57,23 @@ class TimerService constructor(private val timeSlotRepo: TimeSlotRepo, private v
         currentTimeSlots.forEach {
             it.endDate = LocalDateTime()
             update(it)
+        }
+        calculateTotalWorkHours()
+    }
+
+    private fun calculateTotalWorkHours() = runBlocking {
+        val curWorkDay = workDayRepo.getWorkDayByDate(LocalDate())
+        curWorkDay?.let {
+            val workDayAndTimeSlots = workDayRepo.getWorkDayAndTimeSlotsById(it.id)
+
+            val totalMinutes = workDayAndTimeSlots?.timeslots?.map { ts ->
+                Period(ts.startDate, ts.endDate).minutes
+            }?.sum()
+
+            totalMinutes?.let {
+                curWorkDay.totalWorkHours = 1F * totalMinutes / 60
+                workDayRepo.update(curWorkDay)
+            }
         }
     }
 
