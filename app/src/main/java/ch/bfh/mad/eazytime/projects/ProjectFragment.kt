@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -42,6 +43,7 @@ class ProjectFragment : androidx.fragment.app.Fragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
+    private lateinit var noProjectInfo: ConstraintLayout
     private lateinit var projectListViewModel: ProjectListViewModel
     private lateinit var projectListView: RecyclerView
     private lateinit var createNewProjectButton: FloatingActionButton
@@ -56,6 +58,8 @@ class ProjectFragment : androidx.fragment.app.Fragment() {
         navigator = requireContext() as? EazyTimeNavigator ?: throw IllegalStateException("Context of ProjectFragment is not an Instance of EazyTimeNavigator")
         activity!!.title = getString(R.string.project_fragment_title)
         projectListView = view.findViewById(R.id.lv_projects)
+        noProjectInfo = view.findViewById(R.id.projects_no_projects_exists)
+
         createNewProjectButton = view.findViewById(R.id.fab_projects)
         createNewProjectButton.setOnClickListener{ openAddNewProjectActivity() }
 
@@ -74,6 +78,9 @@ class ProjectFragment : androidx.fragment.app.Fragment() {
 
         projectListViewModel.projects.observe(this, Observer { projects ->
             projectsRecycleListAdapter.submitList(projects)
+            if (!projects.isEmpty()){
+                noProjectInfo.visibility = View.GONE
+            }
         })
 
         initSwipe()
@@ -123,6 +130,9 @@ class ProjectFragment : androidx.fragment.app.Fragment() {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, position: Int) {
                 projectsRecycleListAdapter.removeItem(viewHolder)
+                if (projectsRecycleListAdapter.itemCount == 0) {
+                    noProjectInfo.visibility = View.VISIBLE
+                }
             }
 
             override fun onChildDraw(

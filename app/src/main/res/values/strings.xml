@@ -29,6 +29,10 @@
     <string name="geofence_emtpy_fragment_info">Hinzugefügte Arbeitsorte werden hier angezeigt.</string>
     <string name="geofence_emtpy_fragment_icon_text">Arbeitsort Bild</string>
 
+    <string name="project_emtpy_fragment_icon_text">Projekt icon</string>
+    <string name="project_empty_fragment_title">Keine Projekte</string>
+    <string name="projects_emtpy_fragment_info">Hinzugefügte Projekte werden hier angezeigt.</string>
+
     <string name="geofence_marker_fragment_info">Markiere das Zentrum des Arbeitsorts indem du die gewünschte Position
         auf
         der Karte antippst!
