@@ -49,13 +49,9 @@ class ProjectProviderService(projectRepo: ProjectRepo, timeSlotRepo: TimeSlotRep
                 ?.map { Seconds.secondsBetween(it.startDate, it.endDate) }
                 ?.fold(Seconds.seconds(0)) { acc, minutes -> acc.plus(minutes)}
 
-            filteredTimeSlots?.filter { it.projectId == project.id && it.endDate == null }?.firstOrNull()?.let {
-                val currentSeconds = Seconds.secondsBetween(it.startDate, LocalDateTime())
-                isActive = true
-                mappedTimeSlotSeconds = mappedTimeSlotSeconds?.plus(currentSeconds)
-            }
+            val activeTimeslot = filteredTimeSlots?.filter { it.projectId == project.id && it.endDate == null }?.firstOrNull()?.also { isActive = true }
 
-            ProjectListItem(project.id, project.name, project.shortCode, mappedTimeSlotSeconds?.seconds, project.color, project.isDefault, project.onWidget, isActive, project.isDeleted)
+            ProjectListItem(project.id, project.name, project.shortCode, mappedTimeSlotSeconds?.seconds, activeTimeslot?.startDate, project.color, project.isDefault, project.onWidget, isActive, project.isDeleted)
         }
 
     }

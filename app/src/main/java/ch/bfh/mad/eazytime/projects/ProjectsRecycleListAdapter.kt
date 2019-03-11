@@ -16,6 +16,8 @@ import ch.bfh.mad.eazytime.data.repo.ProjectRepo
 import ch.bfh.mad.eazytime.util.EazyTimeDateUtil
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.runBlocking
+import org.joda.time.LocalDateTime
+import org.joda.time.Seconds
 import java.util.*
 
 class ProjectsRecycleListAdapter(var context: Context, var projectRepo: ProjectRepo) : ListAdapter<ProjectListItem, ProjectsRecycleListAdapter.ViewHolder>(DiffCallBack()) {
@@ -47,13 +49,13 @@ class ProjectsRecycleListAdapter(var context: Context, var projectRepo: ProjectR
     }
 
     private fun formatTime(timeTV: TextView, projectItem: ProjectListItem) {
-        projectItem.currentTime?.let {
+        projectItem.previousTimeSeconds?.let {
             timeTV.text = EazyTimeDateUtil.fromSecondsToHHmmSS(it)
         }
         if (projectItem.active) {
             timeTV.setTypeface(null, Typeface.BOLD)
             timeTV.setTextColor(ContextCompat.getColor(context, R.color.eazyTime_colorBlack))
-            val myUpdateTimer = MyUpdateTimer(timeTV, projectItem.currentTime)
+            val myUpdateTimer = MyUpdateTimer(timeTV, projectItem.previousTimeSeconds, projectItem.currentStartTime)
             timers.add(myUpdateTimer)
             Timer().scheduleAtFixedRate(myUpdateTimer, 0, 1000)
         }
@@ -133,11 +135,15 @@ class ProjectsRecycleListAdapter(var context: Context, var projectRepo: ProjectR
     }
 }
 
-class MyUpdateTimer(val timeTV: TextView?, startTime: Int? = 0) : TimerTask() {
+class MyUpdateTimer(val timeTV: TextView?, prevTime: Int? = 0, startDate: LocalDateTime?) : TimerTask() {
     private var counter = 0
 
     init {
-        startTime?.let { counter = it }
+        prevTime?.let { counter = it }
+        startDate?.let {
+            val currentSeconds = Seconds.secondsBetween(it, LocalDateTime())
+            counter += currentSeconds.seconds
+        }
     }
 
     override fun run() {
@@ -156,7 +162,8 @@ private class DiffCallBack : DiffUtil.ItemCallback<ProjectListItem>() {
                 oldItem.active == newItem.active &&
                 oldItem.default == newItem.default &&
                 oldItem.color == newItem.color &&
-                oldItem.currentTime == newItem.currentTime &&
+                oldItem.previousTimeSeconds == newItem.previousTimeSeconds &&
+                oldItem.currentStartTime == newItem.currentStartTime &&
                 oldItem.shortCode == newItem.shortCode &&
                 oldItem.name == newItem.name &&
                 oldItem.isDeleted == newItem.isDeleted
