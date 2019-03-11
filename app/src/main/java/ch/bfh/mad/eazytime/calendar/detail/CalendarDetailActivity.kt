@@ -10,9 +10,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import ch.bfh.mad.R
 import ch.bfh.mad.eazytime.di.Injector
+import ch.bfh.mad.eazytime.util.CalendarUtil
 import org.joda.time.Period
 import org.joda.time.format.DateTimeFormat
-import org.joda.time.format.PeriodFormatterBuilder
 import java.util.*
 import javax.inject.Inject
 
@@ -42,13 +42,7 @@ class CalendarDetailActivity: AppCompatActivity() {
             }
             calendarDetails.first().workDayTotalWorkHours?.let {totalWorkHours ->
                 val totalHoursTv = findViewById<TextView>(R.id.calendar_detail_total_hours_label)
-                val hoursAndMinutesFormatter = PeriodFormatterBuilder()
-                    .printZeroAlways()
-                    .minimumPrintedDigits(2)
-                    .appendHours()
-                    .appendLiteral(":")
-                    .appendMinutes()
-                    .toFormatter()
+                val hoursAndMinutesFormatter = CalendarUtil.getHoursAndMinutesFormatter()
                 val totalWorkSeconds = totalWorkHours * 60 * 60
                 val totalWorkPeriod = Period.seconds(totalWorkSeconds.toInt()).normalizedStandard()
 

@@ -22,8 +22,8 @@ class WorkDayRepo(private val workDayDao: WorkDayDao) {
     }
 
     @WorkerThread
-    suspend fun getWorkDays(): LiveData<List<WorkDay>> = withContext(Dispatchers.IO){
-        workDayDao.getWorkDays()
+    suspend fun getWorkDays(): LiveData<List<WorkDayAndTimeSlots>> = withContext(Dispatchers.IO){
+        workDayDao.getWorkDayAndTimeSlots()
     }
 
     @WorkerThread

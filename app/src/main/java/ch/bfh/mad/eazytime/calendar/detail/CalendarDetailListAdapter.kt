@@ -10,9 +10,9 @@ import android.widget.TextView
 import androidx.annotation.LayoutRes
 import ch.bfh.mad.R
 import ch.bfh.mad.eazytime.data.dao.WorkDayDao
+import ch.bfh.mad.eazytime.util.CalendarUtil
 import org.joda.time.Period
 import org.joda.time.format.DateTimeFormat
-import org.joda.time.format.PeriodFormatterBuilder
 
 class CalendarDetailListAdapter(context: Context, @LayoutRes itemLayoutRes: Int) :
     ArrayAdapter<WorkDayDao.WorkDayTimeSlotProject>(context, itemLayoutRes) {
@@ -35,17 +35,11 @@ class CalendarDetailListAdapter(context: Context, @LayoutRes itemLayoutRes: Int)
             timeSlotTv.text = String.format(timeRangePattern, startDate, endDate)
 
             val durationTv = view.findViewById<TextView>(R.id.calendar_detail_list_item_duration)
-            val hoursAndMinutesFormatter = PeriodFormatterBuilder()
-                .printZeroAlways()
-                .minimumPrintedDigits(2)
-                .appendHours()
-                .appendLiteral(":")
-                .appendMinutes()
-                .toFormatter()
+            val hoursAndMinutesFormatter = CalendarUtil.getHoursAndMinutesFormatter()
             val periodStr = calendarListItem.timeSlotEndDate?.let { timeSlotEndDate ->
                 val period = Period(calendarListItem.timeSlotStartDate, timeSlotEndDate)
                 hoursAndMinutesFormatter.print(period)
-            } ?: "ongoing"
+            } ?: context.getString(R.string.ongoing)
 
             durationTv.text = periodStr
 

@@ -39,7 +39,7 @@ class CalendarFragment : androidx.fragment.app.Fragment() {
         val calendarListAdapter = CalendarListAdapter(requireContext(), android.R.layout.simple_list_item_1)
         calendarListView.adapter = calendarListAdapter
         calendarListView.setOnItemClickListener { _, _, position, _ ->
-            openCalendarDetailActivity(calendarListAdapter.getItem(position))
+            openCalendarDetailActivity(calendarListAdapter.getItem(position)?.workDay)
         }
         calendarListViewModel.getCalendarItems().observe(this, Observer { calendarItems ->
             calendarItems?.let {
