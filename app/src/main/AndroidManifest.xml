@@ -82,8 +82,9 @@
         </receiver>
         <service
                 android:name="ch.bfh.mad.eazytime.geofence.receiver.GeoFenceTransitionsJobIntentService"
+                android:permission="android.permission.FOREGROUND_SERVICE"
                 android:exported="true"
-                android:permission="android.permission.BIND_JOB_SERVICE"/>
+                />
         <service
                 android:name="ch.bfh.mad.eazytime.remoteViews.notification.ScreenActionService"
                 android:enabled="true"
