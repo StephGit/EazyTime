@@ -30,7 +30,8 @@ class GeoFenceService @Inject constructor(
     /**
      * Explicit removal of all active geofences and add them again.
      */
-    fun initGeoFences() {
+    fun initGeoFences() : Boolean {
+        var hasGeoFences = false
         this.geoFences.addAll(geoFenceRepo.getActiveGeoFences())
         geoFences.forEach {
             remove(it,
@@ -41,7 +42,9 @@ class GeoFenceService @Inject constructor(
             add(it,
                 success = { Log.d(TAG, "GeoFence " + it.name + " added successfully") },
                 failure = { err -> Log.d(TAG, "Adding failed for GeoFence [" + it.name + "], Error: " + err) })
+            hasGeoFences = true
         }
+        return hasGeoFences
     }
 
     /**
