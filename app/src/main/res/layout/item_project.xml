@@ -8,12 +8,15 @@
               android:layout_marginStart="@dimen/eazyTime_left_margin_list_elements"
               android:layout_marginEnd="@dimen/eazyTime_right_margin_list_elements"
               android:padding="@dimen/eazyTime_padding_list_elements"
-              android:background="@color/eazyTime_colorBackgroundLight">
+              android:background="@color/eazyTime_colorBackgroundLight"
+              android:foreground="?android:attr/selectableItemBackground"
+>
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/project_list_item_content"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/eazyTime_height_content_list_elements">
+            android:layout_height="@dimen/eazyTime_height_content_list_elements"
+    >
        <TextView
                android:id="@+id/project_list_item_color_tag"
                android:layout_width="@dimen/eazyTime_width_color_tag_list_elements"

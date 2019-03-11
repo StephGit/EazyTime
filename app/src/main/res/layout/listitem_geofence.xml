@@ -8,7 +8,10 @@
               android:layout_marginStart="@dimen/eazyTime_left_margin_list_elements"
               android:layout_marginEnd="@dimen/eazyTime_right_margin_list_elements"
               android:padding="@dimen/eazyTime_padding_list_elements"
-              android:background="@color/eazyTime_colorBackgroundLight">
+              android:clickable="true"
+              android:focusable="true"
+              android:background="@color/eazyTime_colorBackgroundLight"
+              android:foreground="?android:attr/selectableItemBackground">
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/geofence_list_item_content"

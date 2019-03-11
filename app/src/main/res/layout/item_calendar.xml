@@ -8,7 +8,8 @@
               android:layout_marginStart="@dimen/eazyTime_left_margin_list_elements"
               android:layout_marginEnd="@dimen/eazyTime_right_margin_list_elements"
               android:padding="@dimen/eazyTime_padding_list_elements"
-              android:background="@color/eazyTime_colorBackground">
+              android:background="@color/eazyTime_colorBackgroundLight"
+              android:foreground="?android:attr/selectableItemBackground">
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/calendar_list_item_content"
