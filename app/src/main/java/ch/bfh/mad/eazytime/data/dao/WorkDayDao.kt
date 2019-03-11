@@ -12,7 +12,7 @@ interface WorkDayDao {
     @Query("SELECT * FROM workday ORDER BY date ASC")
     fun getWorkDays(): LiveData<List<WorkDay>>
 
-    @Query("SELECT * FROM workday ORDER BY date ASC")
+    @Query("SELECT * FROM workday ORDER BY date DESC")
     fun getWorkDayAndTimeSlots(): LiveData<List<WorkDayAndTimeSlots>>
 
     @Insert
