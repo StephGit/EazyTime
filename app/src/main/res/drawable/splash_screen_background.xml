@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_height="match_parent" android:layout_width="match_parent"
+            android:opacity="opaque">
+
+    <item android:drawable="@color/eazyTime_colorBrand"/>
+    <!-- Your product logo - 144dp color version of your app icon -->
+    <item>
+        <bitmap
+                android:src="@drawable/ic_launcher_foreground"
+                android:gravity="center"/>
+    </item>
+</layer-list>
