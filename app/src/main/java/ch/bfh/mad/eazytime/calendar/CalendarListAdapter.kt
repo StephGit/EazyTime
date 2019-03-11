@@ -33,7 +33,7 @@ class CalendarListAdapter(context: Context, @LayoutRes itemLayoutRes: Int) :
                 .fold(Period(0L)) { acc, period ->  acc.plus(period)}
             val hoursAndMinutesFormatter = CalendarUtil.getHoursAndMinutesFormatter()
 
-            totalHoursTv.text = hoursAndMinutesFormatter.print(period)
+            totalHoursTv.text = hoursAndMinutesFormatter.print(period.normalizedStandard())
         }
         return view
     }

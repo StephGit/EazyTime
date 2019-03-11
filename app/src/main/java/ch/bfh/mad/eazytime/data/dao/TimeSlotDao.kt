@@ -3,6 +3,7 @@ package ch.bfh.mad.eazytime.data.dao
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import ch.bfh.mad.eazytime.data.entity.TimeSlot
+import org.joda.time.LocalDateTime
 
 @Dao
 interface TimeSlotDao {
@@ -20,4 +21,7 @@ interface TimeSlotDao {
 
     @Query("SELECT * FROM timeslot WHERE endDate is NULL")
     fun getCurrentTimeSlots(): List<TimeSlot>
+
+    @Query("SELECT * FROM timeslot where startDate > :startOfDay")
+    fun getTimeSlotsForDay(startOfDay: LocalDateTime?): LiveData<List<TimeSlot>>
 }

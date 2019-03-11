@@ -20,7 +20,7 @@ class ProjectProviderService(projectRepo: ProjectRepo, timeSlotRepo: TimeSlotRep
 
     init {
         val projectsLd: LiveData<List<Project>> = projectRepo.allProjects
-        val timeSlotsLd: LiveData<List<TimeSlot>> = timeSlotRepo.allTimeSlots
+        val timeSlotsLd: LiveData<List<TimeSlot>> = timeSlotRepo.todaysTimeSlots()
 
         projectItemList = MediatorLiveData()
         projectItemList.addSource(projectsLd) {projects ->
@@ -39,23 +39,19 @@ class ProjectProviderService(projectRepo: ProjectRepo, timeSlotRepo: TimeSlotRep
     }
 
     private fun mergeLiveData(projects: List<Project>?, timeslots: List<TimeSlot>?): List<ProjectListItem>? {
-        // need to be filtered  here because LiveData-Queries with parameter are not allowed
-        val filteredTimeSlots = timeslots?.filter { timeSlot -> isFromToday(timeSlot) }
 
         return projects?.map {project ->
             var isActive = false
-            var mappedTimeSlotSeconds = filteredTimeSlots
+            var mappedTimeSlotSeconds = timeslots
                 ?.filter { it.projectId == project.id && it.endDate != null }
                 ?.map { Seconds.secondsBetween(it.startDate, it.endDate) }
                 ?.fold(Seconds.seconds(0)) { acc, minutes -> acc.plus(minutes)}
 
-            val activeTimeslot = filteredTimeSlots?.filter { it.projectId == project.id && it.endDate == null }?.firstOrNull()?.also { isActive = true }
+            val activeTimeslot = timeslots?.filter { it.projectId == project.id && it.endDate == null }?.firstOrNull()?.also { isActive = true }
 
             ProjectListItem(project.id, project.name, project.shortCode, mappedTimeSlotSeconds?.seconds, activeTimeslot?.startDate, project.color, project.isDefault, project.onWidget, isActive, project.isDeleted)
         }
 
     }
-
-    private fun isFromToday(ts: TimeSlot) = ts.startDate?.toDate()?.time ?: 0 >= LocalDate().toDate().time
 
 }
