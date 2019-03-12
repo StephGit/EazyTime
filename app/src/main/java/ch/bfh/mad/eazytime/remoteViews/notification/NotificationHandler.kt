@@ -2,10 +2,8 @@ package ch.bfh.mad.eazytime.remoteViews.notification
 
 import android.app.*
 import android.content.Context
-import android.graphics.Color
 import android.os.Build
 import android.widget.RemoteViews
-import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.PRIORITY_MIN
 import androidx.core.app.NotificationManagerCompat
@@ -49,10 +47,10 @@ class NotificationHandler(val context: Context, private val remoteViewButtonUtil
     fun getNotification(): Notification {
         val channelId =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                createNotificationChannel("my_service", "My Background Service")
+                createNotificationChannel("ForeGroundService", "ForegroundServiceChannel")
+                "ForeGroundService"
             } else {
                 // If earlier version channel ID is not used
-                // https://developer.android.com/reference/android/support/v4/app/NotificationCompat.Builder.html#NotificationCompat.Builder(android.content.Context)
                 ""
             }
 
@@ -62,25 +60,10 @@ class NotificationHandler(val context: Context, private val remoteViewButtonUtil
             .setPriority(PRIORITY_MIN)
             .setCategory(Notification.CATEGORY_SERVICE)
             .build()
-
-
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun createNotificationChannel(channelId: String, channelName: String): String {
-        val chan = NotificationChannel(
-            channelId,
-            channelName, NotificationManager.IMPORTANCE_NONE
-        )
-        chan.lightColor = Color.BLUE
-        chan.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
-        val service = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        service.createNotificationChannel(chan)
-        return channelId
     }
 
     fun createEazyTimeNotification() {
-        createNotificationChannel(notificationChannelId)
+        createNotificationChannel()
 
         val notificationLayout = RemoteViews(context.packageName, R.layout.notification)
         projectProviderService.getProjectListitems().observeForever { projectListItems ->
@@ -102,13 +85,16 @@ class NotificationHandler(val context: Context, private val remoteViewButtonUtil
         }
     }
 
-    private fun createNotificationChannel(name: String) {
+    private fun createNotificationChannel(
+        channelId: String = notificationChannelId,
+        name: String = notificationChannelId
+    ) {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val descriptionText = context.getString(R.string.app_name)
             val importance = NotificationManager.IMPORTANCE_LOW
-            val channel = NotificationChannel(notificationChannelId, name, importance).apply {
+            val channel = NotificationChannel(channelId, name, importance).apply {
                 description = descriptionText
                 lockscreenVisibility = Notification.VISIBILITY_PUBLIC
             }
