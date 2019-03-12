@@ -1,7 +1,6 @@
 package ch.bfh.mad.eazytime.remoteViews.notification
 
 import android.annotation.SuppressLint
-import android.app.Notification
 import android.app.Service
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -27,7 +26,8 @@ class ScreenActionService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        startForeground(1212, Notification())
+        startForeground(1212, notificationHandler.getNotification())
+
     }
 
     override fun onBind(intent: Intent): IBinder {
