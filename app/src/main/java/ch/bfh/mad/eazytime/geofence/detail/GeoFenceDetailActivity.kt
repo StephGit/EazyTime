@@ -25,6 +25,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.gms.tasks.Task
 import com.google.maps.android.SphericalUtil
+import java.util.*
 import javax.inject.Inject
 
 class GeoFenceDetailActivity : AppCompatActivity(),
@@ -321,6 +322,7 @@ class GeoFenceDetailActivity : AppCompatActivity(),
         geoFence.id?.let {
             geoFenceRepo.update(geoFence)
         } ?: run {
+            geoFence.gfId = geoFenceName + UUID.randomUUID()
             geoFenceRepo.insert(geoFence)
         }
         leaveGeoFenceDetail()
