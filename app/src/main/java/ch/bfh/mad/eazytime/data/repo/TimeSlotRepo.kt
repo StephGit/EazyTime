@@ -39,4 +39,8 @@ class TimeSlotRepo(private val timeSlotDao: TimeSlotDao) {
         timeSlotDao.getCurrentTimeSlots()
     }
 
+    @WorkerThread
+    suspend fun getTimeSlotsByWorkDayId(workDayId: Long): List<TimeSlot> = withContext(Dispatchers.IO)  {
+        timeSlotDao.getTimeSlotsByWorkDayId(workDayId)
+    }
 }

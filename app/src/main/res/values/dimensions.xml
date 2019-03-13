@@ -10,7 +10,7 @@
 
     <dimen name="eazyTime_top_margin_list_elements">1dp</dimen>
     <dimen name="eazyTime_bottom_margin_list_elements">1dp</dimen>
-    <dimen name="eazyTime_left_margin_list_elements">0dp</dimen>
+    <dimen name="eazyTime_left_margin_list_elements">5dp</dimen>
     <dimen name="eazyTime_right_margin_list_elements">0dp</dimen>
     <dimen name="eazyTime_margin_save_delete_buttons">8dp</dimen>
     <dimen name="eazyTime_padding_list_elements">6dp</dimen>
