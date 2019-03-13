@@ -16,6 +16,6 @@ interface GeoFenceFlow {
     fun goToMarker()
     fun goToRadius()
     fun goToEdit()
-    fun saveGeoFence(geoFenceName: String)
+    fun saveOrUpdate(geoFenceName: String)
     fun leaveGeoFenceDetail()
 }

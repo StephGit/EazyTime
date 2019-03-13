@@ -1,7 +1,6 @@
 package ch.bfh.mad.eazytime.geofence.detail
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -15,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity
 import ch.bfh.mad.R
 import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.data.entity.GeoFence
+import ch.bfh.mad.eazytime.data.repo.GeoFenceRepo
+import ch.bfh.mad.eazytime.di.Injector
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -24,7 +25,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.gms.tasks.Task
 import com.google.maps.android.SphericalUtil
-import java.util.*
+import javax.inject.Inject
 
 class GeoFenceDetailActivity : AppCompatActivity(),
     GeoFenceFlow,
@@ -50,6 +51,9 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     private lateinit var locationProviderClient: FusedLocationProviderClient
     private lateinit var scaleGestureDetector: ScaleGestureDetector
 
+    @Inject
+    lateinit var geoFenceRepo: GeoFenceRepo
+
     companion object{
         fun newIntent(ctx: Context)= Intent(ctx, GeoFenceDetailActivity::class.java)
     }
@@ -58,16 +62,21 @@ class GeoFenceDetailActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_geofence_detail)
         title = getString(R.string.geofence_edit_fragment_title)
+
+        Injector.appComponent.inject(this)
+
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map_geoFence) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
         locationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         scaleGestureDetector = ScaleGestureDetector(applicationContext, this)
 
-        if (intent.hasExtra("GEOFENCE_NAME")) {
-            getGeoFenceFromIntent()
+        val extras = intent.extras
+        val geoFenceId = extras?.get("GEOFENCE_ID") as Long?
+        geoFenceId?.let {
+            getGeoFenceFromRepo(geoFenceId)
             replaceFragment(GeoFenceEditFragment.newFragment())
-        } else {
+        } ?: run {
             replaceFragment(GeoFenceMarkerFragment.newFragment())
         }
     }
@@ -76,16 +85,10 @@ class GeoFenceDetailActivity : AppCompatActivity(),
         this.geoFence = GeoFence(null, false, null, null, null, null)
     }
 
-    private fun getGeoFenceFromIntent() {
-        this.geoFence = GeoFence(
-            intent.getStringExtra("GEOFENCE_NAME"),
-            intent.getBooleanExtra("GEOFENCE_ACTIVE", false),
-            intent.getStringExtra("GEOFENCE_GFID"),
-            intent.getDoubleExtra("GEOFENCE_RADIUS", 0.0),
-            intent.getDoubleExtra("GEOFENCE_LAT", 0.0),
-            intent.getDoubleExtra("GEOFENCE_LONG", 0.0),
-            intent.getLongExtra("GEOFENCE_ID", 0L)
-        )
+    private fun getGeoFenceFromRepo(geoFenceId: Long) {
+        geoFenceRepo.getGeoFence(geoFenceId)?.let {
+            this.geoFence = it
+        }
     }
 
     private fun replaceFragment(fragment: androidx.fragment.app.Fragment) {
@@ -313,19 +316,13 @@ class GeoFenceDetailActivity : AppCompatActivity(),
         }
     }
 
-    override fun saveGeoFence(geoFenceName: String) {
-        val data = Intent().apply {
-            putExtra("GEOFENCE_NAME", geoFenceName)
-            putExtra("GEOFENCE_ACTIVE", geoFence.active)
-            putExtra("GEOFENCE_GFID", geoFenceName + UUID.randomUUID())
-            putExtra("GEOFENCE_RADIUS", geoFence.radius)
-            putExtra("GEOFENCE_LAT", geoFence.latitude)
-            putExtra("GEOFENCE_LONG", geoFence.longitude)
-            geoFence.id?.let { id ->
-                putExtra("GEOFENCE_ID", id)
-            }
+    override fun saveOrUpdate(geoFenceName: String) {
+        geoFence.name = geoFenceName
+        geoFence.id?.let {
+            geoFenceRepo.update(geoFence)
+        } ?: run {
+            geoFenceRepo.insert(geoFence)
         }
-        setResult(Activity.RESULT_OK, data)
         leaveGeoFenceDetail()
         Toast.makeText(this, getString(R.string.geofence_detail_activity_toast_saved_geofence), Toast.LENGTH_SHORT)
             .show()
