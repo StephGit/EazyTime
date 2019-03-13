@@ -14,6 +14,7 @@ import ch.bfh.mad.eazytime.projects.ProjectsRecycleListAdapter
 import ch.bfh.mad.eazytime.projects.addProject.ProjectSaveOrUpdateService
 import ch.bfh.mad.eazytime.remoteViews.RemoteViewButtonUtil
 import ch.bfh.mad.eazytime.remoteViews.notification.NotificationHandler
+import ch.bfh.mad.eazytime.remoteViews.notification.ScreenActionReceiver
 import ch.bfh.mad.eazytime.remoteViews.notification.ScreenActionService
 import ch.bfh.mad.eazytime.util.*
 import dagger.Module
@@ -88,6 +89,10 @@ class AppModule {
     @Provides
     @Singleton
     fun provideScreenActionService(): ScreenActionService = ScreenActionService()
+
+    @Provides
+    @Singleton
+    fun provideScreenActionReceiver(): ScreenActionReceiver = ScreenActionReceiver()
 
     @Provides
     @Singleton

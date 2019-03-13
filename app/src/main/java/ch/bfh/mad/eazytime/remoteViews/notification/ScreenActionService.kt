@@ -11,14 +11,15 @@ import javax.inject.Inject
 
 class ScreenActionService : Service() {
 
-    private val unlockReceiver: ScreenActionReceiver = ScreenActionReceiver()
+    @Inject
+    lateinit var unlockReceiver: ScreenActionReceiver
+
+    @Inject
+    lateinit var notificationHandler: NotificationHandler
 
     init {
         Injector.appComponent.inject(this)
     }
-
-    @Inject
-    lateinit var notificationHandler: NotificationHandler
 
     override fun onCreate() {
         super.onCreate()
