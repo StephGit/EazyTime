@@ -35,9 +35,9 @@ class GeoFenceService @Inject constructor(
      * Explicit removal of all active geofences and add them again.
      */
     fun initGeoFences() : Boolean {
-
-        geoFenceEntities.addAll(geoFenceRepo.getActiveGeoFences())
-        geoFenceEntities.forEach {
+        val tmpList: MutableList<GeoFence> = ArrayList()
+        tmpList.addAll(geoFenceRepo.getActiveGeoFences())
+        tmpList.forEach {
             remove(it)
             add(it)
         }
