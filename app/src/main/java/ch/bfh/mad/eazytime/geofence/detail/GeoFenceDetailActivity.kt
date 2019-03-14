@@ -16,6 +16,7 @@ import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.data.entity.GeoFence
 import ch.bfh.mad.eazytime.data.repo.GeoFenceRepo
 import ch.bfh.mad.eazytime.di.Injector
+import ch.bfh.mad.eazytime.geofence.GeoFenceService
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -54,6 +55,9 @@ class GeoFenceDetailActivity : AppCompatActivity(),
 
     @Inject
     lateinit var geoFenceRepo: GeoFenceRepo
+
+    @Inject
+    lateinit var geoFenceService: GeoFenceService
 
     companion object{
         fun newIntent(ctx: Context)= Intent(ctx, GeoFenceDetailActivity::class.java)
@@ -321,8 +325,11 @@ class GeoFenceDetailActivity : AppCompatActivity(),
         geoFence.name = geoFenceName
         geoFence.id?.let {
             geoFenceRepo.update(geoFence)
+            if (geoFence.active) {
+                geoFenceService.addOrUpdate(geoFence)
+            }
         } ?: run {
-            geoFence.gfId = geoFenceName + UUID.randomUUID()
+            geoFence.requestId = geoFenceName + UUID.randomUUID()
             geoFenceRepo.insert(geoFence)
         }
         leaveGeoFenceDetail()

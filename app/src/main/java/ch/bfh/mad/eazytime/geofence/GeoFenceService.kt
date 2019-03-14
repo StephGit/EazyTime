@@ -1,6 +1,7 @@
 package ch.bfh.mad.eazytime.geofence
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
@@ -26,22 +27,53 @@ class GeoFenceService @Inject constructor(
     private val geofenceErrorMessages: GeofenceErrorMessages
 ) : OnCompleteListener<Void> {
 
-    private val geoFenceEntities: MutableList<GeoFence> = ArrayList()
-    private val geofences: MutableList<Geofence> = ArrayList()
+//    private val geoFenceEntities: MutableList<GeoFence> = ArrayList()
+
+    private val geofences: MutableMap<Long, String> = HashMap()
     private val geofencingClient: GeofencingClient = LocationServices.getGeofencingClient(context)
     private var localGeofencePendingIntent: PendingIntent? = null
 
     /**
-     * Explicit removal of all active geofences and add them again.
+     * Add Geofence to GeofencingClient
      */
-    fun initGeoFences() : Boolean {
-        val tmpList: MutableList<GeoFence> = ArrayList()
-        tmpList.addAll(geoFenceRepo.getActiveGeoFences())
-        tmpList.forEach {
-            remove(it)
-            add(it)
+    private fun add(geoFence: GeoFence) {
+
+        if (isAlreadyAdded(geoFence)) return
+
+        val geofence = buildGeofence(geoFence.requestId!!, geoFence.latitude!!, geoFence.longitude!!, geoFence.radius!!)
+        if (geofence != null && hasPermissions()) {
+            geofences[geoFence.id!!] = geoFence.requestId!!
+            addToGeofencingClient(geofence)
         }
-        return (geofences.size > 0)
+    }
+
+    /**
+     * Updates an existing geofence if already in map, otherwise adds it to map.
+     * If an existing geofence with the same request ID is already registered, the old geofence is replaced by geofencingClient with the new one
+     */
+    fun addOrUpdate(geoFence: GeoFence) {
+        if (isAlreadyAdded(geoFence)) {
+            // if requestId changes old geofence has to be removed
+            if (geoFence.requestId != this.geofences[geoFence.id]) {
+                remove(geoFence)
+                add(geoFence)
+            } else {
+                val geofence =
+                    buildGeofence(geoFence.requestId!!, geoFence.latitude!!, geoFence.longitude!!, geoFence.radius!!)
+                if (geofence != null && hasPermissions()) {
+                    addToGeofencingClient(geofence)
+                }
+            }
+        } else {
+            add(geoFence)
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun addToGeofencingClient(geofence: Geofence) {
+        geofencingClient
+            .addGeofences(buildGeofencingRequest(geofence), geofencePendingIntent)
+            .addOnCompleteListener(this@GeoFenceService)
     }
 
     /**
@@ -61,55 +93,57 @@ class GeoFenceService @Inject constructor(
     }
 
     /**
-     * Add Geofence to GeofencingClient
+     *  Setting the value to 0 indicates that you don’t want to trigger a GEOFENCE_TRANSITION_ENTER event if the device is already inside the geofence
+     *  Adds the list of geofences to be monitored
      */
-    fun add(geoFence: GeoFence) {
+    private fun buildGeofencingRequest(geofence: Geofence): GeofencingRequest {
+        return GeofencingRequest.Builder()
+            .setInitialTrigger(0)
+            .addGeofence(geofence)
+            .build()
+    }
 
-        if (!isInList(geoFence)) this.geoFenceEntities.add(geoFence) else return
+    private fun hasPermissions(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            this.context,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+    }
 
-        val geofence = buildGeofence(geoFence.gfId!!, geoFence.latitude!!, geoFence.longitude!!, geoFence.radius!!)
-        if (geofence != null &&
-            ContextCompat.checkSelfPermission(
-                this.context,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            geofences.add(geofence)
-            geofencingClient
-                .addGeofences(buildGeofencingRequest(geofences), geofencePendingIntent)
-                .addOnCompleteListener(this@GeoFenceService)
+    /**
+     * Used to initialize geofences after reboot or on app-start
+     */
+    fun initGeoFences(): Boolean {
+        val tmpList: MutableList<GeoFence> = ArrayList()
+        tmpList.addAll(geoFenceRepo.getActiveGeoFences())
+        tmpList.forEach {
+            add(it)
         }
+        return (geofences.isNotEmpty())
     }
 
-    fun remove(geoFence: GeoFence) {
-        if (isInList(geoFence)) this.geoFenceEntities.remove(geoFence) else return
-
-        geofencingClient
-            .removeGeofences(listOf(geoFence.gfId))
-            .addOnCompleteListener(this@GeoFenceService)
-    }
-
-    private fun isInList(geoFence: GeoFence): Boolean {
-        return (this.geoFenceEntities.find { it == geoFence } != null)
+    /**
+     * Check if geoFence-Entity-Id is in map
+     */
+    private fun isAlreadyAdded(geoFence: GeoFence): Boolean {
+        return (this.geofences.containsKey(geoFence.id))
     }
 
     override fun onComplete(task: Task<Void>) {
         if (task.isSuccessful) {
-            Log.d(TAG, "GeoFence added successfully")
+            Log.d(TAG, "GeoFence Task successfully")
         } else {
             Log.d(TAG, "Adding failed for GeoFence, Error: " + geofenceErrorMessages.getErrorString(task.exception!!))
         }
     }
 
-    /**
-     *  Setting the value to 0 indicates that you don’t want to trigger a GEOFENCE_TRANSITION_ENTER event if the device is already inside the geofence
-     *  Adds the list of geofences to be monitored
-     */
-    private fun buildGeofencingRequest(geofences: MutableList<Geofence>): GeofencingRequest {
-        return GeofencingRequest.Builder()
-            .setInitialTrigger(0)
-            .addGeofences(geofences)
-            .build()
+    fun remove(geoFence: GeoFence) {
+        if (!isAlreadyAdded(geoFence)) return
+        val requestToRemove = this.geofences[geoFence.id]
+        this.geofences.remove(geoFence.id)
+        geofencingClient
+            .removeGeofences(listOf(requestToRemove))
+            .addOnCompleteListener(this@GeoFenceService)
     }
 
     /**

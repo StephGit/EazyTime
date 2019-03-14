@@ -31,8 +31,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
-// TODO all items delete show EmptyFragment
-
 class GeoFenceFragment : androidx.fragment.app.Fragment() {
 
     private lateinit var noGeoFenceInfo: ConstraintLayout
@@ -55,6 +53,9 @@ class GeoFenceFragment : androidx.fragment.app.Fragment() {
 
     @Inject
     lateinit var checkPowerSafeUtil: CheckPowerSafeUtil
+
+    @Inject
+    lateinit var geoFenceService: GeoFenceService
 
     companion object {
         fun newFragment(): androidx.fragment.app.Fragment = GeoFenceFragment()
@@ -85,7 +86,7 @@ class GeoFenceFragment : androidx.fragment.app.Fragment() {
         }
 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(GeoFenceViewModel::class.java)
-        if (viewModel.hasGeoFence) subscribeViewModel(recyclerAdapter)
+        subscribeViewModel(recyclerAdapter)
 
         initSwipe()
 
@@ -140,13 +141,17 @@ class GeoFenceFragment : androidx.fragment.app.Fragment() {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, position: Int) {
                 val removedGeoFence = recyclerAdapter.removeItem(viewHolder)
-                if (recyclerAdapter.itemCount == 0) {
+                if (recyclerAdapter.itemCount <= 1) {
                     noGeoFenceInfo.visibility = View.VISIBLE
                 }
                 viewModel.delete(removedGeoFence)
                 Snackbar.make(viewHolder.itemView, "${removedGeoFence.name} gelöscht.", Snackbar.LENGTH_LONG)
                     .setAction("Rückgängig") {
+                        noGeoFenceInfo.visibility = View.GONE
                         viewModel.insert(removedGeoFence)
+                        if (removedGeoFence.active) {
+                            geoFenceService.addOrUpdate(removedGeoFence)
+                        }
                     }.show()
             }
 

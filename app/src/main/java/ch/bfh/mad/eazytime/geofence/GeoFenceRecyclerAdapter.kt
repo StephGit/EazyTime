@@ -39,7 +39,7 @@ class GeoFenceRecyclerAdapter @Inject constructor(private var geoFenceService: G
 
     private fun onSwitchChange(geoFence: GeoFence) {
         if (geoFence.active) {
-            geoFenceService.add(geoFence)
+            geoFenceService.addOrUpdate(geoFence)
         } else {
             geoFenceService.remove(geoFence)
         }
@@ -75,7 +75,7 @@ private class GeoFenceDiffCallback : DiffUtil.ItemCallback<GeoFence>() {
 
     override fun areContentsTheSame(oldItem: GeoFence, newItem: GeoFence): Boolean {
         return oldItem.active == newItem.active &&
-                oldItem.gfId == newItem.gfId &&
+                oldItem.requestId == newItem.requestId &&
                 oldItem.name == newItem.name &&
                 oldItem.latitude == newItem.latitude &&
                 oldItem.longitude == newItem.longitude &&

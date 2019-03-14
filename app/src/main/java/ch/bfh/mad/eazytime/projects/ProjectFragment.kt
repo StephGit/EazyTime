@@ -130,7 +130,8 @@ class ProjectFragment : androidx.fragment.app.Fragment() {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, position: Int) {
                 projectsRecycleListAdapter.removeItem(viewHolder)
-                if (projectsRecycleListAdapter.itemCount == 0) {
+                Log.i("itemcount", projectsRecycleListAdapter.itemCount.toString())
+                if (projectsRecycleListAdapter.itemCount <= 1) {
                     noProjectInfo.visibility = View.VISIBLE
                 }
             }
