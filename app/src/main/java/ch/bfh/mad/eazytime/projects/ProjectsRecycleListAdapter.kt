@@ -3,6 +3,8 @@ package ch.bfh.mad.eazytime.projects
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -148,7 +150,10 @@ class MyUpdateTimer(val timeTV: TextView?, prevTime: Int? = 0, startDate: LocalD
 
     override fun run() {
         counter++
-        timeTV?.text = EazyTimeDateUtil.fromSecondsToHHmmSS(counter)
+        // Use this to support API Level lower than 27 (Android 8.0.0)
+        Handler(Looper.getMainLooper()).post {
+            timeTV?.text = EazyTimeDateUtil.fromSecondsToHHmmSS(counter)
+        }
     }
 }
 
