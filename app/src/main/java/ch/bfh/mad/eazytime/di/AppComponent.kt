@@ -5,6 +5,7 @@ import ch.bfh.mad.eazytime.EazyTimeActivity
 import ch.bfh.mad.eazytime.calendar.CalendarFragment
 import ch.bfh.mad.eazytime.calendar.detail.CalendarDetailActivity
 import ch.bfh.mad.eazytime.geofence.GeoFenceFragment
+import ch.bfh.mad.eazytime.geofence.detail.GeoFenceDetailActivity
 import ch.bfh.mad.eazytime.geofence.receiver.BootBroadcastReceiver
 import ch.bfh.mad.eazytime.geofence.receiver.GeoFenceTransitionsJobIntentService
 import ch.bfh.mad.eazytime.projects.ProjectFragment
@@ -37,6 +38,7 @@ interface AppComponent {
     fun inject(remoteViewBroadCastReceiver: RemoteViewBroadCastReceiver)
     fun inject(widgetProvider: WidgetProvider)
     fun inject(geoFenceFragment: GeoFenceFragment)
+    fun inject(geoFenceDetailActivity: GeoFenceDetailActivity)
     fun inject(remoteViewButtonUtil: RemoteViewButtonUtil)
     fun inject(screenActionService: ScreenActionService)
     fun inject(screenActionReceiver: ScreenActionReceiver)

@@ -15,6 +15,9 @@ interface GeoFenceDao {
     @Query("SELECT * FROM geofence")
     fun getGeoFences(): LiveData<List<GeoFence>>
 
+    @Query("SELECT * FROM geofence WHERE id == :geoFenceId")
+    fun getGeoFenceById(geoFenceId: Long): GeoFence?
+
     @Insert
     fun insert(geoFence: GeoFence): Long
 

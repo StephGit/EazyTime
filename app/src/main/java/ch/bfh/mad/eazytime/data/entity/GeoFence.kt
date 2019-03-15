@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 data class GeoFence(
     var name: String?,
     var active: Boolean = false,
-    var gfId: String?,
+    var requestId: String?,
     var radius: Double?,
     var latitude: Double?,
     var longitude: Double?,

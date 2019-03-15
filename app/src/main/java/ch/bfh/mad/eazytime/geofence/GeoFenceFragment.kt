@@ -3,7 +3,6 @@ package ch.bfh.mad.eazytime.geofence
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.SharedPreferences
@@ -14,7 +13,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.Observer
@@ -33,8 +31,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
-// TODO all items delete show EmptyFragment
-
 class GeoFenceFragment : androidx.fragment.app.Fragment() {
 
     private lateinit var noGeoFenceInfo: ConstraintLayout
@@ -49,9 +45,6 @@ class GeoFenceFragment : androidx.fragment.app.Fragment() {
     private val permissionFineLocation = Manifest.permission.ACCESS_FINE_LOCATION
     private var permissionFineLocationGranted: Boolean = false
 
-    private val geoFenceAddRequest = 1
-    private val geoFenceUpdateRequest = 2
-
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
@@ -60,6 +53,9 @@ class GeoFenceFragment : androidx.fragment.app.Fragment() {
 
     @Inject
     lateinit var checkPowerSafeUtil: CheckPowerSafeUtil
+
+    @Inject
+    lateinit var geoFenceService: GeoFenceService
 
     companion object {
         fun newFragment(): androidx.fragment.app.Fragment = GeoFenceFragment()
@@ -90,7 +86,7 @@ class GeoFenceFragment : androidx.fragment.app.Fragment() {
         }
 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(GeoFenceViewModel::class.java)
-        if (viewModel.hasGeoFence) subscribeViewModel(recyclerAdapter)
+        subscribeViewModel(recyclerAdapter)
 
         initSwipe()
 
@@ -145,13 +141,17 @@ class GeoFenceFragment : androidx.fragment.app.Fragment() {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, position: Int) {
                 val removedGeoFence = recyclerAdapter.removeItem(viewHolder)
-                if (recyclerAdapter.itemCount == 0) {
+                if (recyclerAdapter.itemCount <= 1) {
                     noGeoFenceInfo.visibility = View.VISIBLE
                 }
                 viewModel.delete(removedGeoFence)
                 Snackbar.make(viewHolder.itemView, "${removedGeoFence.name} gelöscht.", Snackbar.LENGTH_LONG)
                     .setAction("Rückgängig") {
+                        noGeoFenceInfo.visibility = View.GONE
                         viewModel.insert(removedGeoFence)
+                        if (removedGeoFence.active) {
+                            geoFenceService.addOrUpdate(removedGeoFence)
+                        }
                     }.show()
             }
 
@@ -205,41 +205,13 @@ class GeoFenceFragment : androidx.fragment.app.Fragment() {
     private fun addGeoFence() {
         permissionFineLocationGranted = permissionHandler.checkPermission()
         if (permissionFineLocationGranted) {
-            startActivityForResult(GeoFenceDetailActivity.newIntent(context!!), geoFenceAddRequest)
+            startActivity(GeoFenceDetailActivity.newIntent(context!!))
         }
     }
 
     private fun showGeoFenceDetail(item: GeoFence) {
         val intent = Intent(activity?.baseContext, GeoFenceDetailActivity::class.java)
-        intent.putExtra("GEOFENCE_NAME", item.name)
-        intent.putExtra("GEOFENCE_ACTIVE", item.active)
-        intent.putExtra("GEOFENCE_GFID", item.gfId)
-        intent.putExtra("GEOFENCE_RADIUS", item.radius)
-        intent.putExtra("GEOFENCE_LAT", item.latitude)
-        intent.putExtra("GEOFENCE_LONG", item.longitude)
         intent.putExtra("GEOFENCE_ID", item.id)
-        startActivityForResult(intent, geoFenceUpdateRequest)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if ((requestCode == geoFenceAddRequest || requestCode == geoFenceUpdateRequest)
-            && resultCode == Activity.RESULT_OK) {
-            val id = data!!.getLongExtra("GEOFENCE_ID", -1L)
-            val geoFence = GeoFence(
-                data.getStringExtra("GEOFENCE_NAME"),
-                data.getBooleanExtra("GEOFENCE_ACTIVE", false),
-                data.getStringExtra("GEOFENCE_GFID"),
-                data.getDoubleExtra("GEOFENCE_RADIUS", 0.0),
-                data.getDoubleExtra("GEOFENCE_LAT", 0.0),
-                data.getDoubleExtra("GEOFENCE_LONG", 0.0),
-                if (id > -1L) id else null
-            )
-
-            if (requestCode == geoFenceUpdateRequest) {
-                viewModel.update(geoFence)
-            } else {
-                viewModel.insert(geoFence)
-            }
-        }
+        startActivity(intent)
     }
 }

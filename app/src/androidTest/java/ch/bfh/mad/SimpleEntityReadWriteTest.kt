@@ -67,6 +67,17 @@ class SimpleEntityReadWriteTest : LifecycleOwner {
     }
 
     @Test
+    fun getGeoFenceById() {
+        assert(db.geoFenceDao().getAnyGeoFence() == null)
+
+        val tmpGeoFence = GeoFence(randomUuid(), true, randomUuid(), randomDouble(), randomDouble(), randomDouble())
+        val entityId = db.geoFenceDao().insert(tmpGeoFence)
+        assert(entityId >= 0)
+        val geoFenceFromDb = db.geoFenceDao().getGeoFenceById(entityId)
+        assert(geoFenceFromDb!!.name == tmpGeoFence.name)
+    }
+
+    @Test
     fun insertGeoFence() {
         val tmpGeoFence = GeoFence(randomUuid(), true, randomUuid(), randomDouble(), randomDouble(), randomDouble())
         val entityId = db.geoFenceDao().insert(tmpGeoFence)

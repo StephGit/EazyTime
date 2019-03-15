@@ -1,6 +1,5 @@
 package ch.bfh.mad.eazytime.geofence
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,9 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ch.bfh.mad.R
-import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.data.entity.GeoFence
-import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
 class GeoFenceRecyclerAdapter @Inject constructor(private var geoFenceService: GeoFenceService) :
@@ -42,33 +39,15 @@ class GeoFenceRecyclerAdapter @Inject constructor(private var geoFenceService: G
 
     private fun onSwitchChange(geoFence: GeoFence) {
         if (geoFence.active) {
-            addGeoFence(geoFence)
+            geoFenceService.addOrUpdate(geoFence)
         } else {
-            removeGeoFence(geoFence)
+            geoFenceService.remove(geoFence)
         }
-    }
-
-    private fun removeGeoFence(it: GeoFence) {
-        geoFenceService.remove(
-            it,
-            success = { Log.d(TAG, "GeoFenceRecyclerAdapter " + it.name + " removed from service successfully") },
-            failure = { err ->
-                Snackbar.make(parentView, err, Snackbar.LENGTH_LONG).show()
-            })
-    }
-
-    private fun addGeoFence(it: GeoFence) {
-        geoFenceService.add(
-            it,
-            success = { Log.d(TAG, "GeoFenceRecyclerAdapter: " + it.name + " added to service successfully") },
-            failure = { err ->
-                Snackbar.make(parentView, err, Snackbar.LENGTH_LONG).show()
-            })
     }
 
     fun removeItem(viewHolder: RecyclerView.ViewHolder): GeoFence {
         val removedGeoFence = getItem(viewHolder.adapterPosition)
-        removeGeoFence(removedGeoFence)
+        geoFenceService.remove(removedGeoFence)
         return removedGeoFence
     }
 
@@ -96,7 +75,7 @@ private class GeoFenceDiffCallback : DiffUtil.ItemCallback<GeoFence>() {
 
     override fun areContentsTheSame(oldItem: GeoFence, newItem: GeoFence): Boolean {
         return oldItem.active == newItem.active &&
-                oldItem.gfId == newItem.gfId &&
+                oldItem.requestId == newItem.requestId &&
                 oldItem.name == newItem.name &&
                 oldItem.latitude == newItem.latitude &&
                 oldItem.longitude == newItem.longitude &&
