@@ -149,10 +149,10 @@ class MyUpdateTimer(val timeTV: TextView?, prevTime: Int? = 0, startDate: LocalD
     }
 
     override fun run() {
-        counter++
         // Use this to support API Level lower than 27 (Android 8.0.0)
         Handler(Looper.getMainLooper()).post {
             timeTV?.text = EazyTimeDateUtil.fromSecondsToHHmmSS(counter)
+            counter++
         }
     }
 }
