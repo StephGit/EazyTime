@@ -26,14 +26,10 @@ class CalendarListAdapter(context: Context, @LayoutRes itemLayoutRes: Int) :
             nameTV.text = pattern.print(calendarListItem.workDay.date)
 
             val totalHoursTv = view.findViewById<TextView>(R.id.calendar_list_item_total_hours)
-            val period = calendarListItem.timeslots.filter { timeSlot -> timeSlot.endDate != null}
-                .map { timeSlot ->
-                    Period(timeSlot.startDate, timeSlot.endDate)
-                }
-                .fold(Period(0L)) { acc, period ->  acc.plus(period)}
+            val periodOfTotalWorkHours = CalendarUtil.getPeriodOfTotalWorkHours(calendarListItem.timeslots)
             val hoursAndMinutesFormatter = CalendarUtil.getHoursAndMinutesFormatter()
 
-            totalHoursTv.text = hoursAndMinutesFormatter.print(period.normalizedStandard())
+            totalHoursTv.text = hoursAndMinutesFormatter.print(periodOfTotalWorkHours.normalizedStandard())
         }
         return view
     }

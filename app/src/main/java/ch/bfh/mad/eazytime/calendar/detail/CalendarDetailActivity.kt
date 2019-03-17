@@ -11,10 +11,10 @@ import androidx.lifecycle.ViewModelProviders
 import ch.bfh.mad.R
 import ch.bfh.mad.eazytime.di.Injector
 import ch.bfh.mad.eazytime.util.CalendarUtil
-import org.joda.time.Period
 import org.joda.time.format.DateTimeFormat
 import java.util.*
 import javax.inject.Inject
+
 
 class CalendarDetailActivity: AppCompatActivity() {
 
@@ -33,27 +33,29 @@ class CalendarDetailActivity: AppCompatActivity() {
         calendarDetailListView = findViewById(R.id.lv_calendar_detail)
 
         val workdayId = intent.extras?.getLong(INTENT_EXTRA_KEY_WORKDAY_ID)
-        workdayId?.let {
-            val calendarDetails = calendarDetailViewModel.getCalendarDetail(it)
+        workdayId?.let {id  ->
+            val calendarDetails = calendarDetailViewModel.getCalendarDetail(id)
             calendarDetails.first().workDayDate?.let { date ->
                 val locale = Locale(getString(R.string.language))
                 val pattern = DateTimeFormat.forPattern(getString(R.string.date_pattern)).withLocale(locale)
                 title = pattern.print(date)
             }
-            calendarDetails.first().workDayTotalWorkHours?.let {totalWorkHours ->
-                val totalHoursTv = findViewById<TextView>(R.id.calendar_detail_total_hours_label)
-                val hoursAndMinutesFormatter = CalendarUtil.getHoursAndMinutesFormatter()
-                val totalWorkSeconds = totalWorkHours * 60 * 60
-                val totalWorkPeriod = Period.seconds(totalWorkSeconds.toInt()).normalizedStandard()
 
-                val totalWorkhoursPattern = getString(R.string.total_workhours_pattern)
-                totalHoursTv.text = String.format(totalWorkhoursPattern, hoursAndMinutesFormatter.print(totalWorkPeriod))
-            }
+            findViewById<TextView>(R.id.calendar_detail_total_hours_label).text = getFormattedTotalWorkHours(id)
+
             val calendarListAdapter = CalendarDetailListAdapter(this, android.R.layout.simple_list_item_1)
             calendarDetailListView.adapter = calendarListAdapter
             calendarListAdapter.addAll(calendarDetails)
         }
 
+    }
+
+    private fun getFormattedTotalWorkHours(workDayId: Long): String{
+        val timeSlots = calendarDetailViewModel.getTimeSlotList(workDayId)
+        val periodOfTotalWorkHours = CalendarUtil.getPeriodOfTotalWorkHours(timeSlots)
+        val totalWorkHoursPattern = getString(R.string.total_workhours_pattern)
+        val hoursAndMinutesFormatter = CalendarUtil.getHoursAndMinutesFormatter()
+        return String.format(totalWorkHoursPattern, hoursAndMinutesFormatter.print(periodOfTotalWorkHours.normalizedStandard()))
     }
 
     companion object {
