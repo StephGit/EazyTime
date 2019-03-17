@@ -17,6 +17,7 @@ import ch.bfh.mad.eazytime.geofence.GeoFenceService
 import ch.bfh.mad.eazytime.projects.ProjectFragment
 import ch.bfh.mad.eazytime.projects.addProject.AddProjectActivity
 import ch.bfh.mad.eazytime.remoteViews.notification.ScreenActionService
+import ch.bfh.mad.eazytime.util.BurnoutProtectorService
 import ch.bfh.mad.eazytime.util.CheckPowerSafeUtil
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.lang.IllegalStateException
@@ -52,6 +53,7 @@ class EazyTimeActivity : AppCompatActivity(), EazyTimeNavigator {
         }
 
         Timer().scheduleAtFixedRate(ScreenServiceKeepAliveTask(), 0, 1000*60)
+        Timer().scheduleAtFixedRate(BurnoutProtectorServiceKeepAliveTask(), 0, 1000*60)
     }
 
     override fun onResume() {
@@ -103,6 +105,20 @@ class EazyTimeActivity : AppCompatActivity(), EazyTimeNavigator {
             } else {
                 try {
                     startService(Intent(application, ScreenActionService::class.java))
+                } catch (error: IllegalStateException) {
+                    Log.d(TAG, error.toString())
+                }
+            }
+        }
+    }
+
+    private inner class BurnoutProtectorServiceKeepAliveTask : TimerTask() {
+        override fun run() {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(Intent(application, BurnoutProtectorService::class.java))
+            } else {
+                try {
+                    startService(Intent(application, BurnoutProtectorService::class.java))
                 } catch (error: IllegalStateException) {
                     Log.d(TAG, error.toString())
                 }

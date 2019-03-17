@@ -20,6 +20,11 @@ class TimeSlotRepo(private val timeSlotDao: TimeSlotDao) {
     }
 
     @WorkerThread
+    fun todaysTimeSlotsList(): List<TimeSlot> = runBlocking {
+        timeSlotDao.getTimeSlotsListForDay(LocalDate().toLocalDateTime(LocalTime.MIDNIGHT))
+    }
+
+    @WorkerThread
     suspend fun insertAll(timeSlots: List<TimeSlot>) = withContext(Dispatchers.IO) {
         timeSlotDao.insertAll(timeSlots)
     }

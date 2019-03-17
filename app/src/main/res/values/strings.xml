@@ -80,7 +80,11 @@
     <string name="geofence_too_many_pending_intents">Die App hat zuviele Arbeitsorte registriert.</string>
     <string name="geofence_detail_activity_toast_saved_geofence">Arbeitsort gespeichert</string>
     <string name="geofence_fragment_toast_activated_geofence">Arbeitsort aktiviert</string>
-  
+
+    <string name="burnout_protector_notification_title">EazyTime Warnung</string>
+    <string name="burnout_protector_notification_content">Maximale Tagesarbeitszeit von 9 Stunden überschritten! Zeit für Feierabend?!</string>
+
+
     <string name="title_activity_maps">Map</string>
 
     <string name="active_projects_cant_be_deleted">Projekte mit einer aktiven Buchung können nicht gelöscht werden</string>

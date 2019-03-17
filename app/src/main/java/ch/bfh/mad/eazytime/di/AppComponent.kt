@@ -15,6 +15,7 @@ import ch.bfh.mad.eazytime.remoteViews.RemoteViewButtonUtil
 import ch.bfh.mad.eazytime.remoteViews.homeScreenWidget.WidgetProvider
 import ch.bfh.mad.eazytime.remoteViews.notification.ScreenActionReceiver
 import ch.bfh.mad.eazytime.remoteViews.notification.ScreenActionService
+import ch.bfh.mad.eazytime.util.BurnoutProtectorService
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -44,4 +45,5 @@ interface AppComponent {
     fun inject(screenActionReceiver: ScreenActionReceiver)
     fun inject(geoFenceTransitionsJobIntentService: GeoFenceTransitionsJobIntentService)
     fun inject(bootBroadcastReceiverTask: BootBroadcastReceiver.BootReceiverTask)
+    fun inject(burnoutProtectorService: BurnoutProtectorService)
 }

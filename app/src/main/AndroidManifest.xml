@@ -91,6 +91,12 @@
                 android:enabled="true"
                 android:exported="true">
         </service>
+        <service
+                android:name="ch.bfh.mad.eazytime.util.BurnoutProtectorService"
+                android:permission="android.permission.FOREGROUND_SERVICE"
+                android:enabled="true"
+                android:exported="true">
+        </service>
         <uses-library android:name="com.google.android.maps"/>
         <uses-library
                 android:name="org.apache.http.legacy"
