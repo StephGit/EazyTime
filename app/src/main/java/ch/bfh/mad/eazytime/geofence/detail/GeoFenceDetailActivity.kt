@@ -9,14 +9,18 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
+import android.view.View
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import ch.bfh.mad.R
+import androidx.cardview.widget.CardView
+import ch.bfh.mad.eazytime.R
 import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.data.entity.GeoFence
 import ch.bfh.mad.eazytime.data.repo.GeoFenceRepo
 import ch.bfh.mad.eazytime.di.Injector
 import ch.bfh.mad.eazytime.geofence.GeoFenceService
+import com.google.android.gms.common.api.Status
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -25,6 +29,11 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.gms.tasks.Task
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.net.FetchPlaceRequest
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.google.maps.android.SphericalUtil
 import java.util.*
 import javax.inject.Inject
@@ -35,7 +44,8 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     GoogleMap.OnMyLocationButtonClickListener,
     GoogleMap.OnMapClickListener,
     GoogleMap.OnMapLongClickListener,
-    ScaleGestureDetector.OnScaleGestureListener {
+    ScaleGestureDetector.OnScaleGestureListener,
+    PlaceSelectionListener {
 
     private val defaultZoom: Float = 18F
     private var defaultRadius: Double = 0.0
@@ -49,9 +59,12 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     private lateinit var map: GoogleMap
     private lateinit var marker: Marker
     private lateinit var circle: Circle
+    private lateinit var searchBarContainer: CardView
 
     private lateinit var locationProviderClient: FusedLocationProviderClient
     private lateinit var scaleGestureDetector: ScaleGestureDetector
+    private lateinit var mapFragment: SupportMapFragment
+    private lateinit var autocompleteFragment: AutocompleteSupportFragment
 
     @Inject
     lateinit var geoFenceRepo: GeoFenceRepo
@@ -67,19 +80,31 @@ class GeoFenceDetailActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_geofence_detail)
         title = getString(R.string.geofence_edit_fragment_title)
+        searchBarContainer = this.findViewById(R.id.cv_searchBarContainer)
 
         Injector.appComponent.inject(this)
 
-        val mapFragment = supportFragmentManager.findFragmentById(R.id.map_geoFence) as SupportMapFragment
+        mapFragment = supportFragmentManager.findFragmentById(R.id.map_geoFence) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
         locationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         scaleGestureDetector = ScaleGestureDetector(applicationContext, this)
 
+        if (!Places.isInitialized()) {
+            Places.initialize(applicationContext, getString(R.string.google_api_key))
+        }
+
+        // Initialize the AutocompleteSupportFragment.
+        autocompleteFragment =
+            supportFragmentManager.findFragmentById(R.id.autocomplete_fragment) as AutocompleteSupportFragment
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME))
+        autocompleteFragment.setOnPlaceSelectedListener(this)
+
         val extras = intent.extras
         val geoFenceId = extras?.get("GEOFENCE_ID") as Long?
         geoFenceId?.let {
             getGeoFenceFromRepo(geoFenceId)
+            setSearchBar(false)
             replaceFragment(GeoFenceEditFragment.newFragment())
         } ?: run {
             replaceFragment(GeoFenceMarkerFragment.newFragment())
@@ -109,10 +134,20 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
         map.mapType = GoogleMap.MAP_TYPE_HYBRID
-        setMapInteractive(true)
+        setMapInteractions(mapActions = true)
         enableLocation()
 
         with(map) {
+            val locationButton =
+                (mapFragment.view!!.findViewById<View>(Integer.parseInt("1")).parent as View).findViewById<View>(
+                    Integer.parseInt("2")
+                )
+            val rlp = locationButton.layoutParams as (RelativeLayout.LayoutParams)
+            // position on right bottom
+            rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0)
+            rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE)
+            rlp.setMargins(0, 0, 30, 30)
+
             setOnMapClickListener(this@GeoFenceDetailActivity)
             setOnMapLongClickListener(this@GeoFenceDetailActivity)
         }
@@ -171,12 +206,19 @@ class GeoFenceDetailActivity : AppCompatActivity(),
         return false
     }
 
-    private fun setMapInteractive(state: Boolean) {
+    private fun setMapInteractions(mapActions: Boolean) {
         with(map.uiSettings) {
-            isMyLocationButtonEnabled = state
-            isMapToolbarEnabled = state
-            setAllGesturesEnabled(state)
+            isMyLocationButtonEnabled = mapActions
+            isMapToolbarEnabled = mapActions
+            setAllGesturesEnabled(mapActions)
         }
+
+    }
+
+    private fun setSearchBar(active: Boolean) {
+        if (active) {
+            searchBarContainer.visibility = View.VISIBLE
+        } else searchBarContainer.visibility = View.GONE
     }
 
     private fun showMarker(position: LatLng) {
@@ -293,7 +335,8 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     }
 
     override fun goToMarker() {
-        setMapInteractive(true)
+        setMapInteractions(true)
+        setSearchBar(true)
         removeCircle()
         replaceFragment(GeoFenceMarkerFragment.newFragment())
     }
@@ -301,7 +344,8 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     override fun goToRadius() {
         if (showingMarker()) {
             moveCamera(this.marker.position, this.map.cameraPosition.zoom)
-            setMapInteractive(false)
+            setMapInteractions(false)
+            setSearchBar(false)
             if (!::geoFence.isInitialized) initGeoFence()
             this.geoFence.latitude = this.marker.position.latitude
             this.geoFence.longitude = this.marker.position.longitude
@@ -314,7 +358,8 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     }
 
     override fun goToEdit() {
-        setMapInteractive(true)
+        setMapInteractions(true)
+        setSearchBar(false)
         if (showingCircle()) {
             this.geoFence.radius = this.circle.radius
             replaceFragment(GeoFenceEditFragment.newFragment())
@@ -346,6 +391,23 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     }
 
     override fun goBack() {
-        if (::geoFence.isInitialized) replaceFragment(GeoFenceEditFragment.newFragment()) else finish()
+        if (::geoFence.isInitialized) goToEdit() else finish()
+    }
+
+    override fun onPlaceSelected(place: Place) {
+        val asList = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG)
+        val request = FetchPlaceRequest.builder(place.id!!, asList).build()
+
+        Places.createClient(application).fetchPlace(request).addOnSuccessListener { response ->
+            val selectedPlace = response.place
+            Log.d(TAG, "Place selected: $selectedPlace")
+            selectedPlace.latLng?.let { latLng ->
+                moveCamera(latLng, defaultZoom)
+            }
+        }
+    }
+
+    override fun onError(status: Status) {
+        Log.d(TAG, status.toString())
     }
 }

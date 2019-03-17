@@ -7,7 +7,7 @@ import android.widget.Button
 import android.widget.CheckBox
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import ch.bfh.mad.R
+import ch.bfh.mad.eazytime.R
 
 
 class GeoFenceDialogFragment : DialogFragment() {

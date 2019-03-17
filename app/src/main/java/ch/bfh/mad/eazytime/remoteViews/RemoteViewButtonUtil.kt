@@ -6,7 +6,7 @@ import android.content.Intent
 import android.view.View
 import android.widget.RemoteViews
 import androidx.core.content.ContextCompat
-import ch.bfh.mad.R
+import ch.bfh.mad.eazytime.R
 import ch.bfh.mad.eazytime.di.Injector
 import ch.bfh.mad.eazytime.projects.ProjectListItem
 import ch.bfh.mad.eazytime.util.EazyTimeColorUtil

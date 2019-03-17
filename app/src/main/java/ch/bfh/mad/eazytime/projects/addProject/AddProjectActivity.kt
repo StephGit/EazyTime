@@ -11,11 +11,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import ch.bfh.mad.R
-import ch.bfh.mad.databinding.ActivityAddProjectBinding
+import ch.bfh.mad.eazytime.R
 import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.data.entity.Project
 import ch.bfh.mad.eazytime.data.repo.ProjectRepo
+import ch.bfh.mad.eazytime.databinding.ActivityAddProjectBinding
 import ch.bfh.mad.eazytime.di.Injector
 import ch.bfh.mad.eazytime.remoteViews.RemoteViewButtonUtil
 import ch.bfh.mad.eazytime.remoteViews.homeScreenWidget.WidgetProvider

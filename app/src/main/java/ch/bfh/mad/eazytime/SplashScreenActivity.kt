@@ -3,7 +3,6 @@ package ch.bfh.mad.eazytime
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import ch.bfh.mad.R
 
 
 class SplashScreenActivity : AppCompatActivity() {

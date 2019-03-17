@@ -12,7 +12,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".eazytime.projects.addProject.AddProjectActivity"
+            tools:context=".projects.addProject.AddProjectActivity"
             android:padding="@dimen/eazyTime_padding_form_fields_border">
 
         <EditText

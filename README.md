@@ -5,6 +5,7 @@ Simple time tracking app for Android in Kotlin.
 
 Android-App to detect when I arrived or left the office. In addition, I can manage my working hours manually and assign different projects. The app allows me to view my working hours of the past few days.
 
+
 ## Technologies
 - Android SDK v28 (min v21)
 - Kotlin 1.3.11
@@ -14,6 +15,21 @@ Android-App to detect when I arrived or left the office. In addition, I can mana
 
 The app is not released yet, so you have to build a debug apk. 
 Download the app by cloning this repository and use the "gradlew installDebug" command to build and install the project directly on your connected device or running emulator.
+
+### GoogleMap and Places API
+
+The app uses Google Maps and Places API for the geofence-feature. If you want to use this feature, you need to get your own API-Key from [Google Cloud Platforms](https://cloud.google.com/maps-platform/).
+Make sure to register your API key for **Maps SDK for Android** and **Places API**.
+
+Add the key to the resource-file 'google_api.xml' by replacing YOUR_API_KEY with the value of your API key.
+'''
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="google_api_key" translatable="false" templateMergeStrategy="preserve">
+        YOUR_API_KEY
+    </string>
+</resources>
+'''
 
 ### Connect your device 
 

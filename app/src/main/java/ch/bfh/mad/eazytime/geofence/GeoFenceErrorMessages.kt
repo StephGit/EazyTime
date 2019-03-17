@@ -1,7 +1,7 @@
 package ch.bfh.mad.eazytime.geofence
 
 import android.content.Context
-import ch.bfh.mad.R
+import ch.bfh.mad.eazytime.R
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.location.GeofenceStatusCodes
 import javax.inject.Inject
