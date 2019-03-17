@@ -17,6 +17,7 @@ import ch.bfh.mad.eazytime.data.entity.GeoFence
 import ch.bfh.mad.eazytime.data.repo.GeoFenceRepo
 import ch.bfh.mad.eazytime.di.Injector
 import ch.bfh.mad.eazytime.geofence.GeoFenceService
+import com.google.android.gms.common.api.Status
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -25,6 +26,11 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.gms.tasks.Task
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.net.FetchPlaceRequest
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.google.maps.android.SphericalUtil
 import java.util.*
 import javax.inject.Inject
@@ -35,7 +41,8 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     GoogleMap.OnMyLocationButtonClickListener,
     GoogleMap.OnMapClickListener,
     GoogleMap.OnMapLongClickListener,
-    ScaleGestureDetector.OnScaleGestureListener {
+    ScaleGestureDetector.OnScaleGestureListener,
+    PlaceSelectionListener {
 
     private val defaultZoom: Float = 18F
     private var defaultRadius: Double = 0.0
@@ -52,6 +59,7 @@ class GeoFenceDetailActivity : AppCompatActivity(),
 
     private lateinit var locationProviderClient: FusedLocationProviderClient
     private lateinit var scaleGestureDetector: ScaleGestureDetector
+    private lateinit var autocompleteFragment: AutocompleteSupportFragment
 
     @Inject
     lateinit var geoFenceRepo: GeoFenceRepo
@@ -72,6 +80,15 @@ class GeoFenceDetailActivity : AppCompatActivity(),
 
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map_geoFence) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        if (!Places.isInitialized()) {
+            Places.initialize(applicationContext, "AIzaSyD4BInpaY4ceBdP7q9F4HZl3Qyzw-Ur6yM")
+        }
+
+        // Initialize the AutocompleteSupportFragment.
+        autocompleteFragment = supportFragmentManager.findFragmentById(R.id.autocomplete_fragment) as AutocompleteSupportFragment
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME))
+        autocompleteFragment.setOnPlaceSelectedListener(this)
 
         locationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         scaleGestureDetector = ScaleGestureDetector(applicationContext, this)
@@ -296,6 +313,7 @@ class GeoFenceDetailActivity : AppCompatActivity(),
         setMapInteractive(true)
         removeCircle()
         replaceFragment(GeoFenceMarkerFragment.newFragment())
+        supportFragmentManager.beginTransaction().show(autocompleteFragment).commit()
     }
 
     override fun goToRadius() {
@@ -307,6 +325,8 @@ class GeoFenceDetailActivity : AppCompatActivity(),
             this.geoFence.longitude = this.marker.position.longitude
             showCircle(this.marker.position, calcRadiusForZoomLevel())
             replaceFragment(GeoFenceRadiusFragment.newFragment())
+            supportFragmentManager.beginTransaction().hide(autocompleteFragment).commit()
+
         } else {
             Toast.makeText(this, getString(R.string.geofence_detail_activity_toast_marker_error), Toast.LENGTH_SHORT)
                 .show()
@@ -347,5 +367,22 @@ class GeoFenceDetailActivity : AppCompatActivity(),
 
     override fun goBack() {
         if (::geoFence.isInitialized) replaceFragment(GeoFenceEditFragment.newFragment()) else finish()
+    }
+
+    override fun onPlaceSelected(place: Place) {
+        val asList = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG)
+        val request = FetchPlaceRequest.builder(place.id!!, asList).build()
+
+        Places.createClient(application).fetchPlace(request).addOnSuccessListener { response ->
+            val selectedPlace = response.place
+            Log.i(TAG, "Place selected: $selectedPlace")
+            selectedPlace.latLng?.let { latLng ->
+                moveCamera(latLng, defaultZoom)
+            }
+        }
+    }
+
+    override fun onError(status: Status) {
+        Log.i(TAG, status.toString())
     }
 }

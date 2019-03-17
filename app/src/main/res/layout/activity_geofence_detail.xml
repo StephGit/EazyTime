@@ -9,6 +9,13 @@
         tools:context=".eazytime.geofence.detail.GeoFenceDetailActivity">
 
     <fragment
+            android:id="@+id/autocomplete_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+            />
+
+    <fragment
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:id="@+id/map_geoFence"
             android:layout_width="match_parent"
