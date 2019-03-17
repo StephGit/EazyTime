@@ -5,8 +5,11 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.AsyncTask
+import android.util.Log
+import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.di.Injector
 import ch.bfh.mad.eazytime.geofence.GeoFenceService
+import ch.bfh.mad.eazytime.util.BurnoutProtectorService
 import javax.inject.Inject
 
 class BootBroadcastReceiver : BroadcastReceiver() {
@@ -16,6 +19,9 @@ class BootBroadcastReceiver : BroadcastReceiver() {
      */
     @SuppressLint("UnsafeProtectedBroadcastReceiver")
     override fun onReceive(context: Context, intent: Intent) {
+        Log.i(TAG, "handling BOOT_COMPLETED")
+        val burnoutProtectorServiceIntent = Intent(context, BurnoutProtectorService::class.java)
+        context.startService(burnoutProtectorServiceIntent)
         val pendingResult: PendingResult = goAsync()
         val asyncTask = BootReceiverTask(pendingResult, intent)
         asyncTask.execute()

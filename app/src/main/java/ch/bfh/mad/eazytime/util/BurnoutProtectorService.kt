@@ -46,11 +46,13 @@ class BurnoutProtectorService: Service() {
         Log.i(TAG, "Start BurnoutProtectorService")
 
         timer?.cancel()
-        timer = fixedRateTimer("BurnoutProtector", true, initialDelay = 0, period = 15 * 60 * 1000) {
-            Log.i(TAG, "BurnoutProtectorTimer executing")
+        val fifteenMinutes = 1000L * 60 * 15
+        timer = fixedRateTimer("BurnoutProtector", true, initialDelay = 0, period = fifteenMinutes) {
+            // track last execution to handle service restarts
             if(lastExecution?.plusMinutes(15)?.isBefore(LocalDateTime()) == true) {
+                Log.i(TAG, "BurnoutProtectorTimer executing")
                 runBlocking {
-                    //calculate only if currentTimeSlots exist
+                    // calculate only if currentTimeSlots exist
                     if(timeSlotRepo.getCurrentTimeSlots().isNotEmpty()) {
                         timeSlotRepo.todaysTimeSlotsList()
                         .map {timeSlot ->
@@ -76,7 +78,7 @@ class BurnoutProtectorService: Service() {
 
     private fun showNotification() {
         val builder = NotificationCompat.Builder(this, "burnoutProtectorChannel")
-            .setSmallIcon(R.drawable.ic_launcher_background)
+            .setSmallIcon(R.drawable.ic_houglass_icon)
             .setContentTitle(getString(R.string.burnout_protector_notification_title))
             .setStyle(NotificationCompat.BigTextStyle().bigText(getString(R.string.burnout_protector_notification_content)))
         val notificationId = 789557
