@@ -19,9 +19,8 @@ import ch.bfh.mad.eazytime.projects.addProject.AddProjectActivity
 import ch.bfh.mad.eazytime.remoteViews.notification.ScreenActionService
 import ch.bfh.mad.eazytime.util.CheckPowerSafeUtil
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import java.lang.IllegalStateException
-import javax.inject.Inject
 import java.util.*
+import javax.inject.Inject
 
 
 class EazyTimeActivity : AppCompatActivity(), EazyTimeNavigator {
@@ -57,10 +56,15 @@ class EazyTimeActivity : AppCompatActivity(), EazyTimeNavigator {
     override fun onResume() {
         super.onResume()
         if (geoFenceService.initGeoFences()) {
-            if (!prefs.getBoolean("ignorePowerSafe", false)) {
+            if (!prefs.getBoolean("ignorePowerSafe", false) && !prefs.getBoolean("powerSafeInfoShowed", false)) {
                 checkPowerSaveUtil.checkPowerSaveMode(supportFragmentManager)
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        prefs.edit().remove("powerSafeInfoShowed").apply()
     }
 
     private fun selectMenuItem(clickedMenuItem: MenuItem): Boolean {
