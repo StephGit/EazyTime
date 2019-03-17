@@ -33,6 +33,10 @@
     <string name="project_empty_fragment_title">Keine Projekte</string>
     <string name="projects_emtpy_fragment_info">Hinzugefügte Projekte werden hier angezeigt.</string>
 
+    <string name="calendar_emtpy_fragment_icon_text">Kalender icon</string>
+    <string name="calendar_empty_fragment_title">Keine Einträge</string>
+    <string name="calendar_emtpy_fragment_info">Tage mit Buchungen werden hier angezeigt.</string>
+
     <string name="geofence_marker_fragment_info">Markiere das Zentrum des Arbeitsorts indem du die gewünschte Position
         auf
         der Karte antippst!
