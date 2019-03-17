@@ -23,14 +23,14 @@ class ScreenActionReceiver : BroadcastReceiver() {
         val action = intent.action
 
         when (action) {
-            Intent.ACTION_SCREEN_ON -> screenOnEvent()
-            Intent.ACTION_SCREEN_OFF -> Log.d(TAG, "screen is off...")
+            Intent.ACTION_SCREEN_ON ->  Log.d(TAG, "screen is on...")
+            Intent.ACTION_SCREEN_OFF -> createNotification()
             Intent.ACTION_USER_PRESENT -> Log.d(TAG, "screen is unlock...")
         }
     }
 
-    private fun screenOnEvent() {
-        Log.d(TAG, "screen is on...")
+    private fun createNotification() {
+        Log.d(TAG, "screen is of...")
         notificationHandler.createEazyTimeNotification()
     }
 
