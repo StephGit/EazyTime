@@ -7,18 +7,13 @@ import ch.bfh.mad.eazytime.data.repo.TimeSlotRepo
 import ch.bfh.mad.eazytime.di.Injector
 import javax.inject.Inject
 import android.util.Log
-import ch.bfh.mad.R
+import ch.bfh.mad.eazytime.R
 import ch.bfh.mad.eazytime.TAG
 import kotlinx.coroutines.runBlocking
 import org.joda.time.LocalDateTime
 import org.joda.time.Period
 import kotlin.concurrent.fixedRateTimer
-import android.app.NotificationManager
-import android.app.PendingIntent
 
-import android.content.Context
-import androidx.core.app.NotificationCompat
-import ch.bfh.mad.eazytime.EazyTimeActivity
 import ch.bfh.mad.eazytime.remoteViews.notification.NotificationHandler
 import org.joda.time.LocalDate
 import org.joda.time.LocalTime
