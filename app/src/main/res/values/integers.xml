@@ -2,4 +2,5 @@
 <resources>
     <integer name="eazyTime_layout_weight_geofence_map_fragment">70</integer>
     <integer name="eazyTime_layout_weight_geofence_flow_container">30</integer>
+    <integer name="eazyTime_burnoutprotector_max_workhours">9</integer>
 </resources>

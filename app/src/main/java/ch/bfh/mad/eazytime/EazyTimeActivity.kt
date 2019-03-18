@@ -15,6 +15,7 @@ import ch.bfh.mad.eazytime.geofence.GeoFenceService
 import ch.bfh.mad.eazytime.projects.ProjectFragment
 import ch.bfh.mad.eazytime.projects.addProject.AddProjectActivity
 import ch.bfh.mad.eazytime.remoteViews.notification.ScreenActionService
+import ch.bfh.mad.eazytime.util.BurnoutProtectorService
 import ch.bfh.mad.eazytime.util.CheckPowerSafeUtil
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import javax.inject.Inject
@@ -47,6 +48,8 @@ class EazyTimeActivity : AppCompatActivity(), EazyTimeNavigator {
             replaceFragment(ProjectFragment())
         }
 
+        val burnoutProtectorServiceIntent = Intent(this, BurnoutProtectorService::class.java)
+        startService(burnoutProtectorServiceIntent)
     }
 
     override fun onResume() {

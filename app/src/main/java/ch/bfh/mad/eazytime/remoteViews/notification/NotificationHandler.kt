@@ -3,12 +3,15 @@ package ch.bfh.mad.eazytime.remoteViews.notification
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import ch.bfh.mad.eazytime.BuildConfig
+import ch.bfh.mad.eazytime.EazyTimeActivity
 import ch.bfh.mad.eazytime.R
 import ch.bfh.mad.eazytime.remoteViews.RemoteViewButtonUtil
 import ch.bfh.mad.eazytime.util.ProjectProviderService
@@ -39,6 +42,23 @@ class NotificationHandler(val context: Context, private val remoteViewButtonUtil
                 notify(notificationId, builder.build())
             }
         }
+    }
+
+    fun createBurnotProtectorNotification() {
+        val notificationId = 789557
+        val notificationChannel = "burnoutProtectorChannel"
+        val builder = NotificationCompat.Builder(context, notificationChannel)
+            .setSmallIcon(R.drawable.ic_houglass_icon)
+            .setContentTitle(context.getString(R.string.burnout_protector_notification_title))
+            .setStyle(NotificationCompat.BigTextStyle().bigText(context.getString(R.string.burnout_protector_notification_content)))
+            .setVibrate(longArrayOf(500, 1000, 500, 1000))
+            .setAutoCancel(true)
+
+        val targetIntent = Intent(context, EazyTimeActivity::class.java)
+        val contentIntent = PendingIntent.getActivity(context, 0, targetIntent, PendingIntent.FLAG_CANCEL_CURRENT)
+        builder.setContentIntent(contentIntent)
+        val nManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        nManager.notify(notificationId, builder.build())
     }
 
     private fun createNotificationChannel(name: String) {

@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <application
             android:name=".EazyTimeApp"
@@ -87,6 +88,12 @@
                 />
         <service
                 android:name="ch.bfh.mad.eazytime.remoteViews.notification.ScreenActionService"
+                android:permission="android.permission.FOREGROUND_SERVICE"
+                android:enabled="true"
+                android:exported="true">
+        </service>
+        <service
+                android:name="ch.bfh.mad.eazytime.util.BurnoutProtectorService"
                 android:permission="android.permission.FOREGROUND_SERVICE"
                 android:enabled="true"
                 android:exported="true">
