@@ -1,5 +1,6 @@
 package ch.bfh.mad.eazytime.util
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context.MODE_PRIVATE
 import android.os.Bundle
@@ -12,6 +13,7 @@ import ch.bfh.mad.eazytime.R
 
 class GeoFenceDialogFragment : DialogFragment() {
 
+    @SuppressLint("InflateParams")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             val builder = AlertDialog.Builder(it)

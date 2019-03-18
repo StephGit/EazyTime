@@ -8,7 +8,7 @@ import ch.bfh.mad.eazytime.data.repo.TimeSlotRepo
 import ch.bfh.mad.eazytime.data.repo.WorkDayRepo
 import kotlinx.coroutines.runBlocking
 
-class CalendarProviderService(val workDayRepo: WorkDayRepo, val timeSlotRepo: TimeSlotRepo) {
+class CalendarProviderService(private val workDayRepo: WorkDayRepo, val timeSlotRepo: TimeSlotRepo) {
 
     fun getCalendarListitems(): LiveData<List<WorkDayAndTimeSlots>> = runBlocking {
         return@runBlocking workDayRepo.getWorkDays()

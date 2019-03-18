@@ -12,7 +12,6 @@ import ch.bfh.mad.eazytime.data.repo.TimeSlotRepo
 import ch.bfh.mad.eazytime.data.repo.WorkDayRepo
 import ch.bfh.mad.eazytime.util.ProjectProviderService
 import ch.bfh.mad.eazytime.util.TimerService
-import kotlinx.coroutines.runBlocking
 import org.joda.time.LocalDateTime
 import org.junit.After
 import org.junit.Before

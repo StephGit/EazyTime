@@ -51,7 +51,7 @@ class GeoFenceEditFragment : androidx.fragment.app.Fragment() {
     }
 
     private fun onSave() {
-        var name = geoFenceName.text.toString().trim()
+        val name = geoFenceName.text.toString().trim()
         if (isValid()) callback.saveOrUpdate(name)
     }
 }
