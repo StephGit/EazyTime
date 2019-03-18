@@ -40,14 +40,14 @@
 
     <string name="add_project_fragment_title">Add project…</string>
 
-    <string name="et_hint_add_project_name">Projectname</string>
-    <string name="et_hint_add_project_short_code">Shortcode (maximal 3 signs)</string>
-    <string name="tv_label_add_project_color_picker">Projectcolor:</string>
+    <string name="et_hint_add_project_name">Project-Name</string>
+    <string name="et_hint_add_project_short_code">Shortcode (max. 3 signs)</string>
+    <string name="tv_label_add_project_color_picker">Project-Color:</string>
     <string name="tv_label_add_project_on_widget">Show on widget %1$s/5</string>
     <string name="tv_label_add_project_default">Set as standart project</string>
-    <string name="error_short_code_length">Maximal 3 signs!</string>
+    <string name="error_short_code_length">Maximal length of 3 signs!</string>
     <string name="color_picker_dialog_title">Choose your project-color</string>
-    <string name="error_project_name_length">Name should not be empty!</string>
+    <string name="error_project_name_length">Name can not be empty!</string>
     <string name="bu_save_project">Save</string>
     <string name="bu_delete_project">Delete</string>
     <string name="default_projectName">MyProject</string>
@@ -91,4 +91,5 @@
     <string name="time_range_pattern">%1$s - %2$s</string>
     <string name="total_workhours_pattern">Total: %1$s</string>
     <string name="search">Search</string>
+    <string name="geofence_removed">deleted.</string>
 </resources>

@@ -95,4 +95,5 @@
     <string name="time_range_pattern">%1$s - %2$s</string>
     <string name="total_workhours_pattern">Gesamt: %1$s</string>
     <string name="search">Suchen</string>
+    <string name="geofence_removed">gelöscht.</string>
 </resources>
