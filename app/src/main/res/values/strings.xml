@@ -94,8 +94,9 @@
     <string name="language">de</string>
     <string name="now">jetzt</string>
     <string name="ongoing">aktiv</string>
-    <string name="date_pattern">EEEE, dd. MM. yyyy</string>
+    <string name="date_pattern">EEEE, dd.MM.yyyy</string>
     <string name="time_range_pattern">%1$s - %2$s</string>
     <string name="total_workhours_pattern">Gesamt: %1$s</string>
-    <string name="Suchen">Suchen</string>
+    <string name="search">Suchen</string>
+    <string name="geofence_removed">gelöscht.</string>
 </resources>

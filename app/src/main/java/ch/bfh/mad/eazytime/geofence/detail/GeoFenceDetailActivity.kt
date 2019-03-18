@@ -387,6 +387,7 @@ class GeoFenceDetailActivity : AppCompatActivity(),
             }
         } ?: run {
             geoFence.requestId = geoFenceName + UUID.randomUUID()
+            geoFence.active = true
             geoFenceRepo.insert(geoFence)
         }
         leaveGeoFenceDetail()

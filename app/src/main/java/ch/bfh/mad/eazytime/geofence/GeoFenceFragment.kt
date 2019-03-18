@@ -134,8 +134,12 @@ class GeoFenceFragment : androidx.fragment.app.Fragment() {
                     noGeoFenceInfo.visibility = View.VISIBLE
                 }
                 viewModel.delete(removedGeoFence)
-                Snackbar.make(viewHolder.itemView, "${removedGeoFence.name} gelöscht.", Snackbar.LENGTH_LONG)
-                    .setAction("Rückgängig") {
+                Snackbar.make(
+                    viewHolder.itemView,
+                    "${removedGeoFence.name} " + context!!.getString(R.string.geofence_removed),
+                    Snackbar.LENGTH_LONG
+                )
+                    .setAction(context!!.getString(R.string.rollback)) {
                         noGeoFenceInfo.visibility = View.GONE
                         viewModel.insert(removedGeoFence)
                         if (removedGeoFence.active) {
