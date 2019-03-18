@@ -93,9 +93,14 @@ class GeoFenceDetailActivity : AppCompatActivity(),
         val geoFenceId = extras?.get("GEOFENCE_ID") as Long?
         geoFenceId?.let {
             getGeoFenceFromRepo(geoFenceId)
+        }
+    }
+
+    private fun initFlowFragment() {
+        if (::geoFence.isInitialized) {
             setSearchBar(false)
             replaceFragment(GeoFenceEditFragment.newFragment())
-        } ?: run {
+        } else {
             replaceFragment(GeoFenceMarkerFragment.newFragment())
         }
     }
@@ -111,6 +116,7 @@ class GeoFenceDetailActivity : AppCompatActivity(),
             startActivityForResult(intent, 121)
             true
         }
+        initFlowFragment()
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -245,12 +251,14 @@ class GeoFenceDetailActivity : AppCompatActivity(),
             .fillColor(R.color.eazyTime_colorGeoFenceRadius)
             .strokeColor(Color.TRANSPARENT)
             .strokeWidth(2F)
+            .visible(true)
         this.circle = map.addCircle(circleOptions)
     }
 
     private fun removeCircle() {
         if (showingCircle()) {
             circle.remove()
+            circle.isVisible = false
         }
     }
 
@@ -363,10 +371,11 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     override fun goToEdit() {
         setMapInteractions(true)
         setSearchBar(false)
-        if (showingCircle()) {
-            this.geoFence.radius = this.circle.radius
-            replaceFragment(GeoFenceEditFragment.newFragment())
+        if (!showingCircle()) {
+            showCircle(this.marker.position, calcRadiusForZoomLevel())
         }
+        this.geoFence.radius = this.circle.radius
+        replaceFragment(GeoFenceEditFragment.newFragment())
     }
 
     override fun saveOrUpdate(geoFenceName: String) {
@@ -415,7 +424,6 @@ class GeoFenceDetailActivity : AppCompatActivity(),
                     }
                 }
                 AutocompleteActivity.RESULT_ERROR -> {
-                    // TODO: Handle the error.
                     val status = Autocomplete.getStatusFromIntent(data!!)
                     Log.d(TAG, status.statusMessage)
                 }
