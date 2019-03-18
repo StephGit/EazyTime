@@ -44,7 +44,7 @@
     <string name="et_hint_add_project_short_code">Shortcode (max. 3 signs)</string>
     <string name="tv_label_add_project_color_picker">Project-Color:</string>
     <string name="tv_label_add_project_on_widget">Show on widget %1$s/5</string>
-    <string name="tv_label_add_project_default">Set as standart project</string>
+    <string name="tv_label_add_project_default">Set as default project</string>
     <string name="error_short_code_length">Maximal length of 3 signs!</string>
     <string name="color_picker_dialog_title">Choose your project-color</string>
     <string name="error_project_name_length">Name can not be empty!</string>
@@ -52,7 +52,7 @@
     <string name="bu_delete_project">Delete</string>
     <string name="default_projectName">MyProject</string>
     <string name="defaul_color_string">#ff8787</string>
-    <string name="is_default_project">Standartproject</string>
+    <string name="is_default_project">Default project</string>
 
     <string name="action_widget_button_one">ET_WIDGET_BUTTON_ONE</string>
     <string name="action_widget_button_two">ET_WIDGET_BUTTON_TWO</string>
