@@ -1,0 +1,94 @@
+<resources>
+    <string name="app_name">EazyTime</string>
+
+    <string name="project_fragment_title">Projects</string>
+    <string name="calendar_fragment_title">Calendar</string>
+    <string name="geofence_fragment_title">Geofence</string>
+
+    <string name="bottom_navigation_project">Projects</string>
+    <string name="bottom_navigation_calendar">Calendar</string>
+    <string name="bottom_navigation_geofence">Geofence</string>
+
+    <string name="permission_request_rationale">Localisation is needed to use geofences.</string>
+    <string name="OK">OK</string>
+    <string name="geofence_geofence_flow_btn_proceed">Proceed</string>
+    <string name="geofence_geofence_flow_btn_back">Back</string>
+
+    <string name="geofence_edit_fragment_title">Edit geofence</string>
+    <string name="geofence_edit_fragment_edittext_hint">Name of geofence</string>
+    <string name="geofence_edit_fragment_btn_change">Change geofence</string>
+    <string name="geofence_edit_fragment_btn_save">Save</string>
+    <string name="geofence_edit_error_no_name">Please enter a name!</string>
+
+    <string name="geofence_empty_fragment_title">No Geofences</string>
+    <string name="geofence_emtpy_fragment_info">Added geofences are displayed here.</string>
+    <string name="geofence_emtpy_fragment_icon_text">Geofence icon</string>
+
+    <string name="project_emtpy_fragment_icon_text">Project icon</string>
+    <string name="project_empty_fragment_title">No projects</string>
+    <string name="projects_emtpy_fragment_info">Added projects are displayed here.</string>
+
+    <string name="calendar_emtpy_fragment_icon_text">Calendar icon</string>
+    <string name="calendar_empty_fragment_title">No entries</string>
+    <string name="calendar_emtpy_fragment_info">Days with bookings are displayed here.</string>
+
+    <string name="geofence_marker_fragment_info">Mark the center of the geofence by tapping on the map!
+    </string>
+    <string name="geofence_radius_fragment_info">Define the radius of the geofence with a two-finger-pinch!
+    </string>
+    <string name="geofence_detail_activity_toast_marker_error">Please set a marker!</string>
+
+    <string name="add_project_fragment_title">Add project…</string>
+
+    <string name="et_hint_add_project_name">Projectname</string>
+    <string name="et_hint_add_project_short_code">Shortcode (maximal 3 signs)</string>
+    <string name="tv_label_add_project_color_picker">Projectcolor:</string>
+    <string name="tv_label_add_project_on_widget">Show on widget %1$s/5</string>
+    <string name="tv_label_add_project_default">Set as standart project</string>
+    <string name="error_short_code_length">Maximal 3 signs!</string>
+    <string name="color_picker_dialog_title">Choose your project-color</string>
+    <string name="error_project_name_length">Name should not be empty!</string>
+    <string name="bu_save_project">Save</string>
+    <string name="bu_delete_project">Delete</string>
+    <string name="default_projectName">MyProject</string>
+    <string name="defaul_color_string">#ff8787</string>
+    <string name="is_default_project">Standartproject</string>
+
+    <string name="action_widget_button_one">ET_WIDGET_BUTTON_ONE</string>
+    <string name="action_widget_button_two">ET_WIDGET_BUTTON_TWO</string>
+    <string name="action_widget_button_three">ET_WIDGET_BUTTON_THREE</string>
+    <string name="action_widget_button_four">ET_WIDGET_BUTTON_FOUR</string>
+    <string name="action_widget_button_five">ET_WIDGET_BUTTON_FIVE</string>
+    <string name="ExtraKeyProjectId">KEY_PROJECT_ID</string>
+    <string name="ExtraKeyProjectName">KEY_PROJECT_NAME</string>
+    <string name="ExtraKeyProjectShortCode">SHORT_CODE</string>
+    <string name="ExtraKeyUpdateNotification">UPDTAE_NOTFICATION</string>
+    <string name="no_projects_for_widget">No projects with "Show on widget" found</string>
+
+    <string name="geofence_unknown_error">Unknown error: the Geofence service is not available now.</string>
+    <string name="geofence_not_available">Geofence service is not available now. Go to Settings > Location > Mode and
+        choose High accuracy.
+    </string>
+    <string name="geofence_too_many_geofences">Your app has registered to many geofences.</string>
+    <string name="geofence_too_many_pending_intents">You have provided too many PendingIntents to the geofences call.
+    </string>
+    <string name="geofence_detail_activity_toast_saved_geofence">Geofence saved</string>
+
+
+    <string name="active_projects_cant_be_deleted">You can not delete projects with a active booking.</string>
+    <string name="priject_is_deleted">Project deleted</string>
+    <string name="rollback">Undo</string>
+    <string name="geofence_powersafe_dialog_title">Geofence and Battery-Save</string>
+    <string name="geofence_powersafe_dialog_message">The faultless function of geofences is not guaranteed in
+        battery-save mode.
+    </string>
+    <string name="geofence_powersafe_dialog_checkbox_hint">Do not show this hint in the future</string>
+
+    <string name="language">en</string>
+    <string name="now">now</string>
+    <string name="ongoing">active</string>
+    <string name="date_pattern">EEEE, dd.MM.yyyy</string>
+    <string name="time_range_pattern">%1$s - %2$s</string>
+    <string name="total_workhours_pattern">Total: %1$s</string>
+    <string name="search">Search</string>
+</resources>
