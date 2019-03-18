@@ -1,7 +1,6 @@
-# EazyTime App
-Simple time tracking app for Android in Kotlin.
+# EazyTime App   <img src="./doc/eazytime_logo.png" alt="eazytime-logo" width="60"/>
 
-![Logo](./doc/eazytime_logo.png)
+Simple time tracking app for Android in Kotlin.
 
 
 ## What is it?
