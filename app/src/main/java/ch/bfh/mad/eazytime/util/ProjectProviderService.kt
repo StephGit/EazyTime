@@ -7,8 +7,6 @@ import ch.bfh.mad.eazytime.data.entity.TimeSlot
 import ch.bfh.mad.eazytime.data.repo.ProjectRepo
 import ch.bfh.mad.eazytime.data.repo.TimeSlotRepo
 import ch.bfh.mad.eazytime.projects.ProjectListItem
-import org.joda.time.LocalDate
-import org.joda.time.LocalDateTime
 import org.joda.time.Seconds
 
 class ProjectProviderService(projectRepo: ProjectRepo, timeSlotRepo: TimeSlotRepo) {
@@ -42,7 +40,7 @@ class ProjectProviderService(projectRepo: ProjectRepo, timeSlotRepo: TimeSlotRep
 
         return projects?.map {project ->
             var isActive = false
-            var mappedTimeSlotSeconds = timeslots
+            val mappedTimeSlotSeconds = timeslots
                 ?.filter { it.projectId == project.id && it.endDate != null }
                 ?.map { Seconds.secondsBetween(it.startDate, it.endDate) }
                 ?.fold(Seconds.seconds(0)) { acc, minutes -> acc.plus(minutes)}

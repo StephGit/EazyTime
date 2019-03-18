@@ -1,6 +1,6 @@
 <FrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
         android:layout_height="80dp"
         android:padding="@dimen/widget_margin">
 
@@ -8,7 +8,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:background="@color/eazyTime_colorBackground">
+            android:background="@color/eazyTime_colorBackground" tools:ignore="UselessParent">
 
         <Button
                 android:id="@+id/bu_widget_one"

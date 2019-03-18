@@ -137,7 +137,7 @@ class ProjectsRecycleListAdapter(var context: Context, var projectRepo: ProjectR
     }
 }
 
-class MyUpdateTimer(val timeTV: TextView?, prevTime: Int? = 0, startDate: LocalDateTime?) : TimerTask() {
+class MyUpdateTimer(private val timeTV: TextView?, prevTime: Int? = 0, startDate: LocalDateTime?) : TimerTask() {
     private var counter = 0
 
     init {

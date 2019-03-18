@@ -14,7 +14,7 @@ class PermissionHandler {
     private var fragment: androidx.fragment.app.Fragment? = null
     private var requiredPermission: String? = null
     private var permissionRequestCode: Int = 300
-    var permissionGranted: Boolean = false
+    private var permissionGranted: Boolean = false
 
 
     constructor(activity: Activity, requiredPermission: String) {

@@ -3,7 +3,6 @@ package ch.bfh.mad.eazytime.data.dao
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import ch.bfh.mad.eazytime.data.entity.TimeSlot
-import ch.bfh.mad.eazytime.data.entity.WorkDay
 import org.joda.time.LocalDateTime
 
 @Dao
