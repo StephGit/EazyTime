@@ -7,12 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-
-import ch.bfh.mad.R
 import ch.bfh.mad.eazytime.EazyTimeNavigator
+import ch.bfh.mad.eazytime.R
 import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.data.entity.WorkDay
 import ch.bfh.mad.eazytime.di.Injector
@@ -20,6 +20,7 @@ import javax.inject.Inject
 
 class CalendarFragment : androidx.fragment.app.Fragment() {
 
+    private lateinit var calendarEmpty: ConstraintLayout
     private lateinit var calendarListView: ListView
     private lateinit var calendarListViewModel: CalendarListViewModel
     private lateinit var navigator: EazyTimeNavigator
@@ -32,6 +33,7 @@ class CalendarFragment : androidx.fragment.app.Fragment() {
 
         navigator = requireContext() as? EazyTimeNavigator ?: throw IllegalStateException("Context of ProjectFragment is not an Instance of EazyTimeNavigator")
         calendarListView = view.findViewById(R.id.lv_calendar)
+        calendarEmpty = view.findViewById(R.id.calendar_no_calendar_entries)
         activity!!.title = getString(R.string.calendar_fragment_title)
 
         Injector.appComponent.inject(this)
@@ -45,6 +47,9 @@ class CalendarFragment : androidx.fragment.app.Fragment() {
             calendarItems?.let {
                 calendarListAdapter.clear()
                 calendarListAdapter.addAll(it)
+            }
+            if (!calendarItems.isEmpty()) {
+                calendarEmpty.visibility = View.GONE
             }
         })
 

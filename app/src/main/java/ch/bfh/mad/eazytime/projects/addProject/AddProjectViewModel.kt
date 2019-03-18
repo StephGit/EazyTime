@@ -16,6 +16,8 @@ class AddProjectViewModel @Inject constructor(): ViewModel() {
     val colorId = MutableLiveData<Int>()
     val onWidget = MutableLiveData<Boolean>()
     val defaultProject = MutableLiveData<Boolean>()
+    val amountOnWidgetProjects = MutableLiveData<Int>()
+    val initialOnWidget = MutableLiveData<Boolean>()
 
 
     fun selectProjectColor(selectedColor: Int){

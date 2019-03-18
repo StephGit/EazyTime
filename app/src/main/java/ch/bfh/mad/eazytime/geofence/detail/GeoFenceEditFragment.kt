@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import ch.bfh.mad.R
+import ch.bfh.mad.eazytime.R
 
 class GeoFenceEditFragment : androidx.fragment.app.Fragment() {
 
@@ -51,7 +51,7 @@ class GeoFenceEditFragment : androidx.fragment.app.Fragment() {
     }
 
     private fun onSave() {
-        var name = geoFenceName.text.toString().trim()
+        val name = geoFenceName.text.toString().trim()
         if (isValid()) callback.saveOrUpdate(name)
     }
 }

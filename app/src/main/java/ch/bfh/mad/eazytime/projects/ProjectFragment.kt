@@ -17,8 +17,8 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import ch.bfh.mad.R
 import ch.bfh.mad.eazytime.EazyTimeNavigator
+import ch.bfh.mad.eazytime.R
 import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.di.Injector
 import ch.bfh.mad.eazytime.remoteViews.homeScreenWidget.WidgetProvider

@@ -5,7 +5,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".eazytime.calendar.detail.CalendarDetailActivity">
+        tools:context=".calendar.detail.CalendarDetailActivity">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,7 +25,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                android:padding="@dimen/eazyTime_padding_text_views_list_elements"
+                android:padding="@dimen/eazyTime_padding_list_elements"
                 android:textSize="@dimen/eazyTime_text_size_project_name_project_list_item"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

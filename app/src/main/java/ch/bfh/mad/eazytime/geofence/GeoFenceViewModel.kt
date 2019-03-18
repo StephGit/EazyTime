@@ -8,8 +8,6 @@ import javax.inject.Inject
 
 class GeoFenceViewModel @Inject constructor(var geoFenceRepo: GeoFenceRepo) : ViewModel() {
 
-    var hasGeoFence = geoFenceRepo.hasGeoFence()
-
     val geoFenceItems: LiveData<List<GeoFence>> = geoFenceRepo.geoFences
 
     fun insert(geoFence: GeoFence) {

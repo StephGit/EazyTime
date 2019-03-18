@@ -27,4 +27,7 @@ interface TimeSlotDao {
 
     @Query("SELECT * FROM timeslot where startDate > :startOfDay")
     fun getTimeSlotsListForDay(startOfDay: LocalDateTime?): List<TimeSlot>
+
+    @Query("SELECT * FROM timeslot where workday_id = :workDayId")
+    fun getTimeSlotsByWorkDayId(workDayId: Long): List<TimeSlot>
 }

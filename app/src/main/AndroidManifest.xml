@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
-          package="ch.bfh.mad">
+          package="ch.bfh.mad.eazytime">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -9,7 +9,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <application
-            android:name=".eazytime.EazyTimeApp"
+            android:name=".EazyTimeApp"
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
@@ -17,29 +17,29 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".eazytime.SplashScreenActivity" android:theme="@style/SplashScreenTheme">
+        <activity android:name=".SplashScreenActivity" android:theme="@style/SplashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".eazytime.EazyTimeActivity"
+        <activity android:name=".EazyTimeActivity"
                   android:configChanges="orientation"
                   android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".eazytime.geofence.detail.GeoFenceDetailActivity"
+        <activity android:name=".geofence.detail.GeoFenceDetailActivity"
                   android:configChanges="orientation"
                   android:screenOrientation="portrait"/>
-        <activity android:name=".eazytime.projects.addProject.AddProjectActivity"
+        <activity android:name=".projects.addProject.AddProjectActivity"
                   android:configChanges="orientation"
                   android:screenOrientation="portrait"/>
-        <activity android:name=".eazytime.calendar.detail.CalendarDetailActivity"
+        <activity android:name=".calendar.detail.CalendarDetailActivity"
                   android:configChanges="orientation"
                   android:screenOrientation="portrait"/>
 
         <meta-data
                 android:name="com.google.android.geo.API_KEY"
-                android:value="@string/google_maps_key"/>
+                android:value="@string/google_api_key"/>
 
         <receiver android:name="ch.bfh.mad.eazytime.remoteViews.homeScreenWidget.WidgetProvider">
             <intent-filter>

@@ -6,15 +6,15 @@
         android:layout_height="match_parent"
         android:id="@+id/geofenceDetailActivity"
         android:orientation="vertical"
-        tools:context=".eazytime.geofence.detail.GeoFenceDetailActivity">
+        tools:context=".geofence.detail.GeoFenceDetailActivity">
 
     <fragment
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:id="@+id/map_geoFence"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="@integer/eazyTime_layout_weight_geofence_map_fragment"
-    />
+            android:layout_weight="@integer/eazyTime_layout_weight_geofence_map_fragment">
+    </fragment>
 
     <FrameLayout
             android:id="@+id/geofenceFlowContainer"

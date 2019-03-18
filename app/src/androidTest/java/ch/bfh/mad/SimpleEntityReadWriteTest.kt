@@ -95,7 +95,10 @@ class SimpleEntityReadWriteTest : LifecycleOwner {
 
     @Test
     fun insertProject() {
-        val tmpProject = Project(randomLong(), randomUuid(), randomUuid(), randomUuid(), true,  false)
+        val tmpProject = Project(randomLong(), randomUuid(), randomUuid(), randomUuid(),
+            onWidget = true,
+            isDefault = false
+        )
         db.projectDao().insertAll(mutableListOf(tmpProject))
 
         val projects = db.projectDao().getProjects()

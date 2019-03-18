@@ -3,7 +3,7 @@ package ch.bfh.mad.eazytime.util
 import android.content.Context
 import android.util.Log
 import androidx.core.content.ContextCompat
-import ch.bfh.mad.R
+import ch.bfh.mad.eazytime.R
 import ch.bfh.mad.eazytime.TAG
 
 /**
@@ -50,7 +50,7 @@ class EazyTimeColorUtil constructor(val context: Context) {
 
 
     fun getColorId(colorString: String): Int {
-        var colorArrayId = R.color.eazyTime_default_colorProject
+        val colorArrayId = R.color.eazyTime_default_colorProject
         try {
             when (colorString) {
                 convertIdToString(R.color.eazyTime_colorProject1) -> return R.color.eazyTime_colorProject1

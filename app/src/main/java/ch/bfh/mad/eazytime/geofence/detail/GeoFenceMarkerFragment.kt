@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import ch.bfh.mad.R
+import ch.bfh.mad.eazytime.R
 
 class GeoFenceMarkerFragment : androidx.fragment.app.Fragment() {
 

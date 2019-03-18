@@ -13,7 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import ch.bfh.mad.R
+import ch.bfh.mad.eazytime.R
 import ch.bfh.mad.eazytime.data.repo.ProjectRepo
 import ch.bfh.mad.eazytime.util.EazyTimeDateUtil
 import com.google.android.material.snackbar.Snackbar
@@ -137,7 +137,7 @@ class ProjectsRecycleListAdapter(var context: Context, var projectRepo: ProjectR
     }
 }
 
-class MyUpdateTimer(val timeTV: TextView?, prevTime: Int? = 0, startDate: LocalDateTime?) : TimerTask() {
+class MyUpdateTimer(private val timeTV: TextView?, prevTime: Int? = 0, startDate: LocalDateTime?) : TimerTask() {
     private var counter = 0
 
     init {
@@ -149,10 +149,10 @@ class MyUpdateTimer(val timeTV: TextView?, prevTime: Int? = 0, startDate: LocalD
     }
 
     override fun run() {
-        counter++
         // Use this to support API Level lower than 27 (Android 8.0.0)
         Handler(Looper.getMainLooper()).post {
             timeTV?.text = EazyTimeDateUtil.fromSecondsToHHmmSS(counter)
+            counter++
         }
     }
 }

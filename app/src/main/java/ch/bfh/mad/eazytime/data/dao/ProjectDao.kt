@@ -41,4 +41,7 @@ interface ProjectDao {
 
     @Query("SELECT * FROM project WHERE onWidget = 1")
     fun geProjectsForWidget(): List<Project>
+
+    @Query("SELECT count(*) FROM project WHERE onWidget = 1 AND isDeleted = 0")
+    fun getAmountOfProjectsOnWidget(): Int
 }
