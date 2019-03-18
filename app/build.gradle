@@ -7,7 +7,7 @@ apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "ch.bfh.mad"
+        applicationId "ch.bfh.mad.eazytime"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
@@ -50,7 +50,9 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     testImplementation "com.nhaarman:mockito-kotlin:1.5.0"
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
+    androidTestImplementation( 'androidx.test.espresso:espresso-core:3.1.0-alpha4') {
+        exclude group: 'com.google.code.findbugs'
+    }
     androidTestImplementation "androidx.arch.core:core-testing:2.0.0"
     //db
     implementation 'androidx.room:room-runtime:2.0.0-beta01'

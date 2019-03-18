@@ -7,20 +7,16 @@ import android.graphics.Color
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
-import android.view.MotionEvent
-import android.view.ScaleGestureDetector
-import android.view.View
+import android.view.*
 import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
 import ch.bfh.mad.eazytime.R
 import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.data.entity.GeoFence
 import ch.bfh.mad.eazytime.data.repo.GeoFenceRepo
 import ch.bfh.mad.eazytime.di.Injector
 import ch.bfh.mad.eazytime.geofence.GeoFenceService
-import com.google.android.gms.common.api.Status
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -32,11 +28,13 @@ import com.google.android.gms.tasks.Task
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.FetchPlaceRequest
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.AutocompleteActivity
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.maps.android.SphericalUtil
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 class GeoFenceDetailActivity : AppCompatActivity(),
     GeoFenceFlow,
@@ -44,8 +42,7 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     GoogleMap.OnMyLocationButtonClickListener,
     GoogleMap.OnMapClickListener,
     GoogleMap.OnMapLongClickListener,
-    ScaleGestureDetector.OnScaleGestureListener,
-    PlaceSelectionListener {
+    ScaleGestureDetector.OnScaleGestureListener {
 
     private val defaultZoom: Float = 18F
     private var defaultRadius: Double = 0.0
@@ -59,12 +56,11 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     private lateinit var map: GoogleMap
     private lateinit var marker: Marker
     private lateinit var circle: Circle
-    private lateinit var searchBarContainer: CardView
 
     private lateinit var locationProviderClient: FusedLocationProviderClient
     private lateinit var scaleGestureDetector: ScaleGestureDetector
     private lateinit var mapFragment: SupportMapFragment
-    private lateinit var autocompleteFragment: AutocompleteSupportFragment
+    private lateinit var searchItem: MenuItem
 
     @Inject
     lateinit var geoFenceRepo: GeoFenceRepo
@@ -80,7 +76,6 @@ class GeoFenceDetailActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_geofence_detail)
         title = getString(R.string.geofence_edit_fragment_title)
-        searchBarContainer = this.findViewById(R.id.cv_searchBarContainer)
 
         Injector.appComponent.inject(this)
 
@@ -94,12 +89,6 @@ class GeoFenceDetailActivity : AppCompatActivity(),
             Places.initialize(applicationContext, getString(R.string.google_api_key))
         }
 
-        // Initialize the AutocompleteSupportFragment.
-        autocompleteFragment =
-            supportFragmentManager.findFragmentById(R.id.autocomplete_fragment) as AutocompleteSupportFragment
-        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME))
-        autocompleteFragment.setOnPlaceSelectedListener(this)
-
         val extras = intent.extras
         val geoFenceId = extras?.get("GEOFENCE_ID") as Long?
         geoFenceId?.let {
@@ -109,6 +98,20 @@ class GeoFenceDetailActivity : AppCompatActivity(),
         } ?: run {
             replaceFragment(GeoFenceMarkerFragment.newFragment())
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.eazy_time_search, menu)
+        searchItem = menu!!.findItem(R.id.menu_search)
+        searchItem.setOnMenuItemClickListener {
+            val fields: MutableList<Place.Field> = ArrayList()
+            fields.add(Place.Field.ID)
+            fields.add(Place.Field.NAME)
+            val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields).build(this)
+            startActivityForResult(intent, 121)
+            true
+        }
+        return super.onCreateOptionsMenu(menu)
     }
 
     private fun initGeoFence() {
@@ -216,9 +219,9 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     }
 
     private fun setSearchBar(active: Boolean) {
-        if (active) {
-            searchBarContainer.visibility = View.VISIBLE
-        } else searchBarContainer.visibility = View.GONE
+        if (::searchItem.isInitialized) {
+            searchItem.isVisible = active
+        } else searchItem.isVisible = false
     }
 
     private fun showMarker(position: LatLng) {
@@ -394,20 +397,29 @@ class GeoFenceDetailActivity : AppCompatActivity(),
         if (::geoFence.isInitialized) goToEdit() else finish()
     }
 
-    override fun onPlaceSelected(place: Place) {
-        val asList = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG)
-        val request = FetchPlaceRequest.builder(place.id!!, asList).build()
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == 121) {
+            when (resultCode) {
+                RESULT_OK -> {
+                    val place: Place = Autocomplete.getPlaceFromIntent(data!!)
+                    val asList =
+                        Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG)
+                    val request = FetchPlaceRequest.builder(place.id!!, asList).build()
 
-        Places.createClient(application).fetchPlace(request).addOnSuccessListener { response ->
-            val selectedPlace = response.place
-            Log.d(TAG, "Place selected: $selectedPlace")
-            selectedPlace.latLng?.let { latLng ->
-                moveCamera(latLng, defaultZoom)
+                    Places.createClient(application).fetchPlace(request).addOnSuccessListener { response ->
+                        val selectedPlace = response.place
+                        Log.d(TAG, "Place selected: $selectedPlace")
+                        selectedPlace.latLng?.let { latLng ->
+                            moveCamera(latLng, defaultZoom)
+                        }
+                    }
+                }
+                AutocompleteActivity.RESULT_ERROR -> {
+                    // TODO: Handle the error.
+                    val status = Autocomplete.getStatusFromIntent(data!!)
+                    Log.d(TAG, status.statusMessage)
+                }
             }
         }
-    }
-
-    override fun onError(status: Status) {
-        Log.d(TAG, status.toString())
     }
 }

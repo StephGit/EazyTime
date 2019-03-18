@@ -3,7 +3,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_height="match_parent"
         android:id="@+id/geofenceDetailActivity"
         android:orientation="vertical"
         tools:context=".geofence.detail.GeoFenceDetailActivity">
@@ -14,25 +14,6 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="@integer/eazyTime_layout_weight_geofence_map_fragment">
-
-        <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/cv_searchBarContainer">
-
-            <androidx.appcompat.widget.Toolbar
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    app:layout_collapseMode="pin">
-                <fragment
-                        android:id="@+id/autocomplete_fragment"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
-                />
-            </androidx.appcompat.widget.Toolbar>
-        </androidx.cardview.widget.CardView>
-
     </fragment>
 
     <FrameLayout
