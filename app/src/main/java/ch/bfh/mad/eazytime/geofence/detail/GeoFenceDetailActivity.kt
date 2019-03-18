@@ -7,11 +7,11 @@ import android.graphics.Color
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
-import android.view.MotionEvent
-import android.view.ScaleGestureDetector
+import android.view.*
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import ch.bfh.mad.R
+import ch.bfh.mad.eazytime.R
 import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.data.entity.GeoFence
 import ch.bfh.mad.eazytime.data.repo.GeoFenceRepo
@@ -25,9 +25,16 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.gms.tasks.Task
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.net.FetchPlaceRequest
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.AutocompleteActivity
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.maps.android.SphericalUtil
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 class GeoFenceDetailActivity : AppCompatActivity(),
     GeoFenceFlow,
@@ -52,6 +59,8 @@ class GeoFenceDetailActivity : AppCompatActivity(),
 
     private lateinit var locationProviderClient: FusedLocationProviderClient
     private lateinit var scaleGestureDetector: ScaleGestureDetector
+    private lateinit var mapFragment: SupportMapFragment
+    private lateinit var searchItem: MenuItem
 
     @Inject
     lateinit var geoFenceRepo: GeoFenceRepo
@@ -70,20 +79,45 @@ class GeoFenceDetailActivity : AppCompatActivity(),
 
         Injector.appComponent.inject(this)
 
-        val mapFragment = supportFragmentManager.findFragmentById(R.id.map_geoFence) as SupportMapFragment
+        mapFragment = supportFragmentManager.findFragmentById(R.id.map_geoFence) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
         locationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         scaleGestureDetector = ScaleGestureDetector(applicationContext, this)
 
+        if (!Places.isInitialized()) {
+            Places.initialize(applicationContext, getString(R.string.google_api_key))
+        }
+
         val extras = intent.extras
         val geoFenceId = extras?.get("GEOFENCE_ID") as Long?
         geoFenceId?.let {
             getGeoFenceFromRepo(geoFenceId)
+        }
+    }
+
+    private fun initFlowFragment() {
+        if (::geoFence.isInitialized) {
+            setSearchBar(false)
             replaceFragment(GeoFenceEditFragment.newFragment())
-        } ?: run {
+        } else {
             replaceFragment(GeoFenceMarkerFragment.newFragment())
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.eazy_time_search, menu)
+        searchItem = menu!!.findItem(R.id.menu_search)
+        searchItem.setOnMenuItemClickListener {
+            val fields: MutableList<Place.Field> = ArrayList()
+            fields.add(Place.Field.ID)
+            fields.add(Place.Field.NAME)
+            val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields).build(this)
+            startActivityForResult(intent, 121)
+            true
+        }
+        initFlowFragment()
+        return super.onCreateOptionsMenu(menu)
     }
 
     private fun initGeoFence() {
@@ -109,10 +143,20 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
         map.mapType = GoogleMap.MAP_TYPE_HYBRID
-        setMapInteractive(true)
+        setMapInteractions(mapActions = true)
         enableLocation()
 
         with(map) {
+            val locationButton =
+                (mapFragment.view!!.findViewById<View>(Integer.parseInt("1")).parent as View).findViewById<View>(
+                    Integer.parseInt("2")
+                )
+            val rlp = locationButton.layoutParams as (RelativeLayout.LayoutParams)
+            // position on right bottom
+            rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0)
+            rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE)
+            rlp.setMargins(0, 0, 30, 30)
+
             setOnMapClickListener(this@GeoFenceDetailActivity)
             setOnMapLongClickListener(this@GeoFenceDetailActivity)
         }
@@ -171,12 +215,19 @@ class GeoFenceDetailActivity : AppCompatActivity(),
         return false
     }
 
-    private fun setMapInteractive(state: Boolean) {
+    private fun setMapInteractions(mapActions: Boolean) {
         with(map.uiSettings) {
-            isMyLocationButtonEnabled = state
-            isMapToolbarEnabled = state
-            setAllGesturesEnabled(state)
+            isMyLocationButtonEnabled = mapActions
+            isMapToolbarEnabled = mapActions
+            setAllGesturesEnabled(mapActions)
         }
+
+    }
+
+    private fun setSearchBar(active: Boolean) {
+        if (::searchItem.isInitialized) {
+            searchItem.isVisible = active
+        } else searchItem.isVisible = false
     }
 
     private fun showMarker(position: LatLng) {
@@ -200,12 +251,14 @@ class GeoFenceDetailActivity : AppCompatActivity(),
             .fillColor(R.color.eazyTime_colorGeoFenceRadius)
             .strokeColor(Color.TRANSPARENT)
             .strokeWidth(2F)
+            .visible(true)
         this.circle = map.addCircle(circleOptions)
     }
 
     private fun removeCircle() {
         if (showingCircle()) {
             circle.remove()
+            circle.isVisible = false
         }
     }
 
@@ -293,7 +346,8 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     }
 
     override fun goToMarker() {
-        setMapInteractive(true)
+        setMapInteractions(true)
+        setSearchBar(true)
         removeCircle()
         replaceFragment(GeoFenceMarkerFragment.newFragment())
     }
@@ -301,7 +355,8 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     override fun goToRadius() {
         if (showingMarker()) {
             moveCamera(this.marker.position, this.map.cameraPosition.zoom)
-            setMapInteractive(false)
+            setMapInteractions(false)
+            setSearchBar(false)
             if (!::geoFence.isInitialized) initGeoFence()
             this.geoFence.latitude = this.marker.position.latitude
             this.geoFence.longitude = this.marker.position.longitude
@@ -314,11 +369,13 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     }
 
     override fun goToEdit() {
-        setMapInteractive(true)
-        if (showingCircle()) {
-            this.geoFence.radius = this.circle.radius
-            replaceFragment(GeoFenceEditFragment.newFragment())
+        setMapInteractions(true)
+        setSearchBar(false)
+        if (!showingCircle()) {
+            showCircle(this.marker.position, calcRadiusForZoomLevel())
         }
+        this.geoFence.radius = this.circle.radius
+        replaceFragment(GeoFenceEditFragment.newFragment())
     }
 
     override fun saveOrUpdate(geoFenceName: String) {
@@ -346,6 +403,31 @@ class GeoFenceDetailActivity : AppCompatActivity(),
     }
 
     override fun goBack() {
-        if (::geoFence.isInitialized) replaceFragment(GeoFenceEditFragment.newFragment()) else finish()
+        if (::geoFence.isInitialized) goToEdit() else finish()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == 121) {
+            when (resultCode) {
+                RESULT_OK -> {
+                    val place: Place = Autocomplete.getPlaceFromIntent(data!!)
+                    val asList =
+                        Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG)
+                    val request = FetchPlaceRequest.builder(place.id!!, asList).build()
+
+                    Places.createClient(application).fetchPlace(request).addOnSuccessListener { response ->
+                        val selectedPlace = response.place
+                        Log.d(TAG, "Place selected: $selectedPlace")
+                        selectedPlace.latLng?.let { latLng ->
+                            moveCamera(latLng, defaultZoom)
+                        }
+                    }
+                }
+                AutocompleteActivity.RESULT_ERROR -> {
+                    val status = Autocomplete.getStatusFromIntent(data!!)
+                    Log.d(TAG, status.statusMessage)
+                }
+            }
+        }
     }
 }

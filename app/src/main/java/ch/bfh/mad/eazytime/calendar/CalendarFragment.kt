@@ -11,9 +11,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-
-import ch.bfh.mad.R
 import ch.bfh.mad.eazytime.EazyTimeNavigator
+import ch.bfh.mad.eazytime.R
 import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.data.entity.WorkDay
 import ch.bfh.mad.eazytime.di.Injector

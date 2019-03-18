@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import ch.bfh.mad.R
+import ch.bfh.mad.eazytime.R
 import com.google.android.material.snackbar.Snackbar
 
 class PermissionHandler {

@@ -6,9 +6,9 @@ import android.os.Build
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import ch.bfh.mad.BuildConfig
-import ch.bfh.mad.R
+import ch.bfh.mad.eazytime.BuildConfig
 import ch.bfh.mad.eazytime.EazyTimeActivity
+import ch.bfh.mad.eazytime.R
 import ch.bfh.mad.eazytime.remoteViews.RemoteViewButtonUtil
 import ch.bfh.mad.eazytime.util.ProjectProviderService
 import java.util.*

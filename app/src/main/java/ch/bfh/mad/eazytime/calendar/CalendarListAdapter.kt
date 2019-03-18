@@ -7,10 +7,9 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.annotation.LayoutRes
-import ch.bfh.mad.R
+import ch.bfh.mad.eazytime.R
 import ch.bfh.mad.eazytime.data.entity.WorkDayAndTimeSlots
 import ch.bfh.mad.eazytime.util.CalendarUtil
-import org.joda.time.Period
 import org.joda.time.format.DateTimeFormat
 import java.util.*
 

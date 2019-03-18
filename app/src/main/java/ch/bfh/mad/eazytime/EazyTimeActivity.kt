@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import ch.bfh.mad.R
 import ch.bfh.mad.eazytime.calendar.CalendarFragment
 import ch.bfh.mad.eazytime.calendar.detail.CalendarDetailActivity
 import ch.bfh.mad.eazytime.di.Injector
@@ -53,10 +52,15 @@ class EazyTimeActivity : AppCompatActivity(), EazyTimeNavigator {
     override fun onResume() {
         super.onResume()
         if (geoFenceService.initGeoFences()) {
-            if (!prefs.getBoolean("ignorePowerSafe", false)) {
+            if (!prefs.getBoolean("ignorePowerSafe", false) && !prefs.getBoolean("powerSafeInfoShowed", false)) {
                 checkPowerSaveUtil.checkPowerSaveMode(supportFragmentManager)
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        prefs.edit().remove("powerSafeInfoShowed").apply()
     }
 
     override fun onStop() {

@@ -13,7 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import ch.bfh.mad.R
+import ch.bfh.mad.eazytime.R
 import ch.bfh.mad.eazytime.data.repo.ProjectRepo
 import ch.bfh.mad.eazytime.util.EazyTimeDateUtil
 import com.google.android.material.snackbar.Snackbar

@@ -21,11 +21,10 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import ch.bfh.mad.R
+import ch.bfh.mad.eazytime.R
 import ch.bfh.mad.eazytime.data.entity.GeoFence
 import ch.bfh.mad.eazytime.di.Injector
 import ch.bfh.mad.eazytime.geofence.detail.GeoFenceDetailActivity
-import ch.bfh.mad.eazytime.util.CheckPowerSafeUtil
 import ch.bfh.mad.eazytime.util.PermissionHandler
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -50,9 +49,6 @@ class GeoFenceFragment : androidx.fragment.app.Fragment() {
 
     @Inject
     lateinit var recyclerAdapter: GeoFenceRecyclerAdapter
-
-    @Inject
-    lateinit var checkPowerSafeUtil: CheckPowerSafeUtil
 
     @Inject
     lateinit var geoFenceService: GeoFenceService
@@ -96,13 +92,6 @@ class GeoFenceFragment : androidx.fragment.app.Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         checkPermission(this)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (!prefs.getBoolean("ignorePowerSafe", false)) {
-            checkPowerSafeUtil.checkPowerSaveMode(requireFragmentManager())
-        }
     }
 
     private fun subscribeViewModel(recyclerAdapter: GeoFenceRecyclerAdapter) {
