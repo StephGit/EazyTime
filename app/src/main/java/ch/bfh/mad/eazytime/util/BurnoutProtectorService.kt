@@ -19,6 +19,7 @@ import android.app.PendingIntent
 import android.content.Context
 import androidx.core.app.NotificationCompat
 import ch.bfh.mad.eazytime.EazyTimeActivity
+import ch.bfh.mad.eazytime.remoteViews.notification.NotificationHandler
 import org.joda.time.LocalDate
 import org.joda.time.LocalTime
 import java.util.*
@@ -28,6 +29,9 @@ class BurnoutProtectorService: Service() {
 
     @Inject
     lateinit var timeSlotRepo: TimeSlotRepo
+
+    @Inject
+    lateinit var notificationHandler: NotificationHandler
 
     private var timer: Timer? = null
     private var lastExecution: LocalDateTime? = LocalDate().toLocalDateTime(LocalTime.MIDNIGHT)
@@ -64,7 +68,7 @@ class BurnoutProtectorService: Service() {
                         ?.let {
                             if(it.toStandardHours().hours >= maxWorkHOurs) {
                                 Log.i(TAG , "Showing BurnoutProtector notification")
-                                showNotification()
+                                notificationHandler.createBurnotProtectorNotification()
                             }
                         }
                     }
@@ -75,18 +79,4 @@ class BurnoutProtectorService: Service() {
         return START_STICKY
     }
 
-
-    private fun showNotification() {
-        val builder = NotificationCompat.Builder(this, "burnoutProtectorChannel")
-            .setSmallIcon(R.drawable.ic_houglass_icon)
-            .setContentTitle(getString(R.string.burnout_protector_notification_title))
-            .setStyle(NotificationCompat.BigTextStyle().bigText(getString(R.string.burnout_protector_notification_content)))
-        val notificationId = 789557
-
-        val targetIntent = Intent(this, EazyTimeActivity::class.java)
-        val contentIntent = PendingIntent.getActivity(this, 0, targetIntent, PendingIntent.FLAG_CANCEL_CURRENT)
-        builder.setContentIntent(contentIntent)
-        val nManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        nManager.notify(notificationId, builder.build())
-    }
 }
