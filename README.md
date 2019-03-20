@@ -4,7 +4,9 @@ Simple time tracking app for Android in Kotlin.
 
 ##### Table of Contents
 [What is it?](#what-is-it)
+
 [Technologies](#technologies)
+
 [Getting Started](#getting-started)
 
 
