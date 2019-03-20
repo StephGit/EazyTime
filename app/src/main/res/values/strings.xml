@@ -55,7 +55,7 @@
     <string name="error_project_name_length">Name darf nicht leer sein</string>
     <string name="bu_save_project">Speichern</string>
     <string name="bu_delete_project">Löschen</string>
-    <string name="default_projectName">MyProject</string>
+    <string name="default_projectName">MeinProjekt</string>
     <string name="defaul_color_string">#ff8787</string>
     <string name="is_default_project">Standardprojekt</string>
 
@@ -68,7 +68,7 @@
     <string name="ExtraKeyProjectName">KEY_PROJECT_NAME</string>
     <string name="ExtraKeyProjectShortCode">SHORT_CODE</string>
     <string name="ExtraKeyUpdateNotification">UPDTAE_NOTFICATION</string>
-    <string name="no_projects_for_widget">Keine Projekte mit "Soll auf AppWidget erscheinen" gefunden</string>
+    <string name="no_projects_for_widget">Keine Projekte mit \'Soll auf AppWidget erscheinen\' gefunden</string>
 
     <string name="geofence_unknown_error">Unbekannter Fehler: Der Arbeitsort-Service ist zur Zeit nicht erreichbar.
     </string>

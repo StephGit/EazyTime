@@ -32,7 +32,7 @@ class RemoteViewButtonUtil {
         addUpdateNotificationExtra = updateNotification
 
         when (buttonsToDisplay) {
-            0 -> showNoProjectInformation(context, remoteViews, projects)
+            0 -> showNoProjectInformation(remoteViews)
             1 -> showButtonOne(context, remoteViews, projects)
             2 -> showButtonOneTwo(context, remoteViews, projects)
             3 -> showButtonOneTwoThree(context, remoteViews, projects)
@@ -87,7 +87,7 @@ class RemoteViewButtonUtil {
         disableElement(remoteViews, R.id.tv_widget_no_project)
     }
 
-    private fun showNoProjectInformation(context: Context, remoteViews: RemoteViews, projects: List<ProjectListItem>) {
+    private fun showNoProjectInformation(remoteViews: RemoteViews) {
         disableElement(remoteViews, R.id.bu_widget_one)
         disableElement(remoteViews, R.id.bu_widget_two)
         disableElement(remoteViews, R.id.bu_widget_three)
