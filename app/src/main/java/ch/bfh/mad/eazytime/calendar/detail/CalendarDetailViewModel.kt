@@ -13,7 +13,7 @@ class CalendarDetailViewModel @Inject constructor(private val calendarProviderSe
         calendarProviderService.getCalendarDetail(id)
     }
 
-    fun getTimeSlotList(workdayId: Long): Deferred<List<TimeSlot>> = GlobalScope.async {
+    fun getTimeSlotListAsync(workdayId: Long): Deferred<List<TimeSlot>> = GlobalScope.async {
         calendarProviderService.getTimeSlotsByWorkDayId(workdayId)
     }
 }

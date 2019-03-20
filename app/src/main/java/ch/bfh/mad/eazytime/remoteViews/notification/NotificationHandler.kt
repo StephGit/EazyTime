@@ -51,9 +51,11 @@ class NotificationHandler(val context: Context, private val remoteViewButtonUtil
     }
 
     fun createBurnotProtectorNotification() {
+        val burnoutNotificationChannelId = BuildConfig.APPLICATION_ID + ".channel"
         val notificationId = 789557
-        val notificationChannel = "burnoutProtectorChannel"
-        val builder = NotificationCompat.Builder(context, notificationChannel)
+
+        createNotificationChannel(burnoutNotificationChannelId)
+        val builder = NotificationCompat.Builder(context, burnoutNotificationChannelId)
             .setSmallIcon(R.drawable.ic_houglass_icon)
             .setContentTitle(context.getString(R.string.burnout_protector_notification_title))
             .setStyle(NotificationCompat.BigTextStyle().bigText(context.getString(R.string.burnout_protector_notification_content)))
