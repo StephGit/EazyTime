@@ -15,31 +15,37 @@ import ch.bfh.mad.eazytime.EazyTimeActivity
 import ch.bfh.mad.eazytime.R
 import ch.bfh.mad.eazytime.remoteViews.RemoteViewButtonUtil
 import ch.bfh.mad.eazytime.util.ProjectProviderService
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class NotificationHandler(val context: Context, private val remoteViewButtonUtil: RemoteViewButtonUtil, val projectProviderService: ProjectProviderService) {
 
     private val notificationChannelId = BuildConfig.APPLICATION_ID + ".channel"
     private val notificationId = 789556
 
-    fun createEazyTimeNotification() {
+    fun createEazyTimeNotification() = GlobalScope.launch {
         createNotificationChannel(notificationChannelId)
 
         val notificationLayout = RemoteViews(context.packageName, R.layout.notification)
-        projectProviderService.getProjectListitems().observeForever { projectListItems ->
-            remoteViewButtonUtil.updateButtons(context, notificationLayout, projectListItems.size, projectListItems, true)
-            val builder = NotificationCompat.Builder(context, notificationChannelId)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setSound(null)
-                .setVibrate(longArrayOf(0))
-                .setCustomContentView(notificationLayout)
-                .setCustomBigContentView(notificationLayout)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setAutoCancel(true)
+        withContext(Dispatchers.Main) {
+            projectProviderService.getProjectListitems().observeForever { projectListItems ->
+                remoteViewButtonUtil.updateButtons(context, notificationLayout, projectListItems.size, projectListItems, true)
+                val builder = NotificationCompat.Builder(context, notificationChannelId)
+                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setSound(null)
+                    .setVibrate(longArrayOf(0))
+                    .setCustomContentView(notificationLayout)
+                    .setCustomBigContentView(notificationLayout)
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                    .setAutoCancel(true)
 
-            with(NotificationManagerCompat.from(context)) {
-                // reuse same notificationId because we only want to update a existing notification
-                notify(notificationId, builder.build())
+                with(NotificationManagerCompat.from(context)) {
+                    // reuse same notificationId because we only want to update a existing notification
+                    notify(notificationId, builder.build())
+                }
             }
         }
     }

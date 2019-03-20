@@ -14,6 +14,10 @@ import ch.bfh.mad.eazytime.di.Injector
 import ch.bfh.mad.eazytime.remoteViews.RemoteViewButtonUtil
 import ch.bfh.mad.eazytime.util.ProjectProviderService
 import ch.bfh.mad.eazytime.util.WidgetProviderUtils
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class WidgetProvider : AppWidgetProvider() {
@@ -46,14 +50,16 @@ class WidgetProvider : AppWidgetProvider() {
         updateButtonsOnWidget(context, appWidgetManager, appWidgetId)
     }
 
-    private fun updateButtonsOnWidget(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int) {
-        projectProviderService.getProjectListitems().observeForever {allProjects ->
-            allProjects.filter { project -> project.onWidget == true }.let { projectListItems ->
-                val buttonsToDisplay = widgetProviderUtils.getAmountOfButtonsToDisplay(projectListItems.size, appWidgetManager, appWidgetId)
-                Log.i(TAG, "buttonsToDisplay in HomeScreenWidget: $buttonsToDisplay")
-                val remoteViews = RemoteViews(context.packageName, R.layout.remote_view_layout)
-                remoteViewButtonUtil.updateButtons(context, remoteViews, buttonsToDisplay, projectListItems, false)
-                appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
+    private fun updateButtonsOnWidget(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int) = GlobalScope.launch {
+        withContext(Dispatchers.Main) {
+            projectProviderService.getProjectListitems().observeForever {allProjects ->
+                allProjects.filter { project -> project.onWidget == true }.let { projectListItems ->
+                    val buttonsToDisplay = widgetProviderUtils.getAmountOfButtonsToDisplay(projectListItems.size, appWidgetManager, appWidgetId)
+                    Log.i(TAG, "buttonsToDisplay in HomeScreenWidget: $buttonsToDisplay")
+                    val remoteViews = RemoteViews(context.packageName, R.layout.remote_view_layout)
+                    remoteViewButtonUtil.updateButtons(context, remoteViews, buttonsToDisplay, projectListItems, false)
+                    appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
+                }
             }
         }
     }
