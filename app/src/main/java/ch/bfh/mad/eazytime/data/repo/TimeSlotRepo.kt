@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import ch.bfh.mad.eazytime.data.dao.TimeSlotDao
 import ch.bfh.mad.eazytime.data.entity.TimeSlot
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.joda.time.LocalDate
 import org.joda.time.LocalTime
@@ -14,13 +13,12 @@ class TimeSlotRepo(private val timeSlotDao: TimeSlotDao) {
 
     val allTimeSlots: LiveData<List<TimeSlot>> = timeSlotDao.getTimeSlots()
 
-    @WorkerThread
-    fun todaysTimeSlots(): LiveData<List<TimeSlot>> = runBlocking {
-        timeSlotDao.getTimeSlotsForDay(LocalDate().toLocalDateTime(LocalTime.MIDNIGHT))
+    fun todaysTimeSlots(): LiveData<List<TimeSlot>> {
+        return timeSlotDao.getTimeSlotsForDay(LocalDate().toLocalDateTime(LocalTime.MIDNIGHT))
     }
 
     @WorkerThread
-    fun todaysTimeSlotsList(): List<TimeSlot> = runBlocking {
+    suspend fun todaysTimeSlotsList(): List<TimeSlot> = withContext(Dispatchers.IO) {
         timeSlotDao.getTimeSlotsListForDay(LocalDate().toLocalDateTime(LocalTime.MIDNIGHT))
     }
 

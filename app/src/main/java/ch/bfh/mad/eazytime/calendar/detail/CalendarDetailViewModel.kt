@@ -4,15 +4,16 @@ import androidx.lifecycle.ViewModel
 import ch.bfh.mad.eazytime.data.dao.WorkDayDao
 import ch.bfh.mad.eazytime.data.entity.TimeSlot
 import ch.bfh.mad.eazytime.util.CalendarProviderService
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 class CalendarDetailViewModel @Inject constructor(private val calendarProviderService: CalendarProviderService): ViewModel() {
 
-    fun getCalendarDetail(id: Long): List<WorkDayDao.WorkDayTimeSlotProject> {
-        return calendarProviderService.getCalendarDetail(id)
+    fun getCalendarDetailAsync(id: Long): Deferred<List<WorkDayDao.WorkDayTimeSlotProject>> = GlobalScope.async {
+        calendarProviderService.getCalendarDetail(id)
     }
 
-    fun getTimeSlotList(workdayId: Long): List<TimeSlot> {
-        return calendarProviderService.getTimeSlotsByWorkDayId(workdayId)
+    fun getTimeSlotList(workdayId: Long): Deferred<List<TimeSlot>> = GlobalScope.async {
+        calendarProviderService.getTimeSlotsByWorkDayId(workdayId)
     }
 }

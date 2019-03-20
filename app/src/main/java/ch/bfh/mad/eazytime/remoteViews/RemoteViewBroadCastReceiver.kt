@@ -10,7 +10,9 @@ import ch.bfh.mad.eazytime.di.Injector
 import ch.bfh.mad.eazytime.remoteViews.homeScreenWidget.WidgetProvider
 import ch.bfh.mad.eazytime.remoteViews.notification.NotificationHandler
 import ch.bfh.mad.eazytime.util.TimerService
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -35,7 +37,7 @@ class RemoteViewBroadCastReceiver : BroadcastReceiver() {
         changeAndStartProject(projectId, context, updateNotification)
     }
 
-    private fun changeAndStartProject(projectId: Long, ctx: Context, updateNotification: Boolean) = runBlocking {
+    private fun changeAndStartProject(projectId: Long, ctx: Context, updateNotification: Boolean) = GlobalScope.launch(Dispatchers.IO) {
         timerService.changeAndStartProject(projectId)
         ctx.sendBroadcast(WidgetProvider.getUpdateAppWidgetsIntent(ctx))
         if (updateNotification) {

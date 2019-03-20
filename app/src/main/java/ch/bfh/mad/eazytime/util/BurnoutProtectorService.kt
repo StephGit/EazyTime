@@ -9,12 +9,13 @@ import javax.inject.Inject
 import android.util.Log
 import ch.bfh.mad.eazytime.R
 import ch.bfh.mad.eazytime.TAG
-import kotlinx.coroutines.runBlocking
 import org.joda.time.LocalDateTime
 import org.joda.time.Period
 import kotlin.concurrent.fixedRateTimer
 
 import ch.bfh.mad.eazytime.remoteViews.notification.NotificationHandler
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.joda.time.LocalDate
 import org.joda.time.LocalTime
 import java.util.*
@@ -50,7 +51,7 @@ class BurnoutProtectorService: Service() {
             // track last execution to handle service restarts
             if(lastExecution?.plusMinutes(15)?.isBefore(LocalDateTime()) == true) {
                 Log.i(TAG, "BurnoutProtectorTimer executing")
-                runBlocking {
+                GlobalScope.launch {
                     // calculate only if currentTimeSlots exist
                     if(timeSlotRepo.getCurrentTimeSlots().isNotEmpty()) {
                         timeSlotRepo.todaysTimeSlotsList()

@@ -17,7 +17,9 @@ import ch.bfh.mad.eazytime.R
 import ch.bfh.mad.eazytime.data.repo.ProjectRepo
 import ch.bfh.mad.eazytime.util.EazyTimeDateUtil
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.joda.time.LocalDateTime
 import org.joda.time.Seconds
 import java.util.*
@@ -112,11 +114,11 @@ class ProjectsRecycleListAdapter(var context: Context, var projectRepo: ProjectR
         }
     }
 
-    private fun deleteProject(projectItem: ProjectListItem) = runBlocking{
+    private fun deleteProject(projectItem: ProjectListItem) = GlobalScope.launch(Dispatchers.IO) {
             projectRepo.deleteProject(projectItem.id!!)
     }
 
-    private fun rollbackDeleteProject(projectItem: ProjectListItem) = runBlocking {
+    private fun rollbackDeleteProject(projectItem: ProjectListItem) = GlobalScope.launch(Dispatchers.IO) {
         projectRepo.rollbackDeleteProject(projectItem.id!!)
     }
 
