@@ -3,6 +3,9 @@ package ch.bfh.mad.eazytime.remoteViews
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.graphics.Typeface
+import android.text.SpannableString
+import android.text.style.StyleSpan
 import android.view.View
 import android.widget.RemoteViews
 import androidx.core.content.ContextCompat
@@ -11,6 +14,7 @@ import ch.bfh.mad.eazytime.di.Injector
 import ch.bfh.mad.eazytime.projects.ProjectListItem
 import ch.bfh.mad.eazytime.util.EazyTimeColorUtil
 import javax.inject.Inject
+
 
 class RemoteViewButtonUtil {
 
@@ -106,14 +110,16 @@ class RemoteViewButtonUtil {
         val pendingIntent = PendingIntent.getBroadcast(context, requestCode, intent, 0)
         remoteViews.setOnClickPendingIntent(buttonId, pendingIntent)
         remoteViews.setViewVisibility(buttonId, View.VISIBLE)
-        remoteViews.setTextViewText(buttonId, project.shortCode)
+        val formattableShortCode = SpannableString(project.shortCode)
         if (project.active) {
             remoteViews.setTextColor(buttonId, ContextCompat.getColor(context, R.color.eazyTime_colorBlack))
+            formattableShortCode.setSpan(StyleSpan(Typeface.BOLD), 0, formattableShortCode.length, 0)
         } else {
             remoteViews.setTextColor(buttonId, ContextCompat.getColor(context, R.color.eazyTime_colorWhite))
         }
         val colorArrayId = eazyTimeColorUtil.getColorId(project.color!!)
         remoteViews.setInt(buttonId, "setBackgroundColor", ContextCompat.getColor(context, colorArrayId))
+        remoteViews.setTextViewText(buttonId, formattableShortCode)
     }
 
     private fun createBroadcastIntentForProjectWithId(context: Context, project: ProjectListItem, action: String): Intent {
