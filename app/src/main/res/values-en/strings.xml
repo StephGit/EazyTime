@@ -63,7 +63,7 @@
     <string name="ExtraKeyProjectName">KEY_PROJECT_NAME</string>
     <string name="ExtraKeyProjectShortCode">SHORT_CODE</string>
     <string name="ExtraKeyUpdateNotification">UPDTAE_NOTFICATION</string>
-    <string name="no_projects_for_widget">No projects with "Show on widget" found</string>
+    <string name="no_projects_for_widget">No projects with \'Show on widget\' found</string>
 
     <string name="geofence_unknown_error">Unknown error: the Geofence service is not available now.</string>
     <string name="geofence_not_available">Geofence service is not available now. Go to Settings > Location > Mode and
@@ -74,6 +74,9 @@
     </string>
     <string name="geofence_detail_activity_toast_saved_geofence">Geofence saved</string>
 
+    <string name="burnout_protector_notification_title">EazyTime Warning</string>
+    <string name="burnout_protector_notification_content">Exceeded maximal worktime of 9 hours! Let\'s call it a day!
+    </string>
 
     <string name="active_projects_cant_be_deleted">You can not delete projects with a active booking.</string>
     <string name="priject_is_deleted">Project deleted</string>
