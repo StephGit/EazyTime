@@ -7,6 +7,7 @@ import androidx.core.app.JobIntentService
 import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.di.Injector
 import ch.bfh.mad.eazytime.geofence.GeofenceErrorMessages
+import ch.bfh.mad.eazytime.remoteViews.homeScreenWidget.WidgetProvider
 import ch.bfh.mad.eazytime.remoteViews.notification.NotificationHandler
 import ch.bfh.mad.eazytime.util.TimerService
 import com.google.android.gms.location.Geofence
@@ -43,6 +44,7 @@ class GeoFenceTransitionsJobIntentService : JobIntentService() {
             Log.e(TAG, errorMessage)
         }
         handleEvent(geofencingEvent)
+        applicationContext.sendBroadcast(WidgetProvider.getUpdateAppWidgetsIntent(applicationContext))
     }
 
     private fun handleEvent(event: GeofencingEvent) {

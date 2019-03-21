@@ -2,6 +2,11 @@
 
 Simple time tracking app for Android in Kotlin.
 
+##### Table of Contents
+[What is it?](#what-is-it)<br>
+[Technologies](#technologies)<br>
+[Getting Started](#getting-started)<br>
+
 
 ## What is it?
 
@@ -13,8 +18,8 @@ Add your projects to book working time on them.
 
 ![ProjectView](./doc/projectView.png)
 
-For each project you can define a name, shortcode and if it should be displayed on the widget.
-Up to five projects can be displayed on the widget and aswell on a LockScreenNotification. With the LockScreenNotification you can start/stop bookings even without unlocking your device.
+For each project you can define a name, shortcode and set if it should be displayed on the widget.
+Up to five projects can be displayed on the widget and as well on a LockScreenNotification. With the LockScreenNotification you can start/stop bookings even without unlocking your device.
 You have the possibility to set one default project, which will be triggered on entering a geofence. 
 
 ![ProjectView](./doc/widget.png)
@@ -31,7 +36,7 @@ Simple overview of your bookings. Shows days with a total of booked time:
 
 ### Geofence View
 
-Allows you to add geofences for your working areas. As soon you enter a active geofence, your default project is triggered. If there's allready a running project nothing happens. Leaving a geofence ends the booking on the current running project.
+Allows you to add geofences for your working areas. As soon you enter a active geofence, your default project is triggered. If there's already a running project nothing happens. Leaving a geofence ends the booking on the current running project.
 
 ![GeofenceEdit](./doc/geofenceEdit.png)
 
