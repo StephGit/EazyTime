@@ -9,6 +9,7 @@ import ch.bfh.mad.eazytime.data.repo.WorkDayRepo
 import kotlinx.coroutines.*
 import org.joda.time.LocalDate
 import org.joda.time.LocalDateTime
+import org.joda.time.LocalTime
 import org.joda.time.Period
 
 class TimerService constructor(private val timeSlotRepo: TimeSlotRepo, private val projectDao: ProjectDao, private val workDayRepo: WorkDayRepo) {
@@ -57,8 +58,22 @@ class TimerService constructor(private val timeSlotRepo: TimeSlotRepo, private v
 
     private suspend fun stopCurrentTimeSlots() = coroutineScope {
         val currentTimeSlots =  timeSlotRepo.getCurrentTimeSlots()
+        val now = LocalDateTime()
         currentTimeSlots.forEach {
-            it.endDate = LocalDateTime()
+            // split timeSlot if running over midnight
+            if(it.startDate?.toLocalDate()?.isBefore(now.toLocalDate()) == true){
+                val midnight = LocalDate().toLocalDateTime(LocalTime.MIDNIGHT)
+                val newTs = TimeSlot()
+                it.endDate = midnight.minusSeconds(1)
+                newTs.projectId = it.projectId
+                newTs.startDate = midnight
+                newTs.endDate = now
+                newTs.workDayId = getWorkDayId()
+
+                timeSlotRepo.insertAll(listOf(newTs))
+            } else {
+                it.endDate = now
+            }
             update(it)
         }
         calculateTotalWorkHours()
