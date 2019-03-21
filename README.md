@@ -1,5 +1,7 @@
 # EazyTime App   <img src="./doc/eazytime_logo.png" alt="eazytime-logo" width="60"/>
 
+[![Build Status](https://travis-ci.com/StephGit/EazyTime.svg?branch=master)](https://travis-ci.com/StephGit/EazyTime)
+
 Simple time tracking app for Android in Kotlin.
 
 ##### Table of Contents
