@@ -16,6 +16,8 @@ import ch.bfh.mad.eazytime.R
 import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.data.entity.WorkDay
 import ch.bfh.mad.eazytime.di.Injector
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class CalendarFragment : androidx.fragment.app.Fragment() {

@@ -25,7 +25,9 @@ import ch.bfh.mad.eazytime.remoteViews.homeScreenWidget.WidgetProvider
 import ch.bfh.mad.eazytime.util.ProjectProviderService
 import ch.bfh.mad.eazytime.util.TimerService
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -88,7 +90,7 @@ class ProjectFragment : androidx.fragment.app.Fragment() {
         return view
     }
 
-    private fun activateOrChangeProject(projectLostItem: ProjectListItem?) = runBlocking {
+    private fun activateOrChangeProject(projectLostItem: ProjectListItem?) = GlobalScope.launch(Dispatchers.IO) {
         projectLostItem?.id?.let { projectId ->
             timerService.changeAndStartProject(projectId)
             val ctx = requireContext()

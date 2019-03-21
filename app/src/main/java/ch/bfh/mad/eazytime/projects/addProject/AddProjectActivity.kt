@@ -22,9 +22,7 @@ import ch.bfh.mad.eazytime.remoteViews.homeScreenWidget.WidgetProvider
 import ch.bfh.mad.eazytime.util.EazyTimeColorUtil
 import ch.bfh.mad.eazytime.util.ProjectProviderService
 import com.thebluealliance.spectrum.SpectrumDialog
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import javax.inject.Inject
 import kotlin.random.Random
 
@@ -120,38 +118,42 @@ class AddProjectActivity : AppCompatActivity() {
         })
     }
 
-    private fun initViewModelWithDefaultValues(addProjectViewModel: AddProjectViewModel, dataBinding: ActivityAddProjectBinding) = runBlocking {
+    private fun initViewModelWithDefaultValues(addProjectViewModel: AddProjectViewModel, dataBinding: ActivityAddProjectBinding) = GlobalScope.launch {
         val colors = resources.getIntArray(R.array.eazyTime_project_colors)
         val amountOfProjectsOnWidget = projectRepo.getAmountOfProjectsOnWidget()
         val labelText = getString(R.string.tv_label_add_project_on_widget)
-        addProjectViewModel.selectProjectColor(colors[Random.nextInt(colors.size)])
-        addProjectViewModel.amountOnWidgetProjects.value = amountOfProjectsOnWidget
-        addProjectViewModel.initialOnWidget.value = false
-        dataBinding.buAddProjectSave.isEnabled = false
-        dataBinding.buAddProjectDelete.visibility = View.GONE
-        dataBinding.tvLabelAddProjectOnWidget.text = String.format(labelText, amountOfProjectsOnWidget)
-        if (amountOfProjectsOnWidget >= RemoteViewButtonUtil.MAX_AMOUNT_OF_BUTTONS_ON_WIDGET) {
-            dataBinding.swAddProjectOnWidget.isEnabled = false
-        }
-    }
-
-    private fun initViewModelWithSelectedProjectInformation(addProjectViewModel: AddProjectViewModel, dataBinding: ActivityAddProjectBinding, projectId: Long) = runBlocking {
-        projectRepo.getProjectById(projectId)?.let { project ->
-            val labelText = getString(R.string.tv_label_add_project_on_widget)
-            val amountOfProjectsOnWidget = projectRepo.getAmountOfProjectsOnWidget()
-            val projectIsOnWidget = project.onWidget ?: false
-            addProjectViewModel.initializeWithProjectData(project, colorUtil)
-            addProjectViewModel.initialOnWidget.value = projectIsOnWidget
+        withContext(Dispatchers.Main) {
+            addProjectViewModel.selectProjectColor(colors[Random.nextInt(colors.size)])
             addProjectViewModel.amountOnWidgetProjects.value = amountOfProjectsOnWidget
-            dataBinding.buAddProjectSave.isEnabled = true
+            addProjectViewModel.initialOnWidget.value = false
+            dataBinding.buAddProjectSave.isEnabled = false
+            dataBinding.buAddProjectDelete.visibility = View.GONE
             dataBinding.tvLabelAddProjectOnWidget.text = String.format(labelText, amountOfProjectsOnWidget)
-            if (!projectIsOnWidget && amountOfProjectsOnWidget >= RemoteViewButtonUtil.MAX_AMOUNT_OF_BUTTONS_ON_WIDGET) {
+            if (amountOfProjectsOnWidget >= RemoteViewButtonUtil.MAX_AMOUNT_OF_BUTTONS_ON_WIDGET) {
                 dataBinding.swAddProjectOnWidget.isEnabled = false
             }
         }
     }
 
-    private fun deleteProject(addProjectViewModel: AddProjectViewModel) = runBlocking {
+    private fun initViewModelWithSelectedProjectInformation(addProjectViewModel: AddProjectViewModel, dataBinding: ActivityAddProjectBinding, projectId: Long) = GlobalScope.launch {
+        projectRepo.getProjectById(projectId)?.let { project ->
+            val labelText = getString(R.string.tv_label_add_project_on_widget)
+            val amountOfProjectsOnWidget = projectRepo.getAmountOfProjectsOnWidget()
+            val projectIsOnWidget = project.onWidget ?: false
+            withContext(Dispatchers.Main) {
+                addProjectViewModel.initializeWithProjectData(project, colorUtil)
+                addProjectViewModel.initialOnWidget.value = projectIsOnWidget
+                addProjectViewModel.amountOnWidgetProjects.value = amountOfProjectsOnWidget
+                dataBinding.buAddProjectSave.isEnabled = true
+                dataBinding.tvLabelAddProjectOnWidget.text = String.format(labelText, amountOfProjectsOnWidget)
+                if (!projectIsOnWidget && amountOfProjectsOnWidget >= RemoteViewButtonUtil.MAX_AMOUNT_OF_BUTTONS_ON_WIDGET) {
+                    dataBinding.swAddProjectOnWidget.isEnabled = false
+                }
+            }
+        }
+    }
+
+    private fun deleteProject(addProjectViewModel: AddProjectViewModel) = GlobalScope.launch(Dispatchers.IO) {
         addProjectViewModel.projectId.value?.let { id ->
             Log.i(TAG, "Delete Project started in InsertAsyncTask, close the Activity")
             withContext(Dispatchers.IO) {

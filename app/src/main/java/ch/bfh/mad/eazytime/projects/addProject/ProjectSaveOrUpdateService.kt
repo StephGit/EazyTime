@@ -4,11 +4,13 @@ import android.util.Log
 import ch.bfh.mad.eazytime.TAG
 import ch.bfh.mad.eazytime.data.entity.Project
 import ch.bfh.mad.eazytime.data.repo.ProjectRepo
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class ProjectSaveOrUpdateService constructor(val projectRepo: ProjectRepo) {
 
-    fun saveOrUpdateProject(project: Project): Unit = runBlocking {
+    fun saveOrUpdateProject(project: Project) = GlobalScope.launch(Dispatchers.IO) {
         if (project.isDefault == true){
             markExistingProjectsASNotDefault()
         }
@@ -21,7 +23,7 @@ class ProjectSaveOrUpdateService constructor(val projectRepo: ProjectRepo) {
         }
     }
 
-    private fun markExistingProjectsASNotDefault(): Unit = runBlocking {
+    private fun markExistingProjectsASNotDefault() = GlobalScope.launch(Dispatchers.IO) {
         val projects = projectRepo.getProjects()
         for (project in projects) {
             project.isDefault = false
