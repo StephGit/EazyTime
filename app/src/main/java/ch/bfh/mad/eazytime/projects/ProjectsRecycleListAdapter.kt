@@ -104,6 +104,7 @@ class ProjectsRecycleListAdapter(var context: Context, var projectRepo: ProjectR
         deleteProject(projectItem)
         if (projectItem.active){
             Snackbar.make(viewHolder.itemView, context.getString(R.string.active_projects_cant_be_deleted), Snackbar.LENGTH_LONG).show()
+            notifyItemChanged(removedPosition)
             rollbackDeleteProject(projectItem)
         }else{
             Snackbar.make(viewHolder.itemView, context.getString(R.string.priject_is_deleted), Snackbar.LENGTH_LONG)
