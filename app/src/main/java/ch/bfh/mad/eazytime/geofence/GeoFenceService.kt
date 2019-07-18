@@ -27,8 +27,6 @@ class GeoFenceService @Inject constructor(
     private val geofenceErrorMessages: GeofenceErrorMessages
 ) : OnCompleteListener<Void> {
 
-//    private val geoFenceEntities: MutableList<GeoFence> = ArrayList()
-
     private val geofences: MutableMap<Long, String> = HashMap()
     private val geofencingClient: GeofencingClient = LocationServices.getGeofencingClient(context)
     private var localGeofencePendingIntent: PendingIntent? = null
